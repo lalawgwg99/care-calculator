@@ -71,11 +71,17 @@ export function calculateCareBudget(
   // 特殊情況 1：全日型住宿機構
   // ========================================================================
   // 住宿式機構不適用長照四包錢，改用「機構住宿式服務使用者補助方案」
-  // 年度最高補助 $120,000 (每月約 $10,000)
+  // 依衛福部 2023 年公告（取消排富）：
+  //   - 適用：CMS 4 級以上（或中度以上身障）且入住滿 180 天
+  //   - 年度最高補助：$120,000（月均 $10,000）
+  //   - 資料來源：https://www.mohw.gov.tw/cp-2704-74655-1.html
   if (careType === 'institution') {
+    const institutionMonthlySubsidy = cmsLevel >= 4 ? 10000 : 0;
+    const avgMonthlyFee = 45000; // 全國機構平均月費（含三餐、護理費）
+    const outOfPocketInstitution = Math.max(0, avgMonthlyFee - institutionMonthlySubsidy);
     return {
-      totalSubsidyMonthly: 0,
-      outOfPocketMonthly: 40000, // 預估機構平均月費
+      totalSubsidyMonthly: institutionMonthlySubsidy,
+      outOfPocketMonthly: outOfPocketInstitution,
       hasTransportation: false,
       assistiveDeviceQuota: 0,
     };
