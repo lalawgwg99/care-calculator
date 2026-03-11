@@ -1,20 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-
-const inter = Inter({ 
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const notoSansTC = Noto_Sans_TC({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  display: "swap",
-  variable: "--font-noto-sans-tc",
-});
 
 export const metadata: Metadata = {
   title: "長照 3.0 財務決策引擎 | 快速試算政府補助與自付額",
@@ -27,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-TW" className={`${inter.variable} ${notoSansTC.variable}`}>
-      <body className={inter.className}>
+    <html lang="zh-TW">
+      <body className="antialiased bg-apple-gray-50 text-[17px] text-apple-gray-900">
         <ErrorBoundary>
           {children}
         </ErrorBoundary>
