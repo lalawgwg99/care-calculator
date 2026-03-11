@@ -1,0 +1,100 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Phase 1: 失能等級表
+model CMSLevel {
+  id                Int      @id @default(autoincrement())
+  level             Int      @unique // 1-8
+  name              String   // "輕度失能", "中度失能" 等
+  description       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  subsidyRules      SubsidyRule[]
+  @@map("cms_levels")
+}
+
+// Phase 1: 長照 3.0 補助規則表
+model SubsidyRule {
+  id                        Int      @id @default(autoincrement())
+  cmsLevelId                Int
+  cmsLevel                  CMSLevel @relation(fields: [cmsLevelId], references: [id], onDelete: Cascade)
+  
+  // 第一包：照顧及專業服務 (月額)
+  careServiceMonthly        Int      // 金額
+  careServiceGeneralCopay   Float    // 一般戶自負比例 (e.g., 0.16)
+  careServiceMidLowCopay    Float    // 中低收入戶自負比例 (e.g., 0.05)
+  careServiceLowCopay       Float    // 低收入戶自負比例 (e.g., 0.0)
+  
+  // 第二包：交通接送 (月額，CMS 4級以上)
+  transportMonthly          Int?     // 金額，null 表示不適用
+  transportGeneralCopay     Float?
+  transportMidLowCopay      Float?
+  transportLowCopay         Float?
+  
+  // 第三包：輔具及無障礙改造 (三年額度)
+  assistiveDeviceQuota      Int?     // 金額，null 表示不適用
+  assistiveDeviceGeneralCopay Float?
+  assistiveDeviceMidLowCopay Float?
+  assistiveDeviceLowCopay   Float?
+  
+  // 第四包：喘息服務 (年額)
+  respiteYearly             Int?     // 金額，null 表示不適用
+  respiteGeneralCopay       Float?
+  respiteMidLowCopay        Float?
+  respiteLowCopay           Float?
+  
+  region                    String   @default("national") // "national", "kaohsiung", etc. (Phase 2 擴展)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@unique([cmsLevelId, region])
+  @@map("subsidy_rules")
+}
+
+// Phase 2: 無障礙空間改造評估 (預留)
+model AccessibilityAssessment {
+  id                Int      @id @default(autoincrement())
+  userId            String?  // 未來關聯用戶
+  cmsLevelId        Int
+  assessmentData    Json?    // 評估問卷結果
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("accessibility_assessments")
+}
+
+// Phase 2: 長照機構地圖 (預留)
+model CareInstitution {
+  id                Int      @id @default(autoincrement())
+  name              String
+  region            String   // "kaohsiung", "taipei", etc.
+  serviceType       String   // "residential", "day-care", "home-care"
+  monthlyFee        Int?
+  capacity          Int?
+  contactInfo       Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("care_institutions")
+}
+
+// Phase 3: 照顧者退休金缺口檢測 (預留)
+model RetirementGapAnalysis {
+  id                Int      @id @default(autoincrement())
+  userId            String?
+  currentSavings    Int?
+  projectedExpense  Int?
+  gapAmount         Int?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("retirement_gap_analyses")
+}
