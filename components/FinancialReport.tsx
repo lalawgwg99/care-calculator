@@ -68,11 +68,6 @@ export default function FinancialReport({
   const total5YearPaid = totalMonthlyBurden * months;
   const total5YearGov = monthlyGovSubsidy * months;
 
-  // Tax deduction: 長照特別扣除額 $120,000/year
-  // Effective saving for 一般受薪階級 at ~12% effective tax rate
-  const annualTaxSaving = 120000 * 0.12;
-  const total5YearTaxSaving = annualTaxSaving * 5;
-
   // Elderly assets deduction
   const elderlyAssetsCover = Math.min(elderlyAssets, total5YearPaid);
   const familyNet5Year = Math.max(0, total5YearPaid - elderlyAssetsCover);
@@ -308,33 +303,6 @@ export default function FinancialReport({
         monthlyGovSubsidy={monthlyGovSubsidy}
       />
 
-      {/* ====== ASSISTIVE DEVICE QUOTA (第三包) ====== */}
-      {assistiveDeviceQuota > 0 && careType !== "institution" && (
-        <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-[24px]">🦽</span>
-            <h4 className="text-[17px] font-bold text-apple-gray-900">別忘了！還有輔具補助（第三包）</h4>
-          </div>
-          <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-4">
-            CMS 2 級以上即可申請<strong className="text-apple-blue">「輔具及居家無障礙環境改善」</strong>補助，
-            每 3 年最高 <strong className="text-apple-orange">{formatMoney(assistiveDeviceQuota)}</strong>。
-          </p>
-          <div className="bg-sky-50/60 rounded-[14px] p-4 border border-sky-100/50 space-y-2">
-            <p className="text-[13px] text-sky-800/80 font-medium">常見可申請項目：</p>
-            <div className="grid grid-cols-2 gap-1.5">
-              {["電動床（補助約 $10,000）", "輪椅（補助約 $4,000）", "助行器（補助約 $1,500）", "便盆椅（補助約 $600）", "浴室扶手（補助約 $1,000）", "防滑地板改善"].map((item, i) => (
-                <span key={i} className="text-[12px] text-sky-700/70 flex items-center gap-1">
-                  <span className="text-sky-400">•</span> {item}
-                </span>
-              ))}
-            </div>
-            <p className="text-[12px] text-sky-600/60 mt-2">
-              💡 需先經照管中心評估核准，購買前務必先申請，事後補件不受理。
-            </p>
-          </div>
-        </div>
-      )}
-
       {/* ====== OPPORTUNITY COST WARNING ====== */}
       <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
         <button
@@ -421,7 +389,9 @@ export default function FinancialReport({
               `  家庭總支出：${formatMoney(total5YearPaid)}`,
               elderlyAssets > 0 ? `  長輩積蓄可撐：${monthsFromAssets} 個月` : '',
               ``,
-              `💡 長照特別扣除額可節稅 ${formatMoney(total5YearTaxSaving)}（5年）`,
+              `💎 別忘了隱形省下的錢！`,
+              `  健保減免、勞保減免、報稅扣除額、牌照稅免徵…`,
+              `  用「隱形省下的錢」模組一鍵試算所有減免與退稅`,
               ``,
               `📞 長照專線 1966（免費）`,
               `🔗 試算工具：長照 3.0 財務決策引擎`,
