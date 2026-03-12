@@ -45,10 +45,20 @@ export function calculateCareBudget(
   }
 
   // 特殊情況：全日型住宿機構
+  // 依衛福部 2023 年公告（取消排富條款）：
+  //   - CMS 4 級以上（或中度以上身障）：每年最高 $120,000（月均 $10,000）
+  //   - 既有住民（111年底前已入住，CMS 未達 4 級）：每年最高 $60,000（月均 $5,000）
+  //   - 入住需滿 180 天（未滿則按月計算）
+  //   - 資料來源：https://1966.gov.tw/LTC/cp-6457-69925-207.html
   if (careType === "institution") {
+    // CMS 4+ 適用 12 萬/年補助；CMS 1-3 新申請者不適用此補助
+    const monthlySubsidy = cmsLevel >= 4 ? INSTITUTION_SUBSIDY.monthlySubsidy : 0;
+    const avgMonthlyFee = INSTITUTION_SUBSIDY.estimatedMonthlyFee.min;
+    const outOfPocket = Math.max(0, avgMonthlyFee - monthlySubsidy);
+
     return {
-      totalSubsidyMonthly: INSTITUTION_SUBSIDY.monthlySubsidy,
-      outOfPocketMonthly: INSTITUTION_SUBSIDY.estimatedMonthlyFee.min,
+      totalSubsidyMonthly: monthlySubsidy,
+      outOfPocketMonthly: outOfPocket,
       hasTransportation: false,
       assistiveDeviceQuota: 0,
       respiteMonthly: 0,
@@ -60,7 +70,7 @@ export function calculateCareBudget(
         respiteSubsidy: 0,
         respiteCopay: 0,
       },
-      institutionInfo: INSTITUTION_SUBSIDY,
+      institutionInfo: cmsLevel >= 4 ? INSTITUTION_SUBSIDY : undefined,
     };
   }
 

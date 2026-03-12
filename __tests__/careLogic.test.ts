@@ -128,16 +128,33 @@ describe('careLogic 核心計算邏輯測試', () => {
   });
 
   describe('calculateCareBudget - 住宿式機構', () => {
-    test('住宿式機構無長照四包錢', () => {
+    test('CMS 4+ 住宿式機構適用 12 萬/年補助', () => {
       const result = calculateCareBudget(5, 'general', 'institution');
 
-      expect(result.totalSubsidyMonthly).toBe(0);
-      expect(result.outOfPocketMonthly).toBe(40000);
+      // CMS 5 >= 4：每月補助 $10,000
+      expect(result.totalSubsidyMonthly).toBe(10000);
+      // 自付 = 平均月費 $45,000 - 補助 $10,000 = $35,000
+      expect(result.outOfPocketMonthly).toBe(35000);
       expect(result.hasTransportation).toBe(false);
       expect(result.assistiveDeviceQuota).toBe(0);
     });
 
-    test('住宿式機構不受收入身份影響', () => {
+    test('CMS 6 級一般戶住宿式機構有補助', () => {
+      const result = calculateCareBudget(6, 'general', 'institution');
+
+      expect(result.totalSubsidyMonthly).toBe(10000);
+      expect(result.outOfPocketMonthly).toBe(35000);
+    });
+
+    test('CMS 1-3 級住宿式機構無補助（新申請者）', () => {
+      for (let level = 1; level <= 3; level++) {
+        const result = calculateCareBudget(level as CMSLevel, 'general', 'institution');
+        expect(result.totalSubsidyMonthly).toBe(0);
+        expect(result.outOfPocketMonthly).toBe(45000);
+      }
+    });
+
+    test('住宿式機構不受收入身份影響（已取消排富）', () => {
       const resultGeneral = calculateCareBudget(5, 'general', 'institution');
       const resultMidLow = calculateCareBudget(5, 'mid-low', 'institution');
       const resultLow = calculateCareBudget(5, 'low', 'institution');
@@ -297,11 +314,18 @@ describe('careLogic 核心計算邏輯測試', () => {
       expect(foreignResult.totalSubsidyMonthly).toBe(0);
     });
 
-    test('所有 CMS 等級的機構費用一致', () => {
-      for (let level = 1; level <= 8; level++) {
+    test('CMS 等級影響機構補助資格', () => {
+      // CMS 1-3：無補助，自付全額
+      for (let level = 1; level <= 3; level++) {
         const result = calculateCareBudget(level as CMSLevel, 'general', 'institution');
         expect(result.totalSubsidyMonthly).toBe(0);
-        expect(result.outOfPocketMonthly).toBe(40000);
+        expect(result.outOfPocketMonthly).toBe(45000);
+      }
+      // CMS 4-8：每月補助 $10,000
+      for (let level = 4; level <= 8; level++) {
+        const result = calculateCareBudget(level as CMSLevel, 'general', 'institution');
+        expect(result.totalSubsidyMonthly).toBe(10000);
+        expect(result.outOfPocketMonthly).toBe(35000);
       }
     });
   });
