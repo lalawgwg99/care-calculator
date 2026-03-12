@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { type CareType, getCareTypeName } from "@/lib/careLogic";
+import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
 
 interface FinancialReportProps {
   careType: CareType;
@@ -300,26 +301,12 @@ export default function FinancialReport({
         </div>
       </div>
 
-      {/* ====== TAX DEDUCTION TIP ====== */}
-      <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
-        <div className="flex items-center gap-3 mb-3">
-          <span className="text-[24px]">💰</span>
-          <h4 className="text-[17px] font-bold text-apple-gray-900">別忘了報稅節稅！</h4>
-        </div>
-        <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-4">
-          符合資格的長照家庭，每年申報所得稅時可享有{" "}
-          <strong className="text-apple-orange">長照特別扣除額 $120,000</strong>。
-          以一般受薪家庭（有效稅率約 12%）計算，每年可少繳約{" "}
-          <strong>{formatMoney(annualTaxSaving)}</strong>，5 年累積節稅{" "}
-          <strong className="text-apple-green">{formatMoney(total5YearTaxSaving)}</strong>。
-        </p>
-        <div className="bg-green-50/60 rounded-[14px] p-4 border border-green-100/50">
-          <p className="text-[13px] text-green-800/70">
-            💡 申報時，只需在綜合所得稅申報書的「特別扣除額」欄位勾選「長期照顧特別扣除額」即可，
-            無需附上證明文件（稅捐機關會比對長照健保資料）。
-          </p>
-        </div>
-      </div>
+      {/* ====== HIDDEN SAVINGS PANEL (隱形省下的錢) ====== */}
+      <HiddenSavingsPanel
+        hasLongTermCareQualification={true}
+        monthlyOutOfPocket={totalMonthlyBurden}
+        monthlyGovSubsidy={monthlyGovSubsidy}
+      />
 
       {/* ====== ASSISTIVE DEVICE QUOTA (第三包) ====== */}
       {assistiveDeviceQuota > 0 && careType !== "institution" && (
