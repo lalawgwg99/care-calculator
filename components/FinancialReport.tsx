@@ -8,6 +8,7 @@ interface FinancialReportProps {
   monthlyGovSubsidy: number;
   monthlyOutOfPocket: number;
   shoppingCartTotal?: number;
+  assistiveDeviceQuota?: number; // 第三包：輔具及居家無障礙改善（3年額度）
 }
 
 // True cost breakdown for foreign caregiver (real-world numbers from labor ministry)
@@ -19,6 +20,15 @@ const FOREIGN_CAREGIVER_REAL_COSTS = [
   { label: "仲介費月攤+機票費月攤", amount: 800 },
 ];
 const FOREIGN_REAL_MONTHLY = FOREIGN_CAREGIVER_REAL_COSTS.reduce((s, i) => s + i.amount, 0);
+
+// 住宿式機構實際費用明細
+const INSTITUTION_REAL_COSTS = [
+  { label: "機構基本月費（含住宿、三餐）", amount: 28000 },
+  { label: "護理照顧費", amount: 8000 },
+  { label: "日常耗材（尿布、護墊等）", amount: 4000 },
+  { label: "其他雜費（洗衣、理髮、代購）", amount: 2000 },
+];
+const INSTITUTION_REAL_MONTHLY = INSTITUTION_REAL_COSTS.reduce((s, i) => s + i.amount, 0);
 
 function formatMoney(amount: number) {
   return new Intl.NumberFormat("zh-TW", {
@@ -33,14 +43,17 @@ export default function FinancialReport({
   monthlyGovSubsidy,
   monthlyOutOfPocket,
   shoppingCartTotal,
+  assistiveDeviceQuota = 0,
 }: FinancialReportProps) {
   const [familyMembers, setFamilyMembers] = useState(1);
   const [elderlyAssets, setElderlyAssets] = useState(0);
   const [showOpportunityCost, setShowOpportunityCost] = useState(false);
   const [monthlyIncome, setMonthlyIncome] = useState(45000);
   const [showForeignBreakdown, setShowForeignBreakdown] = useState(false);
+  const [showInstitutionBreakdown, setShowInstitutionBreakdown] = useState(false);
 
   const isForeignCaregiver = careType === "foreign-caregiver";
+  const isInstitution = careType === "institution";
 
   // Use real total cost for foreign caregiver
   const actualMonthlyPaid =
@@ -155,6 +168,69 @@ export default function FinancialReport({
               )}
             </div>
           )}
+
+          {/* Institution real cost breakdown */}
+          {isInstitution && (
+            <div className="space-y-4 mb-7">
+              <div className="bg-violet-50/60 rounded-[20px] p-5 border border-violet-100/50">
+                <button
+                  onClick={() => setShowInstitutionBreakdown(!showInstitutionBreakdown)}
+                  className="w-full flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[18px]">🏥</span>
+                    <span className="text-[15px] font-bold text-violet-900">住宿式機構　每月費用明細</span>
+                  </div>
+                  <span className={`text-violet-500 text-[18px] transition-transform duration-300 ${showInstitutionBreakdown ? "rotate-45" : ""}`}>+</span>
+                </button>
+                {showInstitutionBreakdown && (
+                  <div className="mt-4 space-y-2">
+                    {INSTITUTION_REAL_COSTS.map((item, i) => (
+                      <div key={i} className="flex items-center justify-between text-[14px]">
+                        <span className="text-violet-800">{item.label}</span>
+                        <span className="font-mono font-bold text-violet-900">{formatMoney(item.amount)}</span>
+                      </div>
+                    ))}
+                    <div className="flex items-center justify-between pt-3 mt-3 border-t border-violet-200/60 text-[16px] font-bold">
+                      <span className="text-violet-900">機構每月總費用</span>
+                      <span className="font-mono text-violet-700">{formatMoney(INSTITUTION_REAL_MONTHLY)}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[14px] text-emerald-700 font-medium">
+                      <span>政府每月補助</span>
+                      <span className="font-mono">-{formatMoney(monthlyGovSubsidy)}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[16px] font-bold pt-2 border-t border-violet-200/40">
+                      <span className="text-apple-red">家庭每月實付</span>
+                      <span className="font-mono text-apple-red">{formatMoney(Math.max(0, INSTITUTION_REAL_MONTHLY - monthlyGovSubsidy))}</span>
+                    </div>
+                    <p className="text-[12px] text-violet-600/60 mt-1">
+                      * 費用因機構等級、地區而異，以上為全國平均估算
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 180 天入住門檻提醒 */}
+              <div className="bg-amber-50/80 rounded-[20px] p-5 border border-amber-200/50">
+                <div className="flex items-start gap-3">
+                  <span className="text-[22px] flex-shrink-0">📅</span>
+                  <div>
+                    <h4 className="text-[15px] font-bold text-amber-900 mb-1.5">180 天入住門檻提醒</h4>
+                    <p className="text-[13px] text-amber-800/80 leading-relaxed mb-2">
+                      住宿式機構補助需<strong>當年度累計入住滿 180 天</strong>才能領取全額 $120,000 年度補助。
+                      未滿 180 天則按月計算（每住滿半個月曆天 = 補助 $10,000）。
+                    </p>
+                    <div className="bg-white/60 rounded-[12px] p-3 border border-amber-100/50">
+                      <p className="text-[12px] text-amber-700/70">
+                        💡 <strong>建議：</strong>若預計入住，盡量在年初辦理以確保當年度達 180 天門檻。
+                        年中入住者，第一年補助可能較少，但次年起即可領全額。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -245,6 +321,33 @@ export default function FinancialReport({
         </div>
       </div>
 
+      {/* ====== ASSISTIVE DEVICE QUOTA (第三包) ====== */}
+      {assistiveDeviceQuota > 0 && careType !== "institution" && (
+        <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-[24px]">🦽</span>
+            <h4 className="text-[17px] font-bold text-apple-gray-900">別忘了！還有輔具補助（第三包）</h4>
+          </div>
+          <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-4">
+            CMS 2 級以上即可申請<strong className="text-apple-blue">「輔具及居家無障礙環境改善」</strong>補助，
+            每 3 年最高 <strong className="text-apple-orange">{formatMoney(assistiveDeviceQuota)}</strong>。
+          </p>
+          <div className="bg-sky-50/60 rounded-[14px] p-4 border border-sky-100/50 space-y-2">
+            <p className="text-[13px] text-sky-800/80 font-medium">常見可申請項目：</p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {["電動床（補助約 $10,000）", "輪椅（補助約 $4,000）", "助行器（補助約 $1,500）", "便盆椅（補助約 $600）", "浴室扶手（補助約 $1,000）", "防滑地板改善"].map((item, i) => (
+                <span key={i} className="text-[12px] text-sky-700/70 flex items-center gap-1">
+                  <span className="text-sky-400">•</span> {item}
+                </span>
+              ))}
+            </div>
+            <p className="text-[12px] text-sky-600/60 mt-2">
+              💡 需先經照管中心評估核准，購買前務必先申請，事後補件不受理。
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ====== OPPORTUNITY COST WARNING ====== */}
       <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
         <button
@@ -316,9 +419,42 @@ export default function FinancialReport({
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
         <button
           className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
-          onClick={() => alert("功能建置中：PDF / LINE 圖卡產生")}
+          onClick={() => {
+            const summary = [
+              `📋 長照財務試算摘要`,
+              `方案：${getCareTypeName(careType)}`,
+              ``,
+              `💰 每月費用`,
+              `  政府補助：${formatMoney(monthlyGovSubsidy)}/月`,
+              `  家庭自付：${formatMoney(totalMonthlyBurden)}/月`,
+              familyMembers > 1 ? `  每人分攤：${formatMoney(perPersonMonthly)}/月（${familyMembers} 人）` : '',
+              ``,
+              `📊 5 年總覽`,
+              `  政府總補助：${formatMoney(total5YearGov)}`,
+              `  家庭總支出：${formatMoney(total5YearPaid)}`,
+              elderlyAssets > 0 ? `  長輩積蓄可撐：${monthsFromAssets} 個月` : '',
+              ``,
+              `💡 長照特別扣除額可節稅 ${formatMoney(total5YearTaxSaving)}（5年）`,
+              ``,
+              `📞 長照專線 1966（免費）`,
+              `🔗 試算工具：長照 3.0 財務決策引擎`,
+            ].filter(Boolean).join('\n');
+
+            if (navigator.share) {
+              navigator.share({ title: '長照財務試算', text: summary }).catch(() => {});
+            } else {
+              navigator.clipboard.writeText(summary).then(() => {
+                const btn = document.activeElement as HTMLButtonElement;
+                const original = btn?.textContent;
+                if (btn) {
+                  btn.textContent = '✅ 已複製到剪貼簿！';
+                  setTimeout(() => { btn.textContent = original; }, 2000);
+                }
+              });
+            }
+          }}
         >
-          📤 匯出圖卡至 LINE
+          📤 複製摘要 / 分享給家人
         </button>
         <button
           className="w-full sm:w-auto px-8 py-3.5 bg-apple-gray-50 text-apple-gray-900 text-[16px] font-semibold rounded-full hover:bg-apple-gray-200 transition-colors border border-apple-gray-200/60"

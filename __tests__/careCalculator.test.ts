@@ -153,7 +153,7 @@ describe('calculateCareBudget', () => {
   });
 
   describe('邊緣案例：住宿式機構', () => {
-    test('無長照四包錢，使用機構補助方案', () => {
+    test('CMS 4+ 使用機構補助方案（每年 12 萬）', () => {
       const result = calculateCareBudget(5, 'general', 'institution');
 
       // 無長照四包錢
@@ -167,22 +167,42 @@ describe('calculateCareBudget', () => {
       expect(result.hasTransportation).toBe(false);
       expect(result.assistiveDeviceQuota).toBe(0);
 
-      // 機構補助方案
+      // CMS 5 >= 4：適用 12 萬/年補助
       expect(result.institutionInfo).toBeDefined();
       expect(result.institutionInfo?.yearlySubsidy).toBe(INSTITUTION_SUBSIDY.yearlySubsidy);
       expect(result.institutionInfo?.monthlySubsidy).toBe(INSTITUTION_SUBSIDY.monthlySubsidy);
       expect(result.totalSubsidyMonthly).toBe(10000);
-      expect(result.outOfPocketMonthly).toBe(35000);
+      // 自付 = 機構最低月費 $35,000 - 補助 $10,000 = $25,000
+      expect(result.outOfPocketMonthly).toBe(25000);
     });
 
-    test('機構補助不受收入身份影響', () => {
+    test('CMS 6 級一般戶使用機構補助方案', () => {
+      const result = calculateCareBudget(6, 'general', 'institution');
+
+      // CMS 6 >= 4：適用 12 萬/年補助
+      expect(result.totalSubsidyMonthly).toBe(10000);
+      expect(result.outOfPocketMonthly).toBe(25000);
+      expect(result.institutionInfo).toBeDefined();
+    });
+
+    test('CMS 1-3 級不適用機構補助（新申請者）', () => {
+      const result = calculateCareBudget(2, 'general', 'institution');
+
+      // CMS 2 < 4：不適用 12 萬/年補助
+      expect(result.totalSubsidyMonthly).toBe(0);
+      expect(result.outOfPocketMonthly).toBe(35000);
+      expect(result.institutionInfo).toBeUndefined();
+    });
+
+    test('機構補助不受收入身份影響（已取消排富）', () => {
       const resultGeneral = calculateCareBudget(5, 'general', 'institution');
       const resultMidLow = calculateCareBudget(5, 'midLow', 'institution');
       const resultLow = calculateCareBudget(5, 'low', 'institution');
 
-      // 所有收入身份的機構補助都相同
-      expect(resultGeneral.totalSubsidyMonthly).toBe(resultMidLow.totalSubsidyMonthly);
-      expect(resultMidLow.totalSubsidyMonthly).toBe(resultLow.totalSubsidyMonthly);
+      // 所有收入身份的機構補助都相同（已取消排富條款）
+      expect(resultGeneral.totalSubsidyMonthly).toBe(10000);
+      expect(resultMidLow.totalSubsidyMonthly).toBe(10000);
+      expect(resultLow.totalSubsidyMonthly).toBe(10000);
     });
   });
 
