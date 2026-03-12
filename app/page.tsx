@@ -59,7 +59,7 @@ export default function Home() {
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
             <div className="bg-white/70 backdrop-blur-sm rounded-[20px] p-4 border border-orange-100/50">
-              <div className="text-[28px] font-bold text-apple-orange">3 種</div>
+              <div className="text-[28px] font-bold text-apple-orange">4 種</div>
               <div className="text-[13px] text-amber-800/60 mt-1">照顧路徑比較</div>
             </div>
             <div className="bg-white/70 backdrop-blur-sm rounded-[20px] p-4 border border-orange-100/50">
@@ -172,7 +172,7 @@ export default function Home() {
               `}
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
-              {cmsLevel && incomeStatus ? "查看 3 種照顧方案的財務對比 →" : "請先完成上方兩個選項"}
+              {cmsLevel && incomeStatus ? "查看 4 種照顧方案的財務對比 →" : "請先完成上方兩個選項"}
             </button>
           </div>
         </div>
@@ -185,7 +185,7 @@ export default function Home() {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {[
-            { emoji: "🏠", title: "三條路，一次比", desc: "居家照顧、住宿機構、外籍看護 — 不用各別查資料，系統同時幫您算好三種方案的費用差異。" },
+            { emoji: "🏠", title: "四條路，一次比", desc: "居家照顧、日間照顧、住宿機構、外籍看護 — 不用各別查資料，系統同時幫您算好四種方案的費用差異。" },
             { emoji: "🛒", title: "服務購物車", desc: "算出補助金額後，直接挑選實際的長照服務項目（洗澡、就醫陪同等），計算真正要花多少錢。" },
             { emoji: "📊", title: "5 年財務預測", desc: "長照不是一個月的事。系統會幫您推算未來 5 年的總支出，方便跟家人討論分攤。" },
             { emoji: "🤔", title: "不懂等級？幫您評估", desc: "透過 4 個簡單的日常生活問題（吃飯、走路、洗澡、認知），自動算出最可能的失能等級。" },

@@ -20,6 +20,15 @@ const FOREIGN_CAREGIVER_REAL_COSTS = [
 ];
 const FOREIGN_REAL_MONTHLY = FOREIGN_CAREGIVER_REAL_COSTS.reduce((s, i) => s + i.amount, 0);
 
+// 住宿式機構實際費用明細
+const INSTITUTION_REAL_COSTS = [
+  { label: "機構基本月費（含住宿、三餐）", amount: 28000 },
+  { label: "護理照顧費", amount: 8000 },
+  { label: "日常耗材（尿布、護墊等）", amount: 4000 },
+  { label: "其他雜費（洗衣、理髮、代購）", amount: 2000 },
+];
+const INSTITUTION_REAL_MONTHLY = INSTITUTION_REAL_COSTS.reduce((s, i) => s + i.amount, 0);
+
 function formatMoney(amount: number) {
   return new Intl.NumberFormat("zh-TW", {
     style: "currency",
@@ -39,8 +48,10 @@ export default function FinancialReport({
   const [showOpportunityCost, setShowOpportunityCost] = useState(false);
   const [monthlyIncome, setMonthlyIncome] = useState(45000);
   const [showForeignBreakdown, setShowForeignBreakdown] = useState(false);
+  const [showInstitutionBreakdown, setShowInstitutionBreakdown] = useState(false);
 
   const isForeignCaregiver = careType === "foreign-caregiver";
+  const isInstitution = careType === "institution";
 
   // Use real total cost for foreign caregiver
   const actualMonthlyPaid =
@@ -153,6 +164,69 @@ export default function FinancialReport({
                   </p>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Institution real cost breakdown */}
+          {isInstitution && (
+            <div className="space-y-4 mb-7">
+              <div className="bg-violet-50/60 rounded-[20px] p-5 border border-violet-100/50">
+                <button
+                  onClick={() => setShowInstitutionBreakdown(!showInstitutionBreakdown)}
+                  className="w-full flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[18px]">🏥</span>
+                    <span className="text-[15px] font-bold text-violet-900">住宿式機構　每月費用明細</span>
+                  </div>
+                  <span className={`text-violet-500 text-[18px] transition-transform duration-300 ${showInstitutionBreakdown ? "rotate-45" : ""}`}>+</span>
+                </button>
+                {showInstitutionBreakdown && (
+                  <div className="mt-4 space-y-2">
+                    {INSTITUTION_REAL_COSTS.map((item, i) => (
+                      <div key={i} className="flex items-center justify-between text-[14px]">
+                        <span className="text-violet-800">{item.label}</span>
+                        <span className="font-mono font-bold text-violet-900">{formatMoney(item.amount)}</span>
+                      </div>
+                    ))}
+                    <div className="flex items-center justify-between pt-3 mt-3 border-t border-violet-200/60 text-[16px] font-bold">
+                      <span className="text-violet-900">機構每月總費用</span>
+                      <span className="font-mono text-violet-700">{formatMoney(INSTITUTION_REAL_MONTHLY)}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[14px] text-emerald-700 font-medium">
+                      <span>政府每月補助</span>
+                      <span className="font-mono">-{formatMoney(monthlyGovSubsidy)}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[16px] font-bold pt-2 border-t border-violet-200/40">
+                      <span className="text-apple-red">家庭每月實付</span>
+                      <span className="font-mono text-apple-red">{formatMoney(Math.max(0, INSTITUTION_REAL_MONTHLY - monthlyGovSubsidy))}</span>
+                    </div>
+                    <p className="text-[12px] text-violet-600/60 mt-1">
+                      * 費用因機構等級、地區而異，以上為全國平均估算
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 180 天入住門檻提醒 */}
+              <div className="bg-amber-50/80 rounded-[20px] p-5 border border-amber-200/50">
+                <div className="flex items-start gap-3">
+                  <span className="text-[22px] flex-shrink-0">📅</span>
+                  <div>
+                    <h4 className="text-[15px] font-bold text-amber-900 mb-1.5">180 天入住門檻提醒</h4>
+                    <p className="text-[13px] text-amber-800/80 leading-relaxed mb-2">
+                      住宿式機構補助需<strong>當年度累計入住滿 180 天</strong>才能領取全額 $120,000 年度補助。
+                      未滿 180 天則按月計算（每住滿半個月曆天 = 補助 $10,000）。
+                    </p>
+                    <div className="bg-white/60 rounded-[12px] p-3 border border-amber-100/50">
+                      <p className="text-[12px] text-amber-700/70">
+                        💡 <strong>建議：</strong>若預計入住，盡量在年初辦理以確保當年度達 180 天門檻。
+                        年中入住者，第一年補助可能較少，但次年起即可領全額。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
