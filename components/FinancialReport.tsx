@@ -8,6 +8,7 @@ interface FinancialReportProps {
   monthlyGovSubsidy: number;
   monthlyOutOfPocket: number;
   shoppingCartTotal?: number;
+  assistiveDeviceQuota?: number; // 第三包：輔具及居家無障礙改善（3年額度）
 }
 
 // True cost breakdown for foreign caregiver (real-world numbers from labor ministry)
@@ -42,6 +43,7 @@ export default function FinancialReport({
   monthlyGovSubsidy,
   monthlyOutOfPocket,
   shoppingCartTotal,
+  assistiveDeviceQuota = 0,
 }: FinancialReportProps) {
   const [familyMembers, setFamilyMembers] = useState(1);
   const [elderlyAssets, setElderlyAssets] = useState(0);
@@ -319,6 +321,33 @@ export default function FinancialReport({
         </div>
       </div>
 
+      {/* ====== ASSISTIVE DEVICE QUOTA (第三包) ====== */}
+      {assistiveDeviceQuota > 0 && careType !== "institution" && (
+        <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-[24px]">🦽</span>
+            <h4 className="text-[17px] font-bold text-apple-gray-900">別忘了！還有輔具補助（第三包）</h4>
+          </div>
+          <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-4">
+            CMS 2 級以上即可申請<strong className="text-apple-blue">「輔具及居家無障礙環境改善」</strong>補助，
+            每 3 年最高 <strong className="text-apple-orange">{formatMoney(assistiveDeviceQuota)}</strong>。
+          </p>
+          <div className="bg-sky-50/60 rounded-[14px] p-4 border border-sky-100/50 space-y-2">
+            <p className="text-[13px] text-sky-800/80 font-medium">常見可申請項目：</p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {["電動床（補助約 $10,000）", "輪椅（補助約 $4,000）", "助行器（補助約 $1,500）", "便盆椅（補助約 $600）", "浴室扶手（補助約 $1,000）", "防滑地板改善"].map((item, i) => (
+                <span key={i} className="text-[12px] text-sky-700/70 flex items-center gap-1">
+                  <span className="text-sky-400">•</span> {item}
+                </span>
+              ))}
+            </div>
+            <p className="text-[12px] text-sky-600/60 mt-2">
+              💡 需先經照管中心評估核准，購買前務必先申請，事後補件不受理。
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ====== OPPORTUNITY COST WARNING ====== */}
       <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
         <button
@@ -390,9 +419,42 @@ export default function FinancialReport({
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
         <button
           className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
-          onClick={() => alert("功能建置中：PDF / LINE 圖卡產生")}
+          onClick={() => {
+            const summary = [
+              `📋 長照財務試算摘要`,
+              `方案：${getCareTypeName(careType)}`,
+              ``,
+              `💰 每月費用`,
+              `  政府補助：${formatMoney(monthlyGovSubsidy)}/月`,
+              `  家庭自付：${formatMoney(totalMonthlyBurden)}/月`,
+              familyMembers > 1 ? `  每人分攤：${formatMoney(perPersonMonthly)}/月（${familyMembers} 人）` : '',
+              ``,
+              `📊 5 年總覽`,
+              `  政府總補助：${formatMoney(total5YearGov)}`,
+              `  家庭總支出：${formatMoney(total5YearPaid)}`,
+              elderlyAssets > 0 ? `  長輩積蓄可撐：${monthsFromAssets} 個月` : '',
+              ``,
+              `💡 長照特別扣除額可節稅 ${formatMoney(total5YearTaxSaving)}（5年）`,
+              ``,
+              `📞 長照專線 1966（免費）`,
+              `🔗 試算工具：長照 3.0 財務決策引擎`,
+            ].filter(Boolean).join('\n');
+
+            if (navigator.share) {
+              navigator.share({ title: '長照財務試算', text: summary }).catch(() => {});
+            } else {
+              navigator.clipboard.writeText(summary).then(() => {
+                const btn = document.activeElement as HTMLButtonElement;
+                const original = btn?.textContent;
+                if (btn) {
+                  btn.textContent = '✅ 已複製到剪貼簿！';
+                  setTimeout(() => { btn.textContent = original; }, 2000);
+                }
+              });
+            }
+          }}
         >
-          📤 匯出圖卡至 LINE
+          📤 複製摘要 / 分享給家人
         </button>
         <button
           className="w-full sm:w-auto px-8 py-3.5 bg-apple-gray-50 text-apple-gray-900 text-[16px] font-semibold rounded-full hover:bg-apple-gray-200 transition-colors border border-apple-gray-200/60"

@@ -295,6 +295,7 @@ export default function Home() {
         careType={selectedPathway}
         monthlyGovSubsidy={currentResult.totalSubsidyMonthly}
         monthlyOutOfPocket={currentResult.outOfPocketMonthly}
+        assistiveDeviceQuota={currentResult.assistiveDeviceQuota}
       />
     );
   };

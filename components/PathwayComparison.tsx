@@ -112,6 +112,46 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
   const lowestOutPocket = Math.min(...pathways.map(p => p.monthlyOutPocket));
   const recommendedId = pathways.find(p => p.monthlyOutPocket === lowestOutPocket)?.id;
 
+  // CMS 1 級：無補助資格
+  if (cmsLevel === 1) {
+    return (
+      <div className="w-full animation-fade-in max-w-2xl mx-auto">
+        <div className="bg-amber-50 rounded-[28px] p-8 sm:p-10 border border-amber-200/60 text-center">
+          <div className="text-[48px] mb-4">🤗</div>
+          <h2 className="text-[24px] sm:text-[28px] font-bold text-apple-gray-900 mb-3">
+            好消息！長輩目前狀況不錯
+          </h2>
+          <p className="text-[16px] text-amber-800/70 leading-relaxed mb-6 max-w-lg mx-auto">
+            CMS 第 1 級屬於「輕度失能」，目前<strong>尚未達到長照補助的門檻</strong>（需 CMS 2 級以上）。
+            但這代表長輩的身體功能還不錯，是延緩退化的好時機！
+          </p>
+          <div className="bg-white/80 rounded-[20px] p-6 border border-amber-100/50 text-left mb-6">
+            <h4 className="text-[16px] font-bold text-apple-gray-900 mb-3">建議您現在可以做的事：</h4>
+            <ul className="space-y-2.5">
+              {[
+                "帶長輩到社區的「巷弄長照站」參加免費活動，延緩失能",
+                "評估居家環境安全（浴室防滑、走廊扶手等）",
+                "鼓勵長輩每天走路、做簡單運動，維持肌力",
+                "若狀況轉變，隨時可撥打 1966 重新申請評估",
+              ].map((tip, i) => (
+                <li key={i} className="flex items-start text-[14px] text-apple-gray-600 leading-snug">
+                  <span className="text-amber-500 mr-2 mt-0.5 flex-shrink-0">●</span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <a
+            href="tel:1966"
+            className="inline-flex items-center gap-2 bg-amber-600 text-white px-8 py-3.5 rounded-full text-[16px] font-bold shadow-lg hover:bg-amber-700 transition-colors"
+          >
+            📞 撥打 1966 諮詢或重新評估
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full animation-fade-in">
       <div className="text-center mb-8 sm:mb-12">
