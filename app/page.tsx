@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
+import { type ConditionId, CONDITION_OPTIONS } from "@/lib/conditionProfiles";
 import CMSEstimator from "@/components/CMSEstimator";
 import PathwayComparison from "@/components/PathwayComparison";
 import ServiceCart from "@/components/ServiceCart";
@@ -18,6 +19,7 @@ export default function Home() {
   const [incomeStatus, setIncomeStatus] = useState<IncomeStatus | null>(null);
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
+  const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
 
   const getBaseCopayRate = () => {
     if (incomeStatus === "general") return 0.16;
@@ -153,6 +155,43 @@ export default function Home() {
                       <div className={`text-[12px] mt-1 ${incomeStatus === status ? "text-apple-orange/70" : "text-apple-gray-500"}`}>
                         {config[status].sub}
                       </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Condition Selection (Optional) */}
+            <div className="mb-10">
+              <label className="block text-[16px] font-semibold text-apple-gray-800 mb-2">
+                ❸ 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
+              </label>
+              <p className="text-[13px] text-apple-gray-500 mb-4">
+                選擇後，系統會針對疾病給出專屬的照顧建議、時間軸和注意事項。
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {CONDITION_OPTIONS.map((condition) => {
+                  const isSelected = selectedConditions.includes(condition.id);
+                  return (
+                    <button
+                      key={condition.id}
+                      onClick={() => {
+                        setSelectedConditions((prev) =>
+                          isSelected
+                            ? prev.filter((c) => c !== condition.id)
+                            : [...prev, condition.id]
+                        );
+                      }}
+                      className={`
+                        p-3 rounded-[14px] text-center transition-all duration-200 border
+                        ${isSelected
+                          ? "bg-apple-orange/10 border-apple-orange text-apple-orange shadow-sm"
+                          : "bg-white border-apple-gray-200 text-apple-gray-700 hover:bg-orange-50 hover:border-orange-200"}
+                      `}
+                      style={{ WebkitTapHighlightColor: "transparent" }}
+                    >
+                      <div className="text-[20px] mb-1">{condition.icon}</div>
+                      <div className="text-[13px] font-semibold">{condition.name}</div>
                     </button>
                   );
                 })}
@@ -296,6 +335,7 @@ export default function Home() {
         monthlyGovSubsidy={currentResult.totalSubsidyMonthly}
         monthlyOutOfPocket={currentResult.outOfPocketMonthly}
         assistiveDeviceQuota={currentResult.assistiveDeviceQuota}
+        selectedConditions={selectedConditions}
       />
     );
   };
