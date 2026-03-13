@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { type CareType, getCareTypeName } from "@/lib/careLogic";
 import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
+import InsuranceAddon from "@/components/InsuranceAddon";
+import LegalNavigator from "@/components/LegalNavigator";
 
 interface FinancialReportProps {
   careType: CareType;
@@ -302,6 +304,15 @@ export default function FinancialReport({
         monthlyOutOfPocket={totalMonthlyBurden}
         monthlyGovSubsidy={monthlyGovSubsidy}
       />
+
+      {/* ====== INSURANCE ADDON (商業保險外掛) ====== */}
+      <InsuranceAddon
+        monthlyOutOfPocket={totalMonthlyBurden}
+        monthlyGovSubsidy={monthlyGovSubsidy}
+      />
+
+      {/* ====== LEGAL NAVIGATOR (法律文件導航) ====== */}
+      <LegalNavigator elderlyAssets={elderlyAssets} />
 
       {/* ====== OPPORTUNITY COST WARNING ====== */}
       <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
