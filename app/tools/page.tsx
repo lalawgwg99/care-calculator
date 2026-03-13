@@ -31,7 +31,7 @@ const TOOLS = [
     href: "/tools/medical-prep",
     tag: "實用工具",
     tagColor: "bg-blue-100 text-blue-700",
-    available: false,
+    available: true,
   },
   {
     id: "caregiver-comm",
@@ -41,7 +41,7 @@ const TOOLS = [
     href: "/tools/caregiver-comm",
     tag: "實用工具",
     tagColor: "bg-blue-100 text-blue-700",
-    available: false,
+    available: true,
   },
   {
     id: "care-timeline",
