@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { type CareType, getCareTypeName } from "@/lib/careLogic";
 import { type ConditionId, CONDITION_PROFILES, getAdditionalMonthlyCost } from "@/lib/conditionProfiles";
+import CareTimeline from "@/components/CareTimeline";
+import FacilityChecklist from "@/components/FacilityChecklist";
 import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
 import InsuranceAddon from "@/components/InsuranceAddon";
 import LegalNavigator from "@/components/LegalNavigator";
@@ -14,6 +16,7 @@ interface FinancialReportProps {
   shoppingCartTotal?: number;
   assistiveDeviceQuota?: number;
   selectedConditions?: ConditionId[];
+  cmsLevel?: number;
 }
 
 // True cost breakdown for foreign caregiver (real-world numbers from labor ministry)
@@ -50,6 +53,7 @@ export default function FinancialReport({
   shoppingCartTotal,
   assistiveDeviceQuota = 0,
   selectedConditions = [],
+  cmsLevel,
 }: FinancialReportProps) {
   const [familyMembers, setFamilyMembers] = useState(1);
   const [elderlyAssets, setElderlyAssets] = useState(0);
@@ -320,6 +324,16 @@ export default function FinancialReport({
             })}
           </div>
         </div>
+      )}
+
+      {/* ====== CARE TIMELINE (照顧時間軸) ====== */}
+      {selectedConditions.length > 0 && (
+        <CareTimeline selectedConditions={selectedConditions} currentCmsLevel={cmsLevel} />
+      )}
+
+      {/* ====== FACILITY CHECKLIST (機構檢核表) ====== */}
+      {isInstitution && (
+        <FacilityChecklist selectedConditions={selectedConditions} />
       )}
 
       {/* ====== ELDERLY ASSETS + FAMILY SPLIT ====== */}

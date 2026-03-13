@@ -336,6 +336,7 @@ export default function Home() {
         monthlyOutOfPocket={currentResult.outOfPocketMonthly}
         assistiveDeviceQuota={currentResult.assistiveDeviceQuota}
         selectedConditions={selectedConditions}
+        cmsLevel={cmsLevel ?? undefined}
       />
     );
   };
