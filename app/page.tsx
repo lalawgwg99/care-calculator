@@ -208,6 +208,37 @@ export default function Home() {
       {/* ====== CAREGIVER TIPS ====== */}
       <CaregiverTips />
 
+      {/* ====== MORE TOOLS SECTION ====== */}
+      <section className="max-w-4xl mx-auto px-4 mb-12">
+        <h3 className="text-[20px] font-bold text-center text-apple-gray-900 mb-6">
+          更多照顧工具
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { href: "/insurance", emoji: "🛡️", label: "保險補充計算" },
+            { href: "/tools/conditions", emoji: "🫀", label: "疾病照顧檔案" },
+            { href: "/tools/caregiverhealth", emoji: "💆", label: "倦怠檢測" },
+            { href: "/tools/reablement", emoji: "🌟", label: "復能任務卡" },
+          ].map((tool) => (
+            <a
+              key={tool.href}
+              href={tool.href}
+              className="bg-white border border-apple-gray-200 rounded-[18px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
+            >
+              <div className="text-[28px] mb-2">{tool.emoji}</div>
+              <div className="text-[13px] font-semibold text-apple-gray-700 group-hover:text-amber-700 transition-colors">
+                {tool.label}
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="text-center mt-4">
+          <a href="/tools" className="text-[13px] text-amber-600 hover:text-amber-700 font-medium">
+            查看全部工具 →
+          </a>
+        </div>
+      </section>
+
       {/* ====== TRUST / FOOTER ====== */}
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
         <div className="bg-amber-50/50 rounded-[20px] p-6 border border-orange-100/50">
