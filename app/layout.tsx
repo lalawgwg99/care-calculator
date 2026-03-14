@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "長照 3.0 財務決策引擎 | 快速試算政府補助與自付額",
@@ -66,6 +67,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-apple-gray-50 text-[17px] text-apple-gray-900">
+        <NavBar />
         <ErrorBoundary>
           {children}
         </ErrorBoundary>
