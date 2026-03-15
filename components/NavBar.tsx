@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
   { href: "/", label: "首頁試算", icon: "🧮" },
+  { href: "/blog", label: "知識庫", icon: "📚" },
   { href: "/tools", label: "實用工具", icon: "🛠️" },
   { href: "/search", label: "資源搜尋", icon: "🔍" },
 ];
