@@ -37,6 +37,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
       monthlySubsidy: homeCareResult.totalSubsidyMonthly,
       monthlyOutPocket: homeCareResult.outOfPocketMonthly,
       totalMonthly: homeCareResult.totalSubsidyMonthly + homeCareResult.outOfPocketMonthly,
+      waitTime: "⏱ 約 2-4 週開始服務",
       features: [
         "專員到府提供洗澡、餵食等服務",
         "彈性安排服務時段",
@@ -56,6 +57,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
       monthlySubsidy: dayCareResult.totalSubsidyMonthly,
       monthlyOutPocket: dayCareResult.outOfPocketMonthly,
       totalMonthly: dayCareResult.totalSubsidyMonthly + dayCareResult.outOfPocketMonthly,
+      waitTime: "⏱ 約 2-4 週，視床位而定",
       features: [
         "白天到日照中心，享專業團體活動",
         "延緩失能退化效果佳",
@@ -75,6 +77,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
       monthlySubsidy: institutionResult.totalSubsidyMonthly,
       monthlyOutPocket: institutionResult.outOfPocketMonthly,
       totalMonthly: institutionResult.outOfPocketMonthly + institutionResult.totalSubsidyMonthly,
+      waitTime: "⏱ 排隊等候，通常需 1-6 個月",
       features: [
         "24 小時專業護理團隊",
         cmsLevel >= 4 ? "每年最高補助 $120,000（已取消排富）" : "CMS 4 級以上才有年度補助",
@@ -95,6 +98,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
       // 真實自付 = 長照自付 + 外看薪資等
       monthlyOutPocket: foreignResult.outOfPocketMonthly + FOREIGN_CAREGIVER_EXTRA,
       totalMonthly: foreignResult.outOfPocketMonthly + FOREIGN_CAREGIVER_EXTRA + foreignResult.totalSubsidyMonthly,
+      waitTime: "⏱ 仲介媒合需 2-4 個月",
       features: [
         "24 小時在家一對一照顧",
         "政府補助僅原本的 30%",
@@ -214,7 +218,10 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
               <div className="p-5 sm:p-6 flex-1">
                 <div className="text-[28px] mb-2">{path.icon}</div>
                 <h3 className="text-[18px] font-bold text-apple-gray-900 mb-1">{path.title}</h3>
-                <p className={`text-[13px] font-medium mb-5 ${path.primaryColor}`}>{path.subtitle}</p>
+                <p className={`text-[13px] font-medium mb-2 ${path.primaryColor}`}>{path.subtitle}</p>
+                <span className="inline-block text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-0.5 mb-4">
+                  {path.waitTime}
+                </span>
 
                 <div className="space-y-3 mb-5">
                   <div>

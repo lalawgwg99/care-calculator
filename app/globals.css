@@ -37,6 +37,50 @@
   outline-offset: 2px;
 }
 
+/* 列印樣式 */
+@media print {
+  nav,
+  footer,
+  button,
+  input[type="range"],
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* 移除所有陰影與漸層，節省墨水 */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  [class*="bg-gradient"] {
+    background: white !important;
+  }
+
+  /* 卡片改為簡單邊框 */
+  [class*="rounded-"] {
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  /* 確保連結顯示網址 */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  a[href^="tel"]::after {
+    content: none;
+  }
+}
+
 /* 減少動畫（尊重用戶偏好） */
 @media (prefers-reduced-motion: reduce) {
   *,

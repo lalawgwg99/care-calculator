@@ -4,6 +4,12 @@ import { useState } from "react";
 import { type CareType, getCareTypeName } from "@/lib/careLogic";
 import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
 
+declare global {
+  interface Window { gtag?: (...args: unknown[]) => void; }
+}
+
+const SITE_URL = "https://care-calculator.vercel.app";
+
 interface FinancialReportProps {
   careType: CareType;
   monthlyGovSubsidy: number;
@@ -370,10 +376,75 @@ export default function FinancialReport({
         </div>
       </div>
 
+      {/* ====== NEXT STEPS ====== */}
+      <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100/60 rounded-[24px] p-6 sm:p-7 mb-4">
+        <h3 className="text-[17px] font-bold text-emerald-800 mb-4">✅ 算完了，接下來怎麼做？</h3>
+        <div className="space-y-3">
+          {[
+            {
+              step: "1",
+              title: "撥打長照專線",
+              desc: "告知長輩狀況，預約照管專員到府評估",
+              cta: "📞 1966（免費）",
+              href: "tel:1966",
+            },
+            {
+              step: "2",
+              title: "準備文件",
+              desc: "身分證、診斷書或出院病摘、健保卡",
+              cta: null,
+              href: null,
+            },
+            {
+              step: "3",
+              title: "等待到府評估",
+              desc: "約 1-2 週完成評估，再 1-3 週開始服務",
+              cta: null,
+              href: null,
+            },
+          ].map((item) => (
+            <div key={item.step} className="flex items-start gap-4">
+              <div className="w-7 h-7 rounded-full bg-emerald-600 text-white text-[13px] font-bold flex-shrink-0 flex items-center justify-center mt-0.5">
+                {item.step}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[15px] font-semibold text-apple-gray-900">{item.title}</div>
+                <div className="text-[13px] text-apple-gray-500 mt-0.5">{item.desc}</div>
+              </div>
+              {item.href && item.cta && (
+                <a
+                  href={item.href}
+                  className="flex-shrink-0 text-[14px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors px-4 py-1.5 rounded-full"
+                >
+                  {item.cta}
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ====== ACTIONS ====== */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        {/* LINE 分享 */}
+        <a
+          href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(SITE_URL)}&text=${encodeURIComponent(
+            `我用長照計算機試算了「${getCareTypeName(careType)}」的費用：\n政府每月補助 ${formatMoney(monthlyGovSubsidy)}，家庭自付約 ${formatMoney(totalMonthlyBurden)}/月\n5 年政府共補助 ${formatMoney(total5YearGov)} 🎉\n\n幫你也試算看看 👉 ${SITE_URL}\n長照專線 1966 免費諮詢`
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#06C755] text-white text-[16px] font-semibold rounded-full shadow-lg shadow-green-200/50 hover:shadow-xl hover:bg-[#05b34c] transition-all"
+          onClick={() => window.gtag?.('event', 'report_shared', { method: 'line', care_type: careType })}
+        >
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.365 9.89c.50 0 .906.406.906.906s-.406.907-.906.907H17.78v1.047h1.585c.5 0 .906.406.906.907s-.406.906-.906.906H16.875a.906.906 0 0 1-.906-.906V9.89c0-.5.406-.906.906-.906h2.49zm-5.023 0c.5 0 .906.406.906.906v3.767a.906.906 0 0 1-1.812 0V9.89c0-.5.406-.906.906-.906zm-2.1 0c.5 0 .906.406.906.906v2.338l-1.835-2.867a.906.906 0 0 0-.78-.44.906.906 0 0 0-.906.906v3.767a.906.906 0 0 0 1.812 0v-2.328l1.835 2.867c.164.25.44.4.734.4h.027a.906.906 0 0 0 .906-.906V9.89a.906.906 0 0 0-.7-.882zm-4.53.906v3.767a.906.906 0 0 1-.905.906H5.22a.906.906 0 0 1 0-1.812h1.582V9.89a.906.906 0 0 1 1.812 0zM12 2C6.477 2 2 6.145 2 11.25c0 4.57 3.67 8.385 8.647 9.107.336.072.793.22.909.506.104.26.068.668.033.93l-.147.882c-.045.26-.207 1.02.894.556 1.1-.463 5.938-3.497 8.1-5.99C21.683 15.294 22 13.323 22 11.25 22 6.145 17.523 2 12 2z"/>
+          </svg>
+          LINE 分享給家人
+        </a>
+
+        {/* 複製 / 原生分享 */}
         <button
-          className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
+          className="w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
           onClick={() => {
             const summary = [
               `📋 長照財務試算摘要`,
@@ -389,16 +460,14 @@ export default function FinancialReport({
               `  家庭總支出：${formatMoney(total5YearPaid)}`,
               elderlyAssets > 0 ? `  長輩積蓄可撐：${monthsFromAssets} 個月` : '',
               ``,
-              `💎 別忘了隱形省下的錢！`,
-              `  健保減免、勞保減免、報稅扣除額、牌照稅免徵…`,
-              `  用「隱形省下的錢」模組一鍵試算所有減免與退稅`,
-              ``,
+              `🔗 試算工具：${SITE_URL}`,
               `📞 長照專線 1966（免費）`,
-              `🔗 試算工具：長照 3.0 財務決策引擎`,
             ].filter(Boolean).join('\n');
 
+            window.gtag?.('event', 'report_shared', { method: 'share' in navigator ? 'native' : 'clipboard', care_type: careType });
+
             if (navigator.share) {
-              navigator.share({ title: '長照財務試算', text: summary }).catch(() => {});
+              navigator.share({ title: '長照財務試算', text: summary, url: SITE_URL }).catch(() => {});
             } else {
               navigator.clipboard.writeText(summary).then(() => {
                 const btn = document.activeElement as HTMLButtonElement;
@@ -411,10 +480,11 @@ export default function FinancialReport({
             }
           }}
         >
-          📤 複製摘要 / 分享給家人
+          📤 複製摘要
         </button>
+
         <button
-          className="w-full sm:w-auto px-8 py-3.5 bg-apple-gray-50 text-apple-gray-900 text-[16px] font-semibold rounded-full hover:bg-apple-gray-200 transition-colors border border-apple-gray-200/60"
+          className="w-full sm:w-auto px-7 py-3.5 bg-apple-gray-50 text-apple-gray-900 text-[16px] font-semibold rounded-full hover:bg-apple-gray-200 transition-colors border border-apple-gray-200/60"
           onClick={() => window.location.reload()}
         >
           🔄 重新評估

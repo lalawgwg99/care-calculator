@@ -2,6 +2,16 @@
 
 import { useState, useMemo } from "react";
 
+declare global {
+  interface Window { gtag?: (...args: unknown[]) => void; }
+}
+
+// TODO: 申請到聯盟帳號後，替換為帶有 tracking 參數的實際 affiliate URL
+const AFFILIATE_LINKS = {
+  ltc: "https://www.comparemo.com.tw/ltc?ref=care-calculator",
+  disability: "https://www.comparemo.com.tw/disability?ref=care-calculator",
+};
+
 function fmt(n: number) {
   return new Intl.NumberFormat("zh-TW", { style: "currency", currency: "TWD", maximumFractionDigits: 0 }).format(Math.round(n));
 }
@@ -145,6 +155,52 @@ export default function InsuranceAddon() {
             </p>
           )}
         </div>
+
+        {/* ====== 保險聯盟 CTA ====== */}
+        {gap > 0 && (
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[20px] border border-blue-100/60 p-5">
+            <div className="flex items-start gap-3 mb-4">
+              <span className="text-[22px] flex-shrink-0">💡</span>
+              <div>
+                <p className="text-[15px] font-bold text-apple-gray-900 mb-1">
+                  填補缺口：您還差 <span className="text-blue-600">{fmt(gap)} / 月</span>
+                </p>
+                <p className="text-[13px] text-apple-gray-500 leading-relaxed">
+                  現有保障不足以覆蓋自付費用。以下是適合您情況的長照保障方案供參考：
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-2.5 mb-3">
+              <a
+                href={AFFILIATE_LINKS.ltc}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-white border border-blue-200 rounded-full text-[14px] font-semibold text-blue-700 hover:bg-blue-50 shadow-sm transition-all"
+                onClick={() => window.gtag?.('event', 'insurance_cta_click', {
+                  insurance_type: 'ltc', gap_amount: gap, cms_level: cmsLevel,
+                })}
+              >
+                🔍 比較長照險方案 →
+              </a>
+              <a
+                href={AFFILIATE_LINKS.disability}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-white border border-blue-200 rounded-full text-[14px] font-semibold text-blue-700 hover:bg-blue-50 shadow-sm transition-all"
+                onClick={() => window.gtag?.('event', 'insurance_cta_click', {
+                  insurance_type: 'disability', gap_amount: gap, cms_level: cmsLevel,
+                })}
+              >
+                🔍 比較失能險 →
+              </a>
+            </div>
+
+            <p className="text-[11px] text-apple-gray-400 leading-relaxed">
+              以上為合作夥伴推薦連結，點擊可能使本站獲得少量佣金，不影響您的費用與選擇。
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
