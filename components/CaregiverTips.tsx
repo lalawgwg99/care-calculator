@@ -36,6 +36,24 @@ export default function CaregiverTips() {
           </p>
         </div>
 
+        {/* 1925 安心專線 */}
+        <a
+          href="tel:1925"
+          className="flex items-center gap-4 bg-blue-50/80 rounded-[20px] p-5 border border-blue-100/60 mb-4 hover:bg-blue-100/60 transition-colors group"
+        >
+          <div className="text-[32px] flex-shrink-0">💙</div>
+          <div className="flex-1 min-w-0">
+            <h4 className="text-[16px] font-bold text-blue-800 mb-1">照顧者心理支援熱線</h4>
+            <p className="text-[13px] text-blue-700/70 leading-relaxed">
+              感到情緒崩潰、無法入睡或難以繼續照顧時，請撥打
+              <strong className="text-blue-700"> 安心專線 1925</strong>（24 小時 · 免付費）
+            </p>
+          </div>
+          <div className="text-[13px] font-bold text-white bg-blue-600 group-hover:bg-blue-700 transition-colors px-4 py-2 rounded-full flex-shrink-0">
+            撥打 1925
+          </div>
+        </a>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {TIPS.map((tip, idx) => (
             <div

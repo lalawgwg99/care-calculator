@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "長照 3.0 財務決策引擎 | 快速試算政府補助與自付額",
@@ -86,6 +87,7 @@ export default function RootLayout({
         <ErrorBoundary>
           {children}
         </ErrorBoundary>
+        <Footer />
       </body>
     </html>
   );

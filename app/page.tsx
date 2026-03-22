@@ -20,6 +20,7 @@ import FinancialReport from "@/components/FinancialReport";
 import FAQ from "@/components/FAQ";
 import ApplicationGuide from "@/components/ApplicationGuide";
 import CaregiverTips from "@/components/CaregiverTips";
+import EmergencyAccordion from "@/components/EmergencyAccordion";
 
 type WizardStep = 'landing' | 'pathway' | 'cart' | 'report';
 
@@ -261,6 +262,9 @@ export default function Home() {
       {/* ====== APPLICATION GUIDE ====== */}
       <ApplicationGuide />
 
+      {/* ====== EMERGENCY ACCORDION ====== */}
+      <EmergencyAccordion />
+
       {/* ====== FAQ ====== */}
       <FAQ />
 
@@ -302,7 +306,7 @@ export default function Home() {
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
         <div className="bg-amber-50/50 rounded-[20px] p-6 border border-orange-100/50">
           <p className="text-[14px] text-amber-800/60 leading-relaxed">
-            📌 本工具依據 <strong>衛生福利部 2026 年長照 3.0 最新法規</strong> 設計。所有數據僅供參考，實際補助金額以各縣市照顧管理中心核定為準。如有任何疑問，請撥打長照專線 <strong className="text-apple-orange">1966</strong>。
+            📌 本工具依據 <strong>衛生福利部 2026 年長照 3.0 最新法規</strong> 設計。所有數據僅供參考，實際補助金額以各縣市照顧管理中心核定為準。如有任何疑問，請撥打長照專線 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
           </p>
         </div>
       </section>

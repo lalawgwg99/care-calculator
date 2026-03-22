@@ -376,6 +376,54 @@ export default function FinancialReport({
         </div>
       </div>
 
+      {/* ====== NEXT STEPS ====== */}
+      <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100/60 rounded-[24px] p-6 sm:p-7 mb-4">
+        <h3 className="text-[17px] font-bold text-emerald-800 mb-4">✅ 算完了，接下來怎麼做？</h3>
+        <div className="space-y-3">
+          {[
+            {
+              step: "1",
+              title: "撥打長照專線",
+              desc: "告知長輩狀況，預約照管專員到府評估",
+              cta: "📞 1966（免費）",
+              href: "tel:1966",
+            },
+            {
+              step: "2",
+              title: "準備文件",
+              desc: "身分證、診斷書或出院病摘、健保卡",
+              cta: null,
+              href: null,
+            },
+            {
+              step: "3",
+              title: "等待到府評估",
+              desc: "約 1-2 週完成評估，再 1-3 週開始服務",
+              cta: null,
+              href: null,
+            },
+          ].map((item) => (
+            <div key={item.step} className="flex items-start gap-4">
+              <div className="w-7 h-7 rounded-full bg-emerald-600 text-white text-[13px] font-bold flex-shrink-0 flex items-center justify-center mt-0.5">
+                {item.step}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[15px] font-semibold text-apple-gray-900">{item.title}</div>
+                <div className="text-[13px] text-apple-gray-500 mt-0.5">{item.desc}</div>
+              </div>
+              {item.href && item.cta && (
+                <a
+                  href={item.href}
+                  className="flex-shrink-0 text-[14px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors px-4 py-1.5 rounded-full"
+                >
+                  {item.cta}
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ====== ACTIONS ====== */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
         {/* LINE 分享 */}
