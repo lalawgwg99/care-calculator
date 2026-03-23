@@ -31,6 +31,95 @@ export const metadata: Metadata = {
   },
 };
 
+// FAQ structured data for search engine rich snippets
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "什麼是長照 2.0 / 3.0？跟我有什麼關係？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "長照是政府針對失能、失智長輩提供的照顧補助制度。只要家中長輩經評估為 CMS 2 級以上，就可以獲得居家照顧、交通接送、喘息服務等補助。長照 3.0 是 2026 年起的最新版本，擴大了補助範圍與額度。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "我要怎麼申請長照服務？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "撥打長照專線 1966（市話免費），專員會安排到府評估長輩的失能等級。評估完成後，照顧管理專員會協助您制定照顧計畫，並安排簽約服務。從撥打電話到開始服務，通常需要 2～4 週。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "CMS 等級是什麼？要怎麼知道長輩是幾級？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CMS（照顧管理評估量表）是衡量長輩失能程度的標準，共分 1～8 級。等級越高，代表需要越多照顧，政府補助也越多。撥打 1966 後會有專業人員到府評估，完全免費。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "長照補助的四包錢是什麼意思？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "政府將長照補助分為四大類：照顧及專業服務（每月定額）、交通接送（CMS 4級以上）、輔具及無障礙改造（每3年上限4萬）、喘息服務（讓主要照顧者休息的臨時替代照顧）。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "聘外籍看護還能申請長照補助嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以，但補助額度會縮減為原本的 30%，且只能用於專業服務（如復健指導、營養諮詢等），不能用於一般的居家照顧服務。"
+      }
+    }
+  ]
+};
+
+// HowTo structured data for application process
+const howToJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何申請台灣長照 3.0 服務",
+  "description": "從撥打 1966 到開始接受長照服務，完整申請流程說明。",
+  "totalTime": "P4W",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "撥打長照專線 1966",
+      "text": "撥打 1966，告知長輩的失能狀況，預約照顧管理專員到府評估。市話免費，週一至五 8:30-17:30。",
+      "position": 1
+    },
+    {
+      "@type": "HowToStep",
+      "name": "等待到府評估",
+      "text": "照顧管理專員到府進行 CMS 評估（約 1-2 小時），評估長輩的失能等級。通常 7-14 天內安排。",
+      "position": 2
+    },
+    {
+      "@type": "HowToStep",
+      "name": "收到評估結果",
+      "text": "約 5-10 個工作天後收到書面評估結果，確認 CMS 等級及可獲補助額度。",
+      "position": 3
+    },
+    {
+      "@type": "HowToStep",
+      "name": "制定照顧計畫並簽約",
+      "text": "照顧管理專員協助選擇服務機構，完成簽約手續。",
+      "position": 4
+    },
+    {
+      "@type": "HowToStep",
+      "name": "開始接受長照服務",
+      "text": "簽約後 3-5 個工作天開始提供服務。整體流程通常需要 3-5 週。",
+      "position": 5
+    }
+  ]
+};
+
 // JSON-LD structured data for search engines
 const jsonLd = {
   "@context": "https://schema.org",
@@ -67,6 +156,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+        />
       </head>
       <body className="antialiased bg-apple-gray-50 text-[17px] text-apple-gray-900">
         {process.env.NEXT_PUBLIC_GA_ID && (
@@ -83,9 +180,18 @@ export default function RootLayout({
             `}</Script>
           </>
         )}
+        {/* 無障礙：跳至主要內容 */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-apple-gray-900 focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:text-[14px] focus:font-semibold"
+        >
+          跳至主要內容
+        </a>
         <NavBar />
         <ErrorBoundary>
-          {children}
+          <main id="main-content">
+            {children}
+          </main>
         </ErrorBoundary>
         <Footer />
       </body>

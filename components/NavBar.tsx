@@ -49,7 +49,9 @@ export default function NavBar() {
         <button
           className="sm:hidden p-2 rounded-full hover:bg-apple-gray-100 transition-colors"
           onClick={() => setMenuOpen((v) => !v)}
-          aria-label="開啟選單"
+          aria-label={menuOpen ? "關閉選單" : "開啟選單"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           <div className="w-5 h-0.5 bg-apple-gray-700 mb-1 transition-all" />
           <div className="w-5 h-0.5 bg-apple-gray-700 mb-1 transition-all" />
@@ -59,7 +61,7 @@ export default function NavBar() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="sm:hidden border-t border-orange-100/60 bg-white/95 px-4 pb-4 pt-2">
+        <div id="mobile-menu" className="sm:hidden border-t border-orange-100/60 bg-white/95 px-4 pb-4 pt-2" role="navigation" aria-label="行動版選單">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (

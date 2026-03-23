@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
 
 declare global {
@@ -13,12 +14,19 @@ const INCOME_LABELS: Record<IncomeStatus, string> = {
   "mid-low": "中低收入",
   low: "低收入戶",
 };
-import CMSEstimator from "@/components/CMSEstimator";
-import PathwayComparison from "@/components/PathwayComparison";
-import ServiceCart from "@/components/ServiceCart";
-import FinancialReport from "@/components/FinancialReport";
+
+const StepLoader = () => (
+  <div className="flex justify-center items-center py-24">
+    <div className="w-8 h-8 border-4 border-orange-200 border-t-apple-orange rounded-full animate-spin" />
+  </div>
+);
+
+const CMSEstimator = dynamic(() => import("@/components/CMSEstimator"), { loading: StepLoader });
+const PathwayComparison = dynamic(() => import("@/components/PathwayComparison"), { loading: StepLoader });
+const ServiceCart = dynamic(() => import("@/components/ServiceCart"), { loading: StepLoader });
+const FinancialReport = dynamic(() => import("@/components/FinancialReport"), { loading: StepLoader });
+const ApplicationGuide = dynamic(() => import("@/components/ApplicationGuide"), { loading: StepLoader });
 import FAQ from "@/components/FAQ";
-import ApplicationGuide from "@/components/ApplicationGuide";
 import CaregiverTips from "@/components/CaregiverTips";
 import EmergencyAccordion from "@/components/EmergencyAccordion";
 
