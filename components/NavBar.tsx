@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
@@ -20,7 +21,7 @@ export default function NavBar() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-[17px] text-apple-gray-900 hover:opacity-80 transition-opacity">
-          <span className="text-[22px]">🧡</span>
+          <Image src="/logo-mark.svg" alt="長照決策引擎 Logo" width={24} height={24} className="rounded-[7px]" priority />
           <span className="hidden sm:block">長照決策引擎</span>
         </Link>
 
