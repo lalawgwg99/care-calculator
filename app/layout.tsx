@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   authors: [{ name: "長照決策引擎團隊" }],
   creator: "長照決策引擎",
   publisher: "長照決策引擎",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
   formatDetection: {
     email: false,
     address: false,

@@ -1,0 +1,14 @@
+Site: https://care-calculator.vercel.app
+Language: zh-TW
+Sitemap: https://care-calculator.vercel.app/sitemap.xml
+Robots: https://care-calculator.vercel.app/robots.txt
+LLMs: https://care-calculator.vercel.app/llms.txt
+
+Content focus:
+- Taiwan LTC 3.0 subsidy calculation
+- CMS level related guidance
+- Care pathway comparison (home/day/foreign caregiver/institution)
+- Caregiver planning tools and educational guides
+
+Important notice:
+- Figures are reference estimates and may vary by city and case review.
