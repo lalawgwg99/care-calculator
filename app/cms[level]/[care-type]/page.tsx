@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
-import { CMS_LEVEL_INFO, CARE_TYPE_INFO, INCOME_TYPE_INFO, CMS_LEVELS, CARE_TYPES, type CareType } from '@/constants/pseoData';
+import { CMS_LEVEL_INFO, CARE_TYPE_INFO, INCOME_TYPE_INFO, CMS_LEVELS_STR, CARE_TYPES, type CareType, type CMSLevel, type IncomeType } from '@/constants/pseoData';
 
 interface PageProps {
   params: { level: string; 'care-type': string };
@@ -8,19 +8,19 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const params: { level: string; 'care-type': string }[] = [];
-  CMS_LEVELS.forEach((level) => {
+  CMS_LEVELS_STR.forEach((level) => {
     CARE_TYPES.forEach((type) => {
-      params.push({ level: level.toString(), 'care-type': type });
+      params.push({ level, 'care-type': type });
     });
   });
   return params;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const level = parseInt(params.level);
+  const level = parseInt(params.level) as CMSLevel;
   const careType = params['care-type'];
   const levelInfo = CMS_LEVEL_INFO[level];
-  const careInfo = CARE_TYPE_INFO[careType];
+  const careInfo = CARE_TYPE_INFO[careType as CareType];
 
   if (!levelInfo || !careInfo) {
     return { title: '無效頁面' };
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 // 计算补助金额
-function calculateSubsidy(level: number, careType: string, incomeType: string) {
+function calculateSubsidy(level: CMSLevel, careType: CareType, incomeType: IncomeType) {
   const levelInfo = CMS_LEVEL_INFO[level];
   const careInfo = CARE_TYPE_INFO[careType];
   const incomeInfo = INCOME_TYPE_INFO[incomeType];
@@ -80,8 +80,8 @@ function calculateSubsidy(level: number, careType: string, incomeType: string) {
 }
 
 export default function CMSCareTypePage({ params }: PageProps) {
-  const level = parseInt(params.level);
-  const careType = params['care-type'];
+  const level = parseInt(params.level) as CMSLevel;
+  const careType = params['care-type'] as CareType;
   const levelInfo = CMS_LEVEL_INFO[level];
   const careInfo = CARE_TYPE_INFO[careType];
 

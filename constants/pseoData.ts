@@ -27,6 +27,7 @@ export const TAIWAN_CITIES = [
 // CMS等级列表
 export const CMS_LEVELS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 export type CMSLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export const CMS_LEVELS_STR = CMS_LEVELS.map(String);
 
 // CMS等级详情
 export const CMS_LEVEL_INFO: Record<CMSLevel, { name: string; description: string; subsidy: number; hasTransport: boolean; respite: number }> = {

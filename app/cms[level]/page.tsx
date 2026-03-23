@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
-import { CMS_LEVELS, CARE_TYPES, CMS_LEVEL_INFO, type CMSLevel } from '@/constants/pseoData';
+import { CMS_LEVELS, CMS_LEVELS_STR, CARE_TYPES, CMS_LEVEL_INFO, type CMSLevel } from '@/constants/pseoData';
 
 const CARE_TYPE_NAMES: Record<string, { name: string; desc: string }> = {
   'home-care': { name: '居家照顧', desc: '專業照服員到宅服務' },
@@ -14,27 +14,18 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return CMS_LEVELS.map((level) => ({
-    level: level.toString(),
+  return CMS_LEVELS_STR.map((level) => ({
+    level,
   }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const level = parseInt(params.level);
-  const levelInfo = CMS_LEVELS.includes(level) ? {
-    1: { name: '輕度失能', subsidy: '第1級尚無照顧及專業服務補助' },
-    2: { name: '輕度失能', subsidy: '每月最高 $10,020' },
-    3: { name: '中度失能', subsidy: '每月最高 $15,460' },
-    4: { name: '中度失能', subsidy: '每月最高 $18,580 + 交通接送' },
-    5: { name: '重度失能', subsidy: '每月最高 $24,100 + 交通接送' },
-    6: { name: '重度失能', subsidy: '每月最高 $28,070 + 交通接送' },
-    7: { name: '極重度失能', subsidy: '每月最高 $32,090 + 交通接送' },
-    8: { name: '極重度失能', subsidy: '每月最高 $36,180 + 交通接送' },
-  }[level] : null;
+  const level = parseInt(params.level) as CMSLevel;
+  const levelInfo = CMS_LEVEL_INFO[level];
 
   return {
     title: `CMS 第${level}級補助多少錢？長照 ${levelInfo?.name || ''} 補助試算 | 長照3.0`,
-    description: `了解 CMS 第${level}級（${levelInfo?.name}）的長照3.0補助金額。${levelInfo?.subsidy}。支援一般戶、中低收入戶、低收入戶不同身份的自負額計算。`,
+    description: `了解 CMS 第${level}級（${levelInfo?.name}）的長照3.0補助金額。每月最高 $${levelInfo?.subsidy?.toLocaleString() || '0'}。支援一般戶、中低收入戶、低收入戶不同身份的自負額計算。`,
     keywords: [
       `CMS第${level}級補助`,
       `長照第${level}級`,
@@ -44,33 +35,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ],
     openGraph: {
       title: `CMS 第${level}級 長照補助試算`,
-      description: `${levelInfo?.subsidity || '計算您的長照補助'}。${levelInfo?.subsidy}`,
+      description: `計算您的長照補助。每月最高 $${levelInfo?.subsidy?.toLocaleString() || '0'}`,
     },
   };
 }
 
 export default function CMSLevelPage({ params }: PageProps) {
-  const level = parseInt(params.level);
-  const levelNames: Record<number, string> = {
-    1: '輕度失能', 2: '輕度失能', 3: '中度失能',
-    4: '中度失能', 5: '重度失能', 6: '重度失能',
-    7: '極重度失能', 8: '極重度失能',
-  };
-  const levelSubsidies: Record<number, { monthly: number; transport: boolean; respite: string }> = {
-    1: { monthly: 0, transport: false, respite: '無' },
-    2: { monthly: 10020, transport: false, respite: '$32,340/年' },
-    3: { monthly: 15460, transport: false, respite: '$32,340/年' },
-    4: { monthly: 18580, transport: true, respite: '$32,340/年' },
-    5: { monthly: 24100, transport: true, respite: '$32,340/年' },
-    6: { monthly: 28070, transport: true, respite: '$32,340/年' },
-    7: { monthly: 32090, transport: true, respite: '$48,510/年' },
-    8: { monthly: 36180, transport: true, respite: '$48,510/年' },
-  };
+  const level = parseInt(params.level) as CMSLevel;
+  const levelInfo = CMS_LEVEL_INFO[level];
 
-  const info = levelSubsidies[level];
-  if (!info) {
+  if (!levelInfo) {
     return <div>無效的CMS等級</div>;
   }
+
+  const info = {
+    monthly: levelInfo.subsidy,
+    transport: levelInfo.hasTransport,
+    respite: levelInfo.respite > 0 ? `$${levelInfo.respite.toLocaleString()}/年` : '無',
+  };
 
   return (
     <main className="min-h-screen bg-apple-gray-50 pb-20">
@@ -87,7 +69,7 @@ export default function CMSLevelPage({ params }: PageProps) {
           </div>
           <h1 className="text-[32px] sm:text-[44px] font-bold tracking-tight text-apple-gray-900 mb-4 leading-tight">
             CMS 第{level}級<br />
-            <span className="text-apple-orange">{levelNames[level]}</span>補助多少？
+            <span className="text-apple-orange">{levelInfo.name}</span>補助多少？
           </h1>
           <p className="text-[16px] text-amber-900/70 leading-relaxed">
             依據衛福部2026年長照3.0最新法規，計算第{level}級的完整補助金額
@@ -103,7 +85,7 @@ export default function CMSLevelPage({ params }: PageProps) {
               第{level}級補助總覽
             </h2>
             <p className="text-[15px] text-amber-800/60 mt-1">
-              {levelNames[level]} | 一般戶自負額16%
+              {levelInfo.name} | 一般戶自負額16%
             </p>
           </div>
           <div className="p-8">
