@@ -53,7 +53,7 @@ describe('careData 數據完整性測試', () => {
         const prev = SUBSIDY_RULES[i - 1].careServiceMonthly;
         const curr = SUBSIDY_RULES[i].careServiceMonthly;
         expect(curr).toBeGreaterThanOrEqual(prev);
-      });
+      }
     });
 
     test('CMS 1-3 級不應有交通接送', () => {

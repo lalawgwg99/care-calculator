@@ -330,17 +330,17 @@ describe('calculateCareBudget', () => {
 
 describe('formatCurrency', () => {
   test('正確格式化台幣金額', () => {
-    expect(formatCurrency(10000)).toBe('NT$10,000');
-    expect(formatCurrency(1234567)).toBe('NT$1,234,567');
-    expect(formatCurrency(0)).toBe('NT$0');
+    expect(formatCurrency(10000)).toBe('$10,000');
+    expect(formatCurrency(1234567)).toBe('$1,234,567');
+    expect(formatCurrency(0)).toBe('$0');
   });
 
-  test('處理小數點（應無小數位）', () => {
-    expect(formatCurrency(10000.99)).toBe('NT$10,001');
-    expect(formatCurrency(1234.56)).toBe('NT$1,235');
+  test('處理小數點（應四捨五入，無小數位）', () => {
+    expect(formatCurrency(10000.99)).toBe('$10,001');
+    expect(formatCurrency(1234.56)).toBe('$1,235');
   });
 
   test('處理負數', () => {
-    expect(formatCurrency(-1000)).toBe('-NT$1,000');
+    expect(formatCurrency(-1000)).toBe('-$1,000');
   });
 });
