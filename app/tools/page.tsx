@@ -95,6 +95,19 @@ const TOOL_GROUPS = [
       },
     ],
   },
+  {
+    title: "創業 & 收入",
+    color: "from-violet-50 to-purple-50",
+    iconBg: "bg-violet-100",
+    tools: [
+      {
+        href: "/tools/startup-ideas",
+        icon: "💡",
+        title: "5萬元創業方案",
+        desc: "適合照顧者的低成本創業點子，補貼長照費用",
+      },
+    ],
+  },
 ];
 
 export default function ToolsPage() {
