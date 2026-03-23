@@ -1,186 +1,117 @@
 "use client";
 
 import { useState } from "react";
-import { type ConditionId, CONDITION_PROFILES } from "@/lib/conditionProfiles";
+import { FACILITY_CHECKLIST } from "@/constants/conditionData";
 
-interface FacilityChecklistProps {
-  selectedConditions: ConditionId[];
-}
+export default function FacilityChecklist() {
+  const [checked, setChecked] = useState<Record<string, boolean>>({});
 
-interface CheckItem {
-  text: string;
-  checked: boolean;
-}
+  const toggleItem = (key: string) => setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
 
-const BASE_CHECKLIST = [
-  { category: "基本照顧", items: [
-    "長輩身上乾淨、無異味",
-    "指甲有修剪",
-    "床單看起來有定期更換",
-    "尿布有及時更換（無紅疹）",
-  ]},
-  { category: "飲食品質", items: [
-    "餐點看起來新鮮、份量足夠",
-    "有提供適合長輩的食物質地",
-    "水分攝取充足（水杯有水）",
-  ]},
-  { category: "環境安全", items: [
-    "走廊和房間沒有障礙物",
-    "浴室有扶手和防滑設施",
-    "緊急呼叫鈴在長輩伸手可及處",
-  ]},
-  { category: "人員態度", items: [
-    "護理師能叫出長輩的名字",
-    "工作人員態度親切、有耐心",
-    "有定時帶長輩出房間活動",
-  ]},
-  { category: "精神狀態", items: [
-    "長輩看起來情緒穩定",
-    "沒有新的瘀青或無法解釋的傷口",
-    "長輩見到你時有正面反應",
-  ]},
-];
+  const totalItems = FACILITY_CHECKLIST.reduce((sum, cat) => sum + cat.items.length, 0);
+  const checkedCount = Object.values(checked).filter(Boolean).length;
+  const score = Math.round((checkedCount / totalItems) * 100);
 
-export default function FacilityChecklist({ selectedConditions }: FacilityChecklistProps) {
-  const [expanded, setExpanded] = useState(false);
-  const [checks, setChecks] = useState<Record<string, boolean>>({});
-  const [visitDate, setVisitDate] = useState(new Date().toISOString().split("T")[0]);
-
-  // 取得疾病專屬的檢核項目
-  const diseaseSpecificItems = selectedConditions.flatMap((condId) => {
-    const profile = CONDITION_PROFILES[condId];
-    if (!profile || profile.warningSignsForFacility.length === 0) return [];
-    return [{
-      category: `${profile.icon} ${profile.name}專屬檢查`,
-      items: profile.warningSignsForFacility,
-    }];
-  });
-
-  const allCategories = [...BASE_CHECKLIST, ...diseaseSpecificItems];
-  const totalItems = allCategories.reduce((s, c) => s + c.items.length, 0);
-  const checkedCount = Object.values(checks).filter(Boolean).length;
-
-  const toggleCheck = (key: string) => {
-    setChecks((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const getScore = () => {
-    if (totalItems === 0) return 0;
-    return Math.round((checkedCount / totalItems) * 100);
-  };
-
-  const score = getScore();
-  const scoreColor = score >= 80 ? "text-apple-green" : score >= 60 ? "text-apple-orange" : "text-apple-red";
-  const scoreLabel = score >= 80 ? "良好" : score >= 60 ? "需注意" : "需改善";
+  const scoreInfo =
+    score >= 80
+      ? { label: "優良機構", color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-100" }
+      : score >= 60
+      ? { label: "基本合格", color: "text-amber-600", bg: "bg-amber-50 border-amber-100" }
+      : score >= 40
+      ? { label: "需再評估", color: "text-orange-600", bg: "bg-orange-50 border-orange-100" }
+      : { label: "建議謹慎", color: "text-rose-600", bg: "bg-rose-50 border-rose-100" };
 
   return (
-    <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between p-6"
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-[24px]">📋</span>
-          <div className="text-left">
-            <h4 className="text-[16px] font-bold text-apple-gray-900">機構探訪檢核表</h4>
-            <p className="text-[13px] text-apple-gray-500">每次探望時花 3 分鐘勾一下，追蹤照顧品質</p>
+    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+      <div className="bg-gradient-to-r from-slate-50 to-blue-50 px-6 py-5 border-b border-slate-100/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-[28px]">📋</span>
+            <div>
+              <h2 className="text-[18px] font-bold text-apple-gray-900">機構評估清單</h2>
+              <p className="text-[13px] text-slate-600/60 mt-0.5">參觀機構時逐項確認</p>
+            </div>
           </div>
+          {checkedCount > 0 && (
+            <div className="text-right">
+              <div className="text-[24px] font-bold text-apple-gray-900">{score}%</div>
+              <div className={`text-[12px] font-semibold ${scoreInfo.color}`}>{scoreInfo.label}</div>
+            </div>
+          )}
         </div>
-        <span className={`text-apple-gray-400 text-[20px] transition-transform duration-300 ${expanded ? "rotate-45" : ""}`}>+</span>
-      </button>
+      </div>
 
-      <div className={`overflow-hidden transition-all duration-300 ${expanded ? "max-h-[3000px] opacity-100" : "max-h-0 opacity-0"}`}>
-        <div className="px-6 pb-6 space-y-4">
-          {/* Visit date */}
-          <div className="flex items-center gap-3 bg-apple-gray-50 rounded-[12px] p-3">
-            <span className="text-[13px] text-apple-gray-600">探訪日期</span>
-            <input
-              type="date"
-              value={visitDate}
-              onChange={(e) => setVisitDate(e.target.value)}
-              className="bg-white border border-apple-gray-200/60 rounded-[8px] px-3 py-1.5 text-[14px] font-mono text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-apple-orange/30"
+      {/* Score bar */}
+      {checkedCount > 0 && (
+        <div className="px-5 pt-4">
+          <div className="h-2 bg-apple-gray-100 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                score >= 80 ? "bg-emerald-400" : score >= 60 ? "bg-amber-400" : "bg-rose-400"
+              }`}
+              style={{ width: `${score}%` }}
             />
           </div>
+          <div className="text-[12px] text-apple-gray-400 mt-1">{checkedCount} / {totalItems} 項已確認</div>
+        </div>
+      )}
 
-          {/* Checklist categories */}
-          {allCategories.map((category, ci) => (
-            <div key={ci}>
-              <h6 className="text-[13px] font-bold text-apple-gray-700 mb-2">{category.category}</h6>
-              <div className="space-y-1">
-                {category.items.map((item, ii) => {
-                  const key = `${ci}-${ii}`;
-                  const isChecked = checks[key] || false;
+      <div className="p-5 space-y-5">
+        {FACILITY_CHECKLIST.map((cat) => {
+          const catChecked = cat.items.filter((_, i) => checked[`${cat.category}-${i}`]).length;
+          return (
+            <div key={cat.category} className="bg-apple-gray-50 rounded-[20px] p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-[20px]">{cat.icon}</span>
+                  <span className="font-semibold text-[14px] text-apple-gray-800">{cat.category}</span>
+                </div>
+                <span className="text-[12px] text-apple-gray-400">{catChecked}/{cat.items.length}</span>
+              </div>
+              <div className="space-y-2">
+                {cat.items.map((item, i) => {
+                  const key = `${cat.category}-${i}`;
                   return (
-                    <button
-                      key={key}
-                      onClick={() => toggleCheck(key)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-[10px] text-left transition-colors ${
-                        isChecked ? "bg-green-50/60" : "bg-apple-gray-50/40 hover:bg-apple-gray-50"
-                      }`}
-                    >
-                      <span className={`text-[16px] ${isChecked ? "text-apple-green" : "text-apple-gray-300"}`}>
-                        {isChecked ? "✅" : "☐"}
-                      </span>
-                      <span className={`text-[13px] ${isChecked ? "text-green-800" : "text-apple-gray-700"}`}>
+                    <label key={i} className="flex items-start gap-2.5 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={!!checked[key]}
+                        onChange={() => toggleItem(key)}
+                        className="mt-0.5 accent-blue-500 w-4 h-4 shrink-0"
+                      />
+                      <span className={`text-[13px] transition-colors leading-relaxed ${
+                        checked[key] ? "line-through text-apple-gray-400" : "text-apple-gray-700 group-hover:text-apple-gray-900"
+                      }`}>
                         {item}
                       </span>
-                    </button>
+                    </label>
                   );
                 })}
               </div>
             </div>
-          ))}
+          );
+        })}
 
-          {/* Score summary */}
-          <div className="bg-apple-gray-50 rounded-[16px] p-4 mt-2">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[14px] font-semibold text-apple-gray-700">本次探訪評分</span>
-              <div className="flex items-center gap-2">
-                <span className={`text-[24px] font-mono font-bold ${scoreColor}`}>{checkedCount}/{totalItems}</span>
-                <span className={`text-[13px] font-medium px-2 py-0.5 rounded-full ${
-                  score >= 80 ? "bg-green-100 text-green-700" : score >= 60 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700"
-                }`}>
-                  {scoreLabel}
-                </span>
-              </div>
+        {/* Result */}
+        {checkedCount > 0 && (
+          <div className={`rounded-[16px] border p-4 ${scoreInfo.bg}`}>
+            <div className={`font-bold text-[15px] ${scoreInfo.color} mb-1`}>
+              評估結果：{scoreInfo.label}（{score}%）
             </div>
-            <div className="w-full h-2.5 bg-apple-gray-200 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-500 ${
-                  score >= 80 ? "bg-apple-green" : score >= 60 ? "bg-apple-orange" : "bg-apple-red"
-                }`}
-                style={{ width: `${score}%` }}
-              />
-            </div>
+            <p className="text-[13px] text-apple-gray-600">
+              {score >= 80
+                ? "這間機構在各項指標表現良好，可以進一步了解費用與入住條件。"
+                : score >= 60
+                ? "整體尚可，但建議針對未勾選項目進一步追問，確認是否符合長輩需求。"
+                : score >= 40
+                ? "有幾個重要面向需要確認，建議多參觀幾間機構再做比較。"
+                : "目前勾選項目較少，建議多詢問未確認的項目，不要操之過急。"}
+            </p>
           </div>
+        )}
 
-          {/* Share */}
-          <button
-            onClick={() => {
-              const summary = [
-                `📋 機構探訪檢核結果`,
-                `日期：${visitDate}`,
-                `評分：${checkedCount}/${totalItems}（${scoreLabel}）`,
-                ``,
-                ...allCategories.map((cat) => {
-                  const catItems = cat.items.map((item, ii) => {
-                    const key = `${allCategories.indexOf(cat)}-${ii}`;
-                    return `  ${checks[key] ? "✅" : "☐"} ${item}`;
-                  });
-                  return `${cat.category}\n${catItems.join("\n")}`;
-                }),
-              ].join("\n");
-
-              if (navigator.share) {
-                navigator.share({ title: "機構探訪檢核", text: summary }).catch(() => {});
-              } else {
-                navigator.clipboard.writeText(summary).then(() => alert("已複製到剪貼簿！"));
-              }
-            }}
-            className="w-full py-3 bg-apple-gray-50 text-apple-gray-700 text-[14px] font-semibold rounded-full border border-apple-gray-200/60 hover:bg-apple-gray-100 transition-colors"
-          >
-            📤 傳給其他家人
-          </button>
+        <div className="text-[12px] text-apple-gray-400 text-center">
+          此清單僅供參考，建議親自參觀並與家人討論後再做決定
         </div>
       </div>
     </div>

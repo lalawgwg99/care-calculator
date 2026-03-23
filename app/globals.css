@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --brand-primary: #d97722;
+    --brand-primary-strong: #b85f14;
+    --surface-tint: #fdf9f3;
+  }
+
   * {
     -webkit-tap-highlight-color: transparent;
   }
@@ -15,6 +21,8 @@
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(180deg, var(--surface-tint) 0%, #fff 220px);
+    color: #141210;
   }
 }
 
@@ -33,8 +41,53 @@
 
 /* 焦點可見性優化 */
 *:focus-visible {
-  outline: 2px solid #4f46e5;
+  outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(217, 119, 34, 0.2);
+}
+
+/* 列印樣式 */
+@media print {
+  nav,
+  footer,
+  button,
+  input[type="range"],
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* 移除所有陰影與漸層，節省墨水 */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  [class*="bg-gradient"] {
+    background: white !important;
+  }
+
+  /* 卡片改為簡單邊框 */
+  [class*="rounded-"] {
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  /* 確保連結顯示網址 */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  a[href^="tel"]::after {
+    content: none;
+  }
 }
 
 /* 減少動畫（尊重用戶偏好） */

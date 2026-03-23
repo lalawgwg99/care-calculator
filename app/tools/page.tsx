@@ -1,138 +1,164 @@
-"use client";
+import Link from "next/link";
+import type { Metadata } from "next";
 
-import NavBar from "@/components/NavBar";
+export const metadata: Metadata = {
+  title: "實用工具 | 長照決策引擎",
+  description: "保險補充計算、法律事項引導、疾病照顧檔案、遊戲化評估工具、就診準備清單、復能任務卡等長照實用工具。",
+};
 
-const TOOLS = [
+const TOOL_GROUPS = [
   {
-    id: "dementia-sim",
-    icon: "🧠",
-    title: "失智溝通模擬器",
-    description: "5 個真實情境，學習專業的溝通技巧。測測你的照顧溝通力！",
-    href: "/tools/dementia-sim",
-    tag: "互動遊戲",
-    tagColor: "bg-purple-100 text-purple-700",
-    available: true,
+    title: "財務 & 法律",
+    color: "from-blue-50 to-indigo-50",
+    iconBg: "bg-blue-100",
+    tools: [
+      {
+        href: "/insurance",
+        icon: "🛡️",
+        title: "保險補充計算",
+        desc: "計算私人保險能補足多少長照缺口",
+      },
+      {
+        href: "/insurance#legal",
+        icon: "⚖️",
+        title: "法律事項引導",
+        desc: "監護宣告、安養信託、遺囑規劃逐步引導",
+      },
+    ],
   },
   {
-    id: "burnout-check",
-    icon: "💛",
-    title: "照顧者壓力檢測",
-    description: "10 題自我檢測，1 分鐘了解自己的壓力狀態。照顧別人之前，先看看自己。",
-    href: "/tools/burnout-check",
-    tag: "心理支持",
-    tagColor: "bg-rose-100 text-rose-700",
-    available: true,
+    title: "疾病照顧",
+    color: "from-emerald-50 to-teal-50",
+    iconBg: "bg-emerald-100",
+    tools: [
+      {
+        href: "/tools/conditions",
+        icon: "🫀",
+        title: "疾病照顧檔案",
+        desc: "失智症、中風、帕金森等常見疾病照顧指引",
+      },
+      {
+        href: "/tools/conditions#timeline",
+        icon: "📅",
+        title: "照顧歷程時間軸",
+        desc: "各階段照顧需求與費用預估",
+      },
+      {
+        href: "/tools/conditions#checklist",
+        icon: "📋",
+        title: "機構評估清單",
+        desc: "選擇居家或住宿機構的評估評分表",
+      },
+    ],
   },
   {
-    id: "medical-prep",
-    icon: "🏥",
-    title: "就醫神隊友",
-    description: "看診前填寫，自動生成「就醫提問單」，拿手機給醫生看就好。",
-    href: "/tools/medical-prep",
-    tag: "實用工具",
-    tagColor: "bg-blue-100 text-blue-700",
-    available: true,
+    title: "照顧者健康",
+    color: "from-rose-50 to-pink-50",
+    iconBg: "bg-rose-100",
+    tools: [
+      {
+        href: "/tools/caregiverhealth",
+        icon: "🧠",
+        title: "失智症體驗模擬",
+        desc: "體驗失智症長輩的日常挑戰，培養同理心",
+      },
+      {
+        href: "/tools/caregiverhealth#burnout",
+        icon: "💆",
+        title: "照顧者倦怠檢測",
+        desc: "10 題評估身心狀態，配對喘息支持資源",
+      },
+    ],
   },
   {
-    id: "caregiver-comm",
-    icon: "🗣️",
-    title: "看護溝通卡",
-    description: "一鍵生成中印/中越雙語對照的照顧清單，貼冰箱或傳 LINE。",
-    href: "/tools/caregiver-comm",
-    tag: "實用工具",
-    tagColor: "bg-blue-100 text-blue-700",
-    available: true,
-  },
-  {
-    id: "care-timeline",
-    icon: "📅",
-    title: "照顧時間軸",
-    description: "根據疾病和 CMS 等級，看到未來每個階段該準備什麼。",
-    href: "/tools/care-timeline",
-    tag: "規劃工具",
-    tagColor: "bg-green-100 text-green-700",
-    available: false,
-  },
-  {
-    id: "reablement",
-    icon: "🌟",
-    title: "每週微光任務卡",
-    description: "每週 3 個適合長輩的生活小任務，打卡累積復能點數。",
-    href: "/tools/reablement",
-    tag: "復能訓練",
-    tagColor: "bg-amber-100 text-amber-700",
-    available: false,
+    title: "日常照顧",
+    color: "from-amber-50 to-orange-50",
+    iconBg: "bg-amber-100",
+    tools: [
+      {
+        href: "/tools/daily",
+        icon: "🏥",
+        title: "就診準備清單",
+        desc: "生命徵象、用藥清單、問診問題一次備齊",
+      },
+      {
+        href: "/tools/daily#comm",
+        icon: "💬",
+        title: "家庭溝通模板",
+        desc: "交班訊息、家庭會議議程、緊急通知範本",
+      },
+      {
+        href: "/tools/reablement",
+        icon: "🌟",
+        title: "微光復能任務卡",
+        desc: "每週復能活動卡，身體、認知、社交全方位",
+      },
+    ],
   },
 ];
 
 export default function ToolsPage() {
   return (
-    <>
-      <NavBar currentSection="tools" />
-      <main className="min-h-screen bg-apple-gray-50 pt-6 sm:pt-12 pb-24 px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="text-[48px] mb-3">🧰</div>
-            <h1 className="text-[28px] sm:text-[34px] font-bold text-apple-gray-900 tracking-tight mb-3">
-              照顧工具箱
-            </h1>
-            <p className="text-[16px] text-apple-gray-500">
-              讓每天的照顧更輕鬆一點
-            </p>
-          </div>
+    <main className="max-w-4xl mx-auto px-4 py-10">
+      {/* Header */}
+      <div className="text-center mb-10">
+        <div className="inline-flex items-center gap-2 bg-amber-100 rounded-full px-4 py-2 mb-4">
+          <span className="text-[18px]">🛠️</span>
+          <span className="text-[13px] font-semibold text-amber-800">實用工具箱</span>
+        </div>
+        <h1 className="text-[32px] font-bold text-apple-gray-900 mb-3">
+          長照照顧工具
+        </h1>
+        <p className="text-[16px] text-apple-gray-500 max-w-xl mx-auto">
+          從財務規劃到日常照顧，提供照顧家庭最需要的實用工具
+        </p>
+      </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {TOOLS.map((tool) => (
-              <div key={tool.id} className="relative">
-                {tool.available ? (
-                  <a
-                    href={tool.href}
-                    className="block bg-white rounded-[24px] p-6 border border-apple-gray-200/50 shadow-sm hover:shadow-apple-warm hover:border-apple-gray-300/50 transition-all"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="text-[36px]">{tool.icon}</div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <h3 className="text-[16px] font-bold text-apple-gray-900">{tool.title}</h3>
-                          <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${tool.tagColor}`}>
-                            {tool.tag}
-                          </span>
-                        </div>
-                        <p className="text-[13px] text-apple-gray-500 leading-relaxed">{tool.description}</p>
-                      </div>
+      {/* Tool Groups */}
+      <div className="space-y-8">
+        {TOOL_GROUPS.map((group) => (
+          <section key={group.title}>
+            <h2 className="text-[16px] font-semibold text-apple-gray-500 uppercase tracking-wider mb-3 px-1">
+              {group.title}
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {group.tools.map((tool) => (
+                <Link
+                  key={tool.href}
+                  href={tool.href}
+                  className={`bg-gradient-to-br ${group.color} border border-white/80 rounded-[20px] p-5 flex items-start gap-4 hover:shadow-apple-hover transition-shadow group`}
+                >
+                  <div className={`${group.iconBg} rounded-[14px] w-11 h-11 flex items-center justify-center text-[22px] shrink-0`}>
+                    {tool.icon}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-[15px] text-apple-gray-900 group-hover:text-amber-800 transition-colors">
+                      {tool.title}
                     </div>
-                  </a>
-                ) : (
-                  <div className="bg-white/60 rounded-[24px] p-6 border border-apple-gray-200/30 opacity-60">
-                    <div className="flex items-start gap-4">
-                      <div className="text-[36px] grayscale">{tool.icon}</div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <h3 className="text-[16px] font-bold text-apple-gray-600">{tool.title}</h3>
-                          <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-apple-gray-100 text-apple-gray-500">
-                            即將推出
-                          </span>
-                        </div>
-                        <p className="text-[13px] text-apple-gray-400 leading-relaxed">{tool.description}</p>
-                      </div>
+                    <div className="text-[13px] text-apple-gray-500 mt-0.5 leading-snug">
+                      {tool.desc}
                     </div>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
 
-          {/* CTA to calculator */}
-          <div className="mt-10 text-center">
-            <a
-              href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[15px] font-semibold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
-            >
-              💰 先算算看政府補助多少 →
-            </a>
-          </div>
+      {/* Resource Search CTA */}
+      <div className="mt-10 bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-100 rounded-[24px] p-6 flex items-center justify-between gap-4">
+        <div>
+          <div className="font-bold text-[17px] text-apple-gray-900 mb-1">找不到合適的資源？</div>
+          <div className="text-[14px] text-apple-gray-500">搜尋台灣各縣市照顧機構、政府服務與支持團體</div>
         </div>
-      </main>
-    </>
+        <Link
+          href="/search"
+          className="shrink-0 bg-amber-500 hover:bg-amber-600 text-white font-semibold text-[14px] px-5 py-2.5 rounded-full transition-colors"
+        >
+          資源搜尋 →
+        </Link>
+      </div>
+    </main>
   );
 }

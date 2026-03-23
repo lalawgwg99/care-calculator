@@ -1,84 +1,88 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
-interface NavBarProps {
-  currentSection?: "calculator" | "tools" | "search";
-}
-
-const NAV_ITEMS = [
-  { id: "calculator" as const, label: "試算引擎", icon: "💰", href: "/" },
-  { id: "tools" as const, label: "工具箱", icon: "🧰", href: "/tools" },
-  { id: "search" as const, label: "找資源", icon: "🔍", href: "/search" },
+const NAV_LINKS = [
+  { href: "/", label: "首頁試算", icon: "🧮" },
+  { href: "/blog", label: "知識庫", icon: "📚" },
+  { href: "/tools", label: "實用工具", icon: "🛠️" },
+  { href: "/search", label: "資源搜尋", icon: "🔍" },
 ];
 
-export default function NavBar({ currentSection = "calculator" }: NavBarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export default function NavBar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
-    <>
-      {/* Desktop Nav */}
-      <nav className="hidden sm:flex items-center justify-between max-w-5xl mx-auto px-6 py-3 sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-apple-gray-200/60">
-        <a href="/" className="flex items-center gap-2">
-          <span className="text-[20px]">🧡</span>
-          <span className="text-[16px] font-bold text-apple-gray-900 tracking-tight">長照 3.0</span>
-        </a>
+    <nav className="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-orange-100/60 shadow-sm">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 font-bold text-[17px] text-apple-gray-900 hover:opacity-80 transition-opacity">
+          <Image src="/logo-mark.svg" alt="長照決策引擎 Logo" width={24} height={24} className="rounded-[7px]" priority />
+          <span className="hidden sm:block">長照決策引擎</span>
+        </Link>
 
-        <div className="flex items-center gap-1">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={item.href}
-              className={`
-                px-4 py-2 rounded-full text-[14px] font-medium transition-colors
-                ${currentSection === item.id
-                  ? "bg-apple-orange/10 text-apple-orange"
-                  : "text-apple-gray-600 hover:bg-apple-gray-100 hover:text-apple-gray-900"
-                }
-              `}
-            >
-              <span className="mr-1.5">{item.icon}</span>
-              {item.label}
-            </a>
-          ))}
+        {/* Desktop Links */}
+        <div className="hidden sm:flex items-center gap-1">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[14px] font-medium transition-all ${
+                  isActive
+                    ? "bg-amber-100 text-amber-800"
+                    : "text-apple-gray-600 hover:bg-apple-gray-100 hover:text-apple-gray-900"
+                }`}
+              >
+                <span>{link.icon}</span>
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
         </div>
 
-        <a
-          href="tel:1966"
-          className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-apple-green/10 text-apple-green text-[14px] font-semibold hover:bg-apple-green/20 transition-colors"
+        {/* Mobile Hamburger */}
+        <button
+          className="sm:hidden p-2 rounded-full hover:bg-apple-gray-100 transition-colors"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={menuOpen ? "關閉選單" : "開啟選單"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
-          📞 1966
-        </a>
-      </nav>
-
-      {/* Mobile Bottom Tab Bar */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-apple-gray-200/60 pb-[env(safe-area-inset-bottom)]">
-        <div className="flex items-center justify-around py-2">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={item.href}
-              className={`
-                flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl transition-colors min-w-[64px]
-                ${currentSection === item.id
-                  ? "text-apple-orange"
-                  : "text-apple-gray-500"
-                }
-              `}
-            >
-              <span className="text-[20px]">{item.icon}</span>
-              <span className="text-[11px] font-medium">{item.label}</span>
-            </a>
-          ))}
-          <a
-            href="tel:1966"
-            className="flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl text-apple-green min-w-[64px]"
-          >
-            <span className="text-[20px]">📞</span>
-            <span className="text-[11px] font-medium">1966</span>
-          </a>
-        </div>
+          <div className="w-5 h-0.5 bg-apple-gray-700 mb-1 transition-all" />
+          <div className="w-5 h-0.5 bg-apple-gray-700 mb-1 transition-all" />
+          <div className="w-5 h-0.5 bg-apple-gray-700 transition-all" />
+        </button>
       </div>
-    </>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div id="mobile-menu" className="sm:hidden border-t border-orange-100/60 bg-white/95 px-4 pb-4 pt-2" role="navigation" aria-label="行動版選單">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-[14px] text-[15px] font-medium transition-all mb-1 ${
+                  isActive
+                    ? "bg-amber-100 text-amber-800"
+                    : "text-apple-gray-700 hover:bg-apple-gray-100"
+                }`}
+              >
+                <span className="text-[20px]">{link.icon}</span>
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </nav>
   );
 }

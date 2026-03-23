@@ -8,29 +8,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        subsidy: "#34C759",
-        outOfPocket: "#FF3B30",
+        subsidy: "#1F9D66",
+        outOfPocket: "#C4493B",
         apple: {
-          blue: "#007AFF",
-          green: "#34C759",
-          indigo: "#5856D6",
-          orange: "#FF9500",
-          pink: "#FF2D55",
-          purple: "#AF52DE",
-          red: "#FF3B30",
-          teal: "#5AC8FA",
-          yellow: "#FFCC00",
+          blue: "#1D6FB8",
+          green: "#1F9D66",
+          indigo: "#5561C8",
+          orange: "#D97722",
+          pink: "#D95173",
+          purple: "#8F53C7",
+          red: "#C4493B",
+          teal: "#3FA9C8",
+          yellow: "#B38A10",
           gray: {
-            50: "#FBFBFD", // Warm System Grouped Background
-            100: "#F2F2F7",
-            200: "#E5E5EA",
-            300: "#D1D1D6",
-            400: "#C7C7CC",
-            500: "#8E8E93", // Warm Gray for muted text
-            600: "#3A3A3C",
-            700: "#2C2C2E",
-            800: "#1C1C1E", // Dark text
-            900: "#000000",
+            50: "#FAF8F4", // Warm grouped background
+            100: "#F3EFE8",
+            200: "#E6DFD3",
+            300: "#D3C7B5",
+            400: "#B8A995",
+            500: "#71685D", // Better contrast for muted text
+            600: "#4E463E",
+            700: "#39332D",
+            800: "#26211D",
+            900: "#141210",
           }
         }
       },
@@ -49,7 +49,7 @@ const config: Config = {
       boxShadow: {
         'apple': '0 4px 24px rgba(0,0,0,0.04)',
         'apple-hover': '0 8px 32px rgba(0,0,0,0.08)',
-        'apple-warm': '0 6px 30px rgba(180,165,150,0.08)',
+        'apple-warm': '0 8px 28px rgba(126, 90, 52, 0.12)',
       }
     },
   },

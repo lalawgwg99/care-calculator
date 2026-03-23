@@ -2,214 +2,206 @@
 
 import { useState } from "react";
 
-interface LegalNavigatorProps {
-  elderlyAssets?: number;
-  cmsLevel?: number;
-}
-
-interface LegalDoc {
+interface LegalItem {
   id: string;
   icon: string;
   title: string;
   subtitle: string;
-  urgency: "high" | "medium" | "low";
-  urgencyLabel: string;
-  showCondition: (props: LegalNavigatorProps) => boolean;
-  steps: { step: string; detail: string }[];
-  requiredDocs: string[];
-  estimatedTime: string;
-  cost: string;
-  tip: string;
-  officialLink: string;
-  officialLinkLabel: string;
+  color: string;
+  bgColor: string;
+  steps: string[];
+  checklist: string[];
+  note: string;
 }
 
-const LEGAL_DOCS: LegalDoc[] = [
+const LEGAL_ITEMS: LegalItem[] = [
   {
-    id: "disability-cert",
-    icon: "🏥",
-    title: "身心障礙證明申請",
-    subtitle: "解鎖更多補助與減免的第一步",
-    urgency: "high",
-    urgencyLabel: "優先辦理",
-    showCondition: () => true,
+    id: "guardianship",
+    icon: "🏛️",
+    title: "監護宣告",
+    subtitle: "保護失能長輩的法律權益",
+    color: "text-indigo-700",
+    bgColor: "bg-indigo-50 border-indigo-100",
     steps: [
-      { step: "到戶籍地公所領取申請表", detail: "攜帶身分證、一吋照片 3 張、印章" },
-      { step: "到指定醫院做身障鑑定", detail: "由醫療團隊依 ICF 架構評估，約需 1-2 小時" },
-      { step: "等待鑑定報告與核定", detail: "約 1-3 個月，核定後公所會通知領證" },
-      { step: "領取身心障礙證明", detail: "可申請各項補助：停車、牌照稅、健保減免等" },
+      "向地方法院家事庭提出聲請（配偶、四親等內親屬均可聲請）",
+      "法院指定鑑定醫院，由精神科醫師評估心智狀態",
+      "法院裁定，通常 2~6 個月審理完畢",
+      "裁定確定後，監護人可代理長輩進行法律行為",
     ],
-    requiredDocs: ["身分證正反面影本", "一吋照片 3 張", "戶口名簿影本", "印章", "診斷證明書（有的話）"],
-    estimatedTime: "申請到核定約 1-3 個月",
-    cost: "鑑定費約 $200-$600（依醫院而異）",
-    tip: "拿到身障證明後，記得回來「隱形省下的錢」模組重新試算，健保減免、牌照稅免徵等都會自動加入！",
-    officialLink: "https://www.sfaa.gov.tw/SFAA/Pages/List.aspx?nodeid=162",
-    officialLinkLabel: "衛福部身心障礙服務入口",
+    checklist: [
+      "準備戶籍謄本（三個月內）",
+      "備妥診斷書（內科或神經科）",
+      "填寫聲請狀（法院有範本）",
+      "繳納聲請費約 1,000 元",
+      "參與法院詢問程序",
+    ],
+    note: "監護宣告後，監護人每年須向法院報告財產狀況，不可任意動用長輩財產。",
   },
   {
-    id: "advance-directive",
-    icon: "📋",
-    title: "預立醫療決定 (AD)",
-    subtitle: "讓長輩的醫療意願被尊重",
-    urgency: "medium",
-    urgencyLabel: "建議討論",
-    showCondition: () => true,
-    steps: [
-      { step: "與家人共同討論", detail: "了解長輩對未來醫療處置的意願（插管、電擊、洗腎等）" },
-      { step: "到醫院接受「預立醫療照護諮商 (ACP)」", detail: "需至少一位二親等內家屬陪同，由醫療團隊說明各項選擇" },
-      { step: "簽署預立醫療決定書", detail: "需經公證人公證或兩位見證人見證" },
-      { step: "註記於健保卡", detail: "醫院協助將 AD 登錄於健保 IC 卡，全國醫療院所可查詢" },
-    ],
-    requiredDocs: ["身分證", "健保卡", "二親等內家屬陪同（至少一人）"],
-    estimatedTime: "預約到完成約 2-4 週",
-    cost: "ACP 諮商費約 $2,000-$3,500（部分醫院有補助）",
-    tip: "AD 不等於放棄治療。它是讓長輩在意識清楚時，預先表達「什麼治療我要、什麼我不要」，避免家屬未來做痛苦決定。",
-    officialLink: "https://hpcod.mohw.gov.tw/HospiceWeb/",
-    officialLinkLabel: "安寧緩和醫療及器官捐贈意願資訊系統",
-  },
-  {
-    id: "trust-guardianship",
+    id: "trust",
     icon: "🏦",
-    title: "財產信託 / 意定監護",
-    subtitle: "保護長輩的財產安全",
-    urgency: "high",
-    urgencyLabel: "越早越好",
-    showCondition: (props) => (props.elderlyAssets ?? 0) > 1000000,
+    title: "安養信託",
+    subtitle: "確保照顧費用安全且專款專用",
+    color: "text-emerald-700",
+    bgColor: "bg-emerald-50 border-emerald-100",
     steps: [
-      { step: "評估長輩財產狀況", detail: "盤點存款、不動產、保險、投資等資產" },
-      { step: "選擇保護方式", detail: "信託：委託銀行管理財產，防詐騙。意定監護：指定未來的監護人" },
-      { step: "信託：與銀行簽約", detail: "攜帶長輩本人（需意識清楚）到銀行辦理安養信託" },
-      { step: "意定監護：到法院公證", detail: "由長輩本人與受任人共同到法院或公證處簽署" },
+      "選擇信託銀行（各大行庫均有長照信託服務）",
+      "與銀行信託部門簽訂信託契約",
+      "將指定財產（存款、不動產）移交信託管理",
+      "銀行依契約按月撥款支付照顧費用",
     ],
-    requiredDocs: ["長輩身分證", "財產相關文件", "受任人/受益人身分證", "醫師診斷證明（證明意識清楚）"],
-    estimatedTime: "信託約 1-2 週、意定監護約 2-4 週",
-    cost: "信託：簽約費 $1,000-$5,000 + 年管理費 0.3%-0.5%。意定監護：公證費約 $1,000-$3,000",
-    tip: "失智症長輩的財產最容易被詐騙或不當挪用。趁長輩還能表達意願時辦理，是最重要的保護。等到嚴重失智後，法律上已無法自行簽署。",
-    officialLink: "https://www.trust.org.tw/",
-    officialLinkLabel: "信託公會安養信託專區",
+    checklist: [
+      "確認可信託財產項目與金額",
+      "決定信託受益人（通常為本人）",
+      "指定信託監察人（子女或律師）",
+      "了解信託管理費（約每年 0.3~0.5%）",
+      "與家人討論信託條件與變更機制",
+    ],
+    note: "安養信託可搭配「意定監護」，在長輩仍有行為能力時預先規劃，比法院指定更有彈性。",
+  },
+  {
+    id: "will",
+    icon: "📜",
+    title: "遺囑規劃",
+    subtitle: "預先安排財產與照顧意願",
+    color: "text-amber-700",
+    bgColor: "bg-amber-50 border-amber-100",
+    steps: [
+      "確認遺囑形式：自書遺囑（本人手寫）或公證遺囑（至公證處辦理）",
+      "列明財產清單與分配方式，注意特留分規定",
+      "指定遺囑執行人（建議為律師或信任的家人）",
+      "妥善保管並告知可信任的人遺囑存放地點",
+    ],
+    checklist: [
+      "自書遺囑：全文親筆書寫、簽名、日期",
+      "公證遺囑：攜帶身份證，至法院或民間公證人辦理",
+      "確認不動產、金融資產均納入遺囑",
+      "考慮是否指定安葬方式",
+      "每 3~5 年或重大事件後重新確認內容",
+    ],
+    note: "子女有「特留分」保障（應繼分的 1/2），遺囑不可低於此比例，否則子女可主張扣還。",
+  },
+  {
+    id: "assets",
+    icon: "💰",
+    title: "財產管理",
+    subtitle: "整理並保障長輩名下財產",
+    color: "text-rose-700",
+    bgColor: "bg-rose-50 border-rose-100",
+    steps: [
+      "盤點長輩名下不動產（地政事務所查詢）、存款、股票等資產",
+      "申請財產清查（向戶政事務所申請財產歸戶清單）",
+      "與家人達成共識，建立透明管理機制",
+      "必要時委任律師或信託機構協助管理",
+    ],
+    checklist: [
+      "整理不動產權狀與租賃合約",
+      "列出所有金融帳戶（銀行、郵局、證券）",
+      "確認保險契約（受益人、保單內容）",
+      "取得長輩同意後辦理財產代管或授權書",
+      "保存所有文件於安全地點並備份",
+    ],
+    note: "若長輩仍有行為能力，建議以「授權書」（特別授權或一般授權）方式處理，不需進行監護宣告。",
   },
 ];
 
-const URGENCY_STYLES = {
-  high: { bg: "bg-red-50", text: "text-red-700", border: "border-red-200/50", dot: "bg-apple-red" },
-  medium: { bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-200/50", dot: "bg-apple-orange" },
-  low: { bg: "bg-green-50", text: "text-green-700", border: "border-green-200/50", dot: "bg-apple-green" },
-};
+export default function LegalNavigator() {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [checked, setChecked] = useState<Record<string, boolean>>({});
 
-export default function LegalNavigator({ elderlyAssets = 0, cmsLevel }: LegalNavigatorProps) {
-  const [expandedDoc, setExpandedDoc] = useState<string | null>(null);
-
-  const visibleDocs = LEGAL_DOCS.filter((doc) => doc.showCondition({ elderlyAssets, cmsLevel }));
-
-  if (visibleDocs.length === 0) return null;
+  const toggle = (id: string) => setOpenId((prev) => (prev === id ? null : id));
+  const toggleCheck = (key: string) => setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
 
   return (
-    <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
-      <div className="p-6 pb-2">
-        <div className="flex items-center gap-3 mb-1">
-          <span className="text-[24px]">📜</span>
-          <h4 className="text-[16px] font-bold text-apple-gray-900">接下來該辦什麼？</h4>
+    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-5 border-b border-indigo-100/50">
+        <div className="flex items-center gap-3">
+          <span className="text-[28px]">⚖️</span>
+          <div>
+            <h2 className="text-[18px] font-bold text-apple-gray-900">法律事項引導</h2>
+            <p className="text-[13px] text-indigo-800/60 mt-0.5">為長輩的未來做好法律準備</p>
+          </div>
         </div>
-        <p className="text-[13px] text-apple-gray-500 ml-[36px]">
-          這些法律文件越早準備越好，別等到來不及
-        </p>
       </div>
 
-      <div className="px-6 pb-6 space-y-3 mt-3">
-        {visibleDocs.map((doc) => {
-          const isExpanded = expandedDoc === doc.id;
-          const style = URGENCY_STYLES[doc.urgency];
+      <div className="p-4 space-y-3">
+        {LEGAL_ITEMS.map((item) => {
+          const isOpen = openId === item.id;
+          const checkedCount = item.checklist.filter((_, i) => checked[`${item.id}-${i}`]).length;
 
           return (
-            <div key={doc.id} className="rounded-[16px] border border-apple-gray-200/40 overflow-hidden">
+            <div key={item.id} className={`border rounded-[20px] overflow-hidden transition-all ${item.bgColor}`}>
+              {/* Header */}
               <button
-                onClick={() => setExpandedDoc(isExpanded ? null : doc.id)}
-                className="w-full flex items-center justify-between p-4 hover:bg-apple-gray-50/50 transition-colors"
+                onClick={() => toggle(item.id)}
+                className="w-full flex items-center justify-between p-4 text-left"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-[22px]">{doc.icon}</span>
-                  <div className="text-left">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] font-bold text-apple-gray-900">{doc.title}</span>
-                      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${style.bg} ${style.text} ${style.border} border`}>
-                        {doc.urgencyLabel}
-                      </span>
-                    </div>
-                    <p className="text-[12px] text-apple-gray-500 mt-0.5">{doc.subtitle}</p>
+                  <span className="text-[24px]">{item.icon}</span>
+                  <div>
+                    <div className={`font-bold text-[15px] ${item.color}`}>{item.title}</div>
+                    <div className="text-[12px] text-apple-gray-500">{item.subtitle}</div>
                   </div>
                 </div>
-                <span className={`text-apple-gray-400 text-[18px] transition-transform duration-300 ${isExpanded ? "rotate-45" : ""}`}>+</span>
+                <div className="flex items-center gap-2">
+                  {checkedCount > 0 && (
+                    <span className="text-[12px] bg-white/80 px-2 py-0.5 rounded-full text-apple-gray-600 font-medium">
+                      {checkedCount}/{item.checklist.length}
+                    </span>
+                  )}
+                  <span className="text-[18px] text-apple-gray-400">{isOpen ? "▲" : "▼"}</span>
+                </div>
               </button>
 
-              <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"}`}>
-                <div className="px-4 pb-5 space-y-4">
-                  {/* 步驟流程 */}
-                  <div className="bg-apple-gray-50/80 rounded-[14px] p-4">
-                    <h6 className="text-[13px] font-bold text-apple-gray-700 mb-3">辦理流程</h6>
-                    <div className="space-y-3">
-                      {doc.steps.map((s, i) => (
-                        <div key={i} className="flex gap-3">
-                          <div className="flex flex-col items-center">
-                            <div className="w-6 h-6 rounded-full bg-apple-orange/10 flex items-center justify-center text-[12px] font-bold text-apple-orange flex-shrink-0">
-                              {i + 1}
-                            </div>
-                            {i < doc.steps.length - 1 && (
-                              <div className="w-0.5 flex-1 bg-apple-orange/10 mt-1" />
-                            )}
-                          </div>
-                          <div className="pb-2">
-                            <p className="text-[14px] font-semibold text-apple-gray-800">{s.step}</p>
-                            <p className="text-[12px] text-apple-gray-500 mt-0.5">{s.detail}</p>
-                          </div>
-                        </div>
+              {/* Content */}
+              {isOpen && (
+                <div className="px-4 pb-4 space-y-4">
+                  {/* Steps */}
+                  <div>
+                    <div className="text-[13px] font-semibold text-apple-gray-600 mb-2">📌 辦理流程</div>
+                    <ol className="space-y-2">
+                      {item.steps.map((step, i) => (
+                        <li key={i} className="flex gap-2 text-[13px] text-apple-gray-700">
+                          <span className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold text-white mt-0.5 ${item.color.replace("text-", "bg-")}`}>
+                            {i + 1}
+                          </span>
+                          {step}
+                        </li>
                       ))}
+                    </ol>
+                  </div>
+
+                  {/* Checklist */}
+                  <div>
+                    <div className="text-[13px] font-semibold text-apple-gray-600 mb-2">✅ 準備清單</div>
+                    <div className="space-y-2">
+                      {item.checklist.map((c, i) => {
+                        const key = `${item.id}-${i}`;
+                        return (
+                          <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                            <input
+                              type="checkbox"
+                              checked={!!checked[key]}
+                              onChange={() => toggleCheck(key)}
+                              className="mt-0.5 accent-indigo-500 w-4 h-4 shrink-0"
+                            />
+                            <span className={`text-[13px] transition-colors ${checked[key] ? "line-through text-apple-gray-400" : "text-apple-gray-700"}`}>
+                              {c}
+                            </span>
+                          </label>
+                        );
+                      })}
                     </div>
                   </div>
 
-                  {/* 所需文件 */}
-                  <div className="bg-blue-50/40 rounded-[14px] p-4">
-                    <h6 className="text-[13px] font-bold text-blue-800 mb-2">需要準備的文件</h6>
-                    <div className="space-y-1">
-                      {doc.requiredDocs.map((d, i) => (
-                        <div key={i} className="flex items-center gap-2 text-[13px] text-blue-700">
-                          <span className="text-blue-400">☐</span>
-                          <span>{d}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 時間與費用 */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-apple-gray-50/60 rounded-[12px] p-3">
-                      <p className="text-[11px] text-apple-gray-500 mb-0.5">預估時間</p>
-                      <p className="text-[13px] font-semibold text-apple-gray-800">{doc.estimatedTime}</p>
-                    </div>
-                    <div className="bg-apple-gray-50/60 rounded-[12px] p-3">
-                      <p className="text-[11px] text-apple-gray-500 mb-0.5">費用</p>
-                      <p className="text-[13px] font-semibold text-apple-gray-800">{doc.cost}</p>
-                    </div>
-                  </div>
-
-                  {/* 小提醒 */}
-                  <div className="bg-amber-50/60 rounded-[12px] p-3 border border-amber-100/50">
-                    <p className="text-[12px] text-amber-800/80 leading-relaxed">
-                      💡 {doc.tip}
+                  {/* Note */}
+                  <div className="bg-white/70 rounded-[12px] p-3 border border-white">
+                    <p className="text-[12px] text-apple-gray-500 leading-relaxed">
+                      💡 <strong>注意：</strong>{item.note}
                     </p>
                   </div>
-
-                  {/* 官方連結 */}
-                  <a
-                    href={doc.officialLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-[12px] border border-apple-gray-200/60 text-[13px] font-medium text-apple-blue hover:bg-blue-50/30 transition-colors"
-                  >
-                    🔗 {doc.officialLinkLabel}
-                    <span className="text-[11px] text-apple-gray-400">↗</span>
-                  </a>
                 </div>
-              </div>
+              )}
             </div>
           );
         })}

@@ -1,15 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
-import { type ConditionId, CONDITION_OPTIONS } from "@/lib/conditionProfiles";
-import CMSEstimator from "@/components/CMSEstimator";
-import PathwayComparison from "@/components/PathwayComparison";
-import ServiceCart from "@/components/ServiceCart";
-import FinancialReport from "@/components/FinancialReport";
+
+declare global {
+  interface Window { gtag?: (...args: unknown[]) => void; }
+}
+
+const STORAGE_KEY = "care-calc-last-v1";
+const INCOME_LABELS: Record<IncomeStatus, string> = {
+  general: "一般戶",
+  "mid-low": "中低收入",
+  low: "低收入戶",
+};
+
+const StepLoader = () => (
+  <div className="flex justify-center items-center py-24">
+    <div className="w-8 h-8 border-4 border-orange-200 border-t-apple-orange rounded-full animate-spin" />
+  </div>
+);
+
+const CMSEstimator = dynamic(() => import("@/components/CMSEstimator"), { loading: StepLoader });
+const PathwayComparison = dynamic(() => import("@/components/PathwayComparison"), { loading: StepLoader });
+const ServiceCart = dynamic(() => import("@/components/ServiceCart"), { loading: StepLoader });
+const FinancialReport = dynamic(() => import("@/components/FinancialReport"), { loading: StepLoader });
+const ApplicationGuide = dynamic(() => import("@/components/ApplicationGuide"), { loading: StepLoader });
 import FAQ from "@/components/FAQ";
-import ApplicationGuide from "@/components/ApplicationGuide";
 import CaregiverTips from "@/components/CaregiverTips";
+import EmergencyAccordion from "@/components/EmergencyAccordion";
 
 type WizardStep = 'landing' | 'pathway' | 'cart' | 'report';
 
@@ -19,7 +38,29 @@ export default function Home() {
   const [incomeStatus, setIncomeStatus] = useState<IncomeStatus | null>(null);
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
-  const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
+  const [showResumeBanner, setShowResumeBanner] = useState(false);
+
+  // 讀取上次試算
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const { cmsLevel: c, incomeStatus: i } = JSON.parse(saved);
+        if (c && i) {
+          setCmsLevel(c as CMSLevel);
+          setIncomeStatus(i as IncomeStatus);
+          setShowResumeBanner(true);
+        }
+      }
+    } catch {}
+  }, []);
+
+  // 儲存試算選擇
+  useEffect(() => {
+    if (cmsLevel && incomeStatus) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ cmsLevel, incomeStatus }));
+    }
+  }, [cmsLevel, incomeStatus]);
 
   const getBaseCopayRate = () => {
     if (incomeStatus === "general") return 0.16;
@@ -31,6 +72,7 @@ export default function Home() {
     if (cmsLevel && incomeStatus) {
       setCurrentStep('pathway');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.gtag?.('event', 'calculation_start', { cms_level: cmsLevel, income_status: incomeStatus });
     }
   };
 
@@ -79,6 +121,30 @@ export default function Home() {
         <div className="absolute -top-20 -right-20 w-64 h-64 bg-orange-200/30 rounded-full blur-3xl" />
         <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-rose-200/30 rounded-full blur-3xl" />
       </section>
+
+      {/* ====== RESUME BANNER ====== */}
+      {showResumeBanner && cmsLevel && incomeStatus && (
+        <div className="max-w-2xl mx-auto px-4 mb-4 mt-[-20px]">
+          <div className="bg-amber-50 border border-orange-200/70 rounded-[18px] px-5 py-3.5 flex items-center justify-between shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="text-[20px]">👋</span>
+              <div>
+                <span className="text-[14px] font-semibold text-amber-900">繼續上次試算</span>
+                <span className="text-[13px] text-amber-700/70 ml-2">
+                  CMS {cmsLevel} 級 · {INCOME_LABELS[incomeStatus]}
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowResumeBanner(false)}
+              className="text-amber-400 hover:text-amber-600 text-[20px] leading-none ml-3"
+              style={{ WebkitTapHighlightColor: "transparent" }}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ====== ASSESSMENT FORM ====== */}
       <section className="max-w-2xl mx-auto px-4 mb-16" id="calculator">
@@ -241,17 +307,51 @@ export default function Home() {
       {/* ====== APPLICATION GUIDE ====== */}
       <ApplicationGuide />
 
+      {/* ====== EMERGENCY ACCORDION ====== */}
+      <EmergencyAccordion />
+
       {/* ====== FAQ ====== */}
       <FAQ />
 
       {/* ====== CAREGIVER TIPS ====== */}
       <CaregiverTips />
 
+      {/* ====== MORE TOOLS SECTION ====== */}
+      <section className="max-w-4xl mx-auto px-4 mb-12">
+        <h3 className="text-[20px] font-bold text-center text-apple-gray-900 mb-6">
+          更多照顧工具
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { href: "/insurance", emoji: "🛡️", label: "保險補充計算" },
+            { href: "/tools/conditions", emoji: "🫀", label: "疾病照顧檔案" },
+            { href: "/tools/caregiverhealth", emoji: "💆", label: "倦怠檢測" },
+            { href: "/tools/reablement", emoji: "🌟", label: "復能任務卡" },
+          ].map((tool) => (
+            <a
+              key={tool.href}
+              href={tool.href}
+              className="bg-white border border-apple-gray-200 rounded-[18px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
+            >
+              <div className="text-[28px] mb-2">{tool.emoji}</div>
+              <div className="text-[13px] font-semibold text-apple-gray-700 group-hover:text-amber-700 transition-colors">
+                {tool.label}
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="text-center mt-4">
+          <a href="/tools" className="text-[13px] text-amber-600 hover:text-amber-700 font-medium">
+            查看全部工具 →
+          </a>
+        </div>
+      </section>
+
       {/* ====== TRUST / FOOTER ====== */}
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
         <div className="bg-amber-50/50 rounded-[20px] p-6 border border-orange-100/50">
           <p className="text-[14px] text-amber-800/60 leading-relaxed">
-            📌 本工具依據 <strong>衛生福利部 2026 年長照 3.0 最新法規</strong> 設計。所有數據僅供參考，實際補助金額以各縣市照顧管理中心核定為準。如有任何疑問，請撥打長照專線 <strong className="text-apple-orange">1966</strong>。
+            📌 本工具依據 <strong>衛生福利部 2026 年長照 3.0 最新法規</strong> 設計。所有數據僅供參考，實際補助金額以各縣市照顧管理中心核定為準。如有任何疑問，請撥打長照專線 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
           </p>
         </div>
       </section>
@@ -285,6 +385,7 @@ export default function Home() {
         incomeStatus={incomeStatus!}
         onSelectPathway={(path) => {
           setSelectedPathway(path);
+          window.gtag?.('event', 'pathway_selected', { care_type: path });
           if (path === 'institution') {
             setCurrentStep('report');
           } else {
