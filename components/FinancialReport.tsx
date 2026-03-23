@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { type CareType, getCareTypeName } from "@/lib/careLogic";
+import { type ConditionId, CONDITION_PROFILES, getAdditionalMonthlyCost } from "@/lib/conditionProfiles";
+import CareTimeline from "@/components/CareTimeline";
+import FacilityChecklist from "@/components/FacilityChecklist";
 import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
+import InsuranceAddon from "@/components/InsuranceAddon";
+import LegalNavigator from "@/components/LegalNavigator";
 
 declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
@@ -15,7 +20,9 @@ interface FinancialReportProps {
   monthlyGovSubsidy: number;
   monthlyOutOfPocket: number;
   shoppingCartTotal?: number;
-  assistiveDeviceQuota?: number; // 第三包：輔具及居家無障礙改善（3年額度）
+  assistiveDeviceQuota?: number;
+  selectedConditions?: ConditionId[];
+  cmsLevel?: number;
 }
 
 // True cost breakdown for foreign caregiver (real-world numbers from labor ministry)
@@ -51,6 +58,8 @@ export default function FinancialReport({
   monthlyOutOfPocket,
   shoppingCartTotal,
   assistiveDeviceQuota = 0,
+  selectedConditions = [],
+  cmsLevel,
 }: FinancialReportProps) {
   const [familyMembers, setFamilyMembers] = useState(1);
   const [elderlyAssets, setElderlyAssets] = useState(0);
@@ -236,6 +245,103 @@ export default function FinancialReport({
         </div>
       </div>
 
+      {/* ====== DISEASE-SPECIFIC COSTS ====== */}
+      {selectedConditions.length > 0 && (
+        <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-[24px]">🩺</span>
+            <div>
+              <h4 className="text-[16px] font-bold text-apple-gray-900">疾病相關額外支出</h4>
+              <p className="text-[13px] text-apple-gray-500">
+                依您選擇的健康狀況，可能產生的額外費用
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {selectedConditions.map((condId) => {
+              const profile = CONDITION_PROFILES[condId];
+              if (!profile || profile.additionalCosts.length === 0) return null;
+              return (
+                <div key={condId} className="bg-apple-gray-50/80 rounded-[16px] p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[16px]">{profile.icon}</span>
+                    <span className="text-[14px] font-bold text-apple-gray-800">{profile.name}</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {profile.additionalCosts.map((cost, i) => (
+                      <div key={i} className="flex items-center justify-between text-[13px]">
+                        <div>
+                          <span className="text-apple-gray-700">{cost.label}</span>
+                          <span className="text-apple-gray-400 ml-1.5 text-[11px]">{cost.note}</span>
+                        </div>
+                        <span className="font-mono font-semibold text-apple-gray-800 whitespace-nowrap ml-2">
+                          {formatMoney(cost.monthlyEstimate)}/月
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {getAdditionalMonthlyCost(selectedConditions) > 0 && (
+            <div className="mt-4 flex items-center justify-between p-4 rounded-[14px] bg-amber-50/60 border border-amber-200/30">
+              <span className="text-[14px] font-semibold text-amber-900">疾病額外月支出估算</span>
+              <span className="text-[20px] font-mono font-bold text-apple-orange">
+                +{formatMoney(getAdditionalMonthlyCost(selectedConditions))}/月
+              </span>
+            </div>
+          )}
+
+          <p className="text-[12px] text-apple-gray-400 mt-3">
+            * 以上為概估，實際費用因個案差異很大。此金額未計入前方的 5 年總支出中，僅供參考。
+          </p>
+        </div>
+      )}
+
+      {/* ====== DISEASE COMMUNICATION TIPS ====== */}
+      {selectedConditions.length > 0 && (
+        <div className="bg-gradient-to-br from-purple-50/50 to-indigo-50/30 rounded-[24px] p-6 border border-purple-100/40">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-[24px]">💬</span>
+            <h4 className="text-[16px] font-bold text-apple-gray-900">跟長輩溝通的小提醒</h4>
+          </div>
+          <div className="space-y-3">
+            {selectedConditions.map((condId) => {
+              const profile = CONDITION_PROFILES[condId];
+              if (!profile || profile.communicationTips.length === 0) return null;
+              return (
+                <div key={condId}>
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <span className="text-[14px]">{profile.icon}</span>
+                    <span className="text-[13px] font-semibold text-purple-800">{profile.name}</span>
+                  </div>
+                  <div className="space-y-1.5 ml-5">
+                    {profile.communicationTips.map((tip, i) => (
+                      <p key={i} className="text-[13px] text-purple-700/80 leading-relaxed">
+                        <span className="text-purple-400 mr-1.5">•</span>{tip}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ====== CARE TIMELINE (照顧時間軸) ====== */}
+      {selectedConditions.length > 0 && (
+        <CareTimeline selectedConditions={selectedConditions} currentCmsLevel={cmsLevel} />
+      )}
+
+      {/* ====== FACILITY CHECKLIST (機構檢核表) ====== */}
+      {isInstitution && (
+        <FacilityChecklist selectedConditions={selectedConditions} />
+      )}
+
       {/* ====== ELDERLY ASSETS + FAMILY SPLIT ====== */}
       <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-[28px] p-7 sm:p-8 border border-orange-100/50">
         <div className="flex items-center gap-3 mb-5">
@@ -308,6 +414,15 @@ export default function FinancialReport({
         monthlyOutOfPocket={totalMonthlyBurden}
         monthlyGovSubsidy={monthlyGovSubsidy}
       />
+
+      {/* ====== INSURANCE ADDON (商業保險外掛) ====== */}
+      <InsuranceAddon
+        monthlyOutOfPocket={totalMonthlyBurden}
+        monthlyGovSubsidy={monthlyGovSubsidy}
+      />
+
+      {/* ====== LEGAL NAVIGATOR (法律文件導航) ====== */}
+      <LegalNavigator elderlyAssets={elderlyAssets} />
 
       {/* ====== OPPORTUNITY COST WARNING ====== */}
       <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
