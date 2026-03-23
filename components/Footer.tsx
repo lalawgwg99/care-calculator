@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
           {/* 左欄：品牌說明 */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-[22px]">🧡</span>
+              <Image src="/logo-mark.svg" alt="長照決策引擎 Logo" width={24} height={24} className="rounded-[7px]" />
               <span className="text-[16px] font-bold text-apple-gray-900">長照決策引擎</span>
             </div>
             <p className="text-[13px] text-apple-gray-500 leading-relaxed mb-3">

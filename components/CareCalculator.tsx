@@ -38,8 +38,8 @@ const INCOME_STATUSES: { value: IncomeStatus; label: string }[] = [
 ];
 
 const COLORS = {
-  subsidy: "#10b981", // 綠色：政府補助
-  outOfPocket: "#ef4444", // 紅色：自付額
+  subsidy: "#1F9D66", // 綠色：政府補助
+  outOfPocket: "#C4493B", // 紅色：自付額
 };
 
 export default function CareCalculator() {

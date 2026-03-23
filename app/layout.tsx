@@ -262,7 +262,7 @@ export default function RootLayout({
     <html lang="zh-TW">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#FFF7ED" />
+        <meta name="theme-color" content="#FCF5EE" />
         <meta name="color-scheme" content="light" />
 
         {/* Preconnect to external domains for performance */}
@@ -270,9 +270,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.google-analytics.com" />
 
         {/* Favicon and app icons */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
 
         {/* Primary structured data */}
         <script
