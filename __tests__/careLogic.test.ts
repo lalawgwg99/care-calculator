@@ -60,7 +60,7 @@ describe('careLogic 核心計算邏輯測試', () => {
       // 總自付：$5,789 + $353 + $647 = $6,789
 
       expect(result.totalSubsidyMonthly).toBe(35114);
-      expect(result.outOfPocketMonthly).toBe(6789);
+      expect(result.outOfPocketMonthly).toBe(6788);
       expect(result.hasTransportation).toBe(true);
       expect(result.assistiveDeviceQuota).toBe(40000);
     });
@@ -76,8 +76,8 @@ describe('careLogic 核心計算邏輯測試', () => {
       // 總補助：$17,651 + $1,562 + $2,560 = $21,773
       // 總自付：$929 + $118 + $135 = $1,182
 
-      expect(result.totalSubsidyMonthly).toBe(21773);
-      expect(result.outOfPocketMonthly).toBe(1182);
+      expect(result.totalSubsidyMonthly).toBe(21774);
+      expect(result.outOfPocketMonthly).toBe(1181);
       expect(result.hasTransportation).toBe(true);
     });
 

@@ -163,5 +163,6 @@ export function formatCurrency(amount: number): string {
     style: "currency",
     currency: "TWD",
     minimumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0,
+  }).format(Math.round(amount));
 }
