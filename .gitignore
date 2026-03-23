@@ -1,5 +1,6 @@
 # Dependencies
 node_modules
+.pnpm-store
 .pnp
 .pnp.js
 
@@ -16,6 +17,8 @@ build
 
 # Misc
 .DS_Store
+Thumbs.db
+Desktop.ini
 *.pem
 .env
 .env.local
@@ -38,3 +41,5 @@ lerna-debug.log*
 
 # Prisma
 prisma/migrations
+prisma/*.db
+prisma/*.db-journal

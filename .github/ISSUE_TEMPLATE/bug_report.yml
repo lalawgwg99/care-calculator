@@ -1,0 +1,61 @@
+name: "\U0001F41B Bug 回報"
+description: 回報試算邏輯錯誤、資料錯誤或 UI 問題
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感謝回報。請盡量提供可重現資訊，方便快速修復。
+
+  - type: dropdown
+    id: care_type
+    attributes:
+      label: 照顧方式
+      options:
+        - 居家照顧
+        - 日間照顧
+        - 聘僱外籍看護工
+        - 住宿式機構
+    validations:
+      required: true
+
+  - type: input
+    id: cms_level
+    attributes:
+      label: CMS 等級
+      placeholder: "1-8"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: income
+    attributes:
+      label: 收入身份
+      options:
+        - 一般戶
+        - 中低收入戶
+        - 低收入戶
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 預期結果
+      description: 請附上你認為的正確數值與依據
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 實際結果
+      description: 系統顯示的結果與你看到的行為
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: 參考來源連結
+      placeholder: "https://..."

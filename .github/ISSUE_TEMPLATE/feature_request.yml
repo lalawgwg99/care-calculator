@@ -1,0 +1,28 @@
+name: "\U0001F4A1 功能建議"
+description: 建議新增功能或改善流程
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解決什麼問題？
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 你期望的解決方案？
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 優先級
+      options:
+        - 高（影響核心試算）
+        - 中（改善體驗）
+        - 低（加分項）
+    validations:
+      required: true

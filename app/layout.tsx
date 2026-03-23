@@ -194,7 +194,7 @@ const jsonLd = {
 };
 
 // FAQ JSON-LD for voice search and featured snippets
-const faqJsonLd = {
+const voiceFaqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -282,7 +282,12 @@ export default function RootLayout({
         {/* FAQ structured data for voice search */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(voiceFaqJsonLd) }}
+        />
+        {/* HowTo structured data for application process */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
         />
         {/* Breadcrumb structured data */}
         <script
