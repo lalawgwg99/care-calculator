@@ -105,7 +105,11 @@ const LEGAL_ITEMS: LegalItem[] = [
   },
 ];
 
-export default function LegalNavigator() {
+interface LegalNavigatorProps {
+  elderlyAssets?: number;
+}
+
+export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalNavigatorProps) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
+import { CONDITION_OPTIONS, type ConditionId } from "@/lib/conditionProfiles";
 
 declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
@@ -37,6 +38,7 @@ export default function Home() {
   const [cmsLevel, setCmsLevel] = useState<CMSLevel | null>(null);
   const [incomeStatus, setIncomeStatus] = useState<IncomeStatus | null>(null);
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
+  const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
   const [showResumeBanner, setShowResumeBanner] = useState(false);
 

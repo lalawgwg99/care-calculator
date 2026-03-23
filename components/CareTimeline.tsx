@@ -1,12 +1,18 @@
 "use client";
 
 import { CARE_TIMELINE } from "@/constants/conditionData";
+import type { ConditionId } from "@/lib/conditionProfiles";
 
 function fmt(n: number) {
   return new Intl.NumberFormat("zh-TW", { style: "currency", currency: "TWD", maximumFractionDigits: 0 }).format(n);
 }
 
-export default function CareTimeline() {
+interface CareTimelineProps {
+  selectedConditions?: ConditionId[];
+  currentCmsLevel?: number;
+}
+
+export default function CareTimeline({ selectedConditions: _selectedConditions, currentCmsLevel: _currentCmsLevel }: CareTimelineProps) {
   return (
     <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-teal-50 to-emerald-50 px-6 py-5 border-b border-teal-100/50">

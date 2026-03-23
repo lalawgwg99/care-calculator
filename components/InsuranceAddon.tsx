@@ -23,7 +23,15 @@ const CMS_GOV_SUBSIDY: Record<number, number> = {
   2: 8417, 3: 12986, 4: 15607, 5: 20244, 6: 23579, 7: 26956, 8: 30391,
 };
 
-export default function InsuranceAddon() {
+interface InsuranceAddonProps {
+  monthlyOutOfPocket?: number;
+  monthlyGovSubsidy?: number;
+}
+
+export default function InsuranceAddon({
+  monthlyOutOfPocket: _monthlyOutOfPocket,
+  monthlyGovSubsidy: _monthlyGovSubsidy,
+}: InsuranceAddonProps) {
   const [cmsLevel, setCmsLevel] = useState(4);
   const [insurance, setInsurance] = useState(10000);
   const [incomeType, setIncomeType] = useState<"general" | "mid-low" | "low">("general");

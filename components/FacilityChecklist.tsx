@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 import { FACILITY_CHECKLIST } from "@/constants/conditionData";
+import type { ConditionId } from "@/lib/conditionProfiles";
 
-export default function FacilityChecklist() {
+interface FacilityChecklistProps {
+  selectedConditions?: ConditionId[];
+}
+
+export default function FacilityChecklist({ selectedConditions: _selectedConditions }: FacilityChecklistProps) {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
 
   const toggleItem = (key: string) => setChecked((prev) => ({ ...prev, [key]: !prev[key] }));

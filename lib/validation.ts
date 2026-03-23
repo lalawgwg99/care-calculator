@@ -13,10 +13,10 @@ export const CareBudgetInputSchema = z.object({
     .min(1, 'CMS 等級最小為 1')
     .max(8, 'CMS 等級最大為 8'),
   incomeStatus: z.enum(['general', 'midLow', 'low'], {
-    errorMap: () => ({ message: '收入身份必須是 general、midLow 或 low' }),
+    message: '收入身份必須是 general、midLow 或 low',
   }),
   careType: z.enum(['home-care', 'day-care', 'foreign-caregiver', 'institution'], {
-    errorMap: () => ({ message: '照顧方式必須是有效的選項' }),
+    message: '照顧方式必須是有效的選項',
   }),
 });
 
@@ -36,7 +36,7 @@ export function validateCareBudgetInputOrThrow(input: unknown): CareBudgetInput 
   const result = CareBudgetInputSchema.safeParse(input);
   
   if (!result.success) {
-    const errors = result.error.errors.map(err => err.message).join(', ');
+    const errors = result.error.issues.map((err) => err.message).join(', ');
     throw new ValidationError(errors);
   }
   
