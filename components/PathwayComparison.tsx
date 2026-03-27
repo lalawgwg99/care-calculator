@@ -9,7 +9,9 @@ interface PathwayComparisonProps {
 }
 
 // 外籍看護真實月支出（含薪資、安定費、健保、加班、仲介）
-const FOREIGN_CAREGIVER_EXTRA = 30000;
+// 與 FinancialReport.tsx 中的 FOREIGN_CAREGIVER_REAL_COSTS 明細加總一致
+// 27470 + 2000 + 826 + 1200 + 800 = 32296
+const FOREIGN_REAL_MONTHLY = 32296;
 
 // 機構平均月費範圍
 const INSTITUTION_FEE = { min: 35000, max: 45000 };
@@ -95,9 +97,9 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
       icon: "🧑‍🤝‍🧑",
       subtitle: "一對一專屬陪伴",
       monthlySubsidy: foreignResult.totalSubsidyMonthly,
-      // 真實自付 = 長照自付 + 外看薪資等
-      monthlyOutPocket: foreignResult.outOfPocketMonthly + FOREIGN_CAREGIVER_EXTRA,
-      totalMonthly: foreignResult.outOfPocketMonthly + FOREIGN_CAREGIVER_EXTRA + foreignResult.totalSubsidyMonthly,
+      // 真實自付 = max(長照自付, 外看真實總成本)，與 FinancialReport 計算方式一致
+      monthlyOutPocket: Math.max(foreignResult.outOfPocketMonthly, FOREIGN_REAL_MONTHLY),
+      totalMonthly: foreignResult.totalSubsidyMonthly + Math.max(foreignResult.outOfPocketMonthly, FOREIGN_REAL_MONTHLY),
       waitTime: "⏱ 仲介媒合需 2-4 個月",
       features: [
         "24 小時在家一對一照顧",
@@ -121,13 +123,13 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
     return (
       <div className="w-full animation-fade-in max-w-2xl mx-auto">
         <div className="bg-amber-50 rounded-[28px] p-8 sm:p-10 border border-amber-200/60 text-center">
-          <div className="text-[48px] mb-4">🤗</div>
+          <div className="text-[48px] mb-4">📋</div>
           <h2 className="text-[24px] sm:text-[28px] font-bold text-apple-gray-900 mb-3">
-            好消息！長輩目前狀況不錯
+            CMS 第 1 級：尚未達補助門檻
           </h2>
           <p className="text-[16px] text-amber-800/70 leading-relaxed mb-6 max-w-lg mx-auto">
-            CMS 第 1 級屬於「輕度失能」，目前<strong>尚未達到長照補助的門檻</strong>（需 CMS 2 級以上）。
-            但這代表長輩的身體功能還不錯，是延緩退化的好時機！
+            CMS 第 1 級屬「輕度失能」，目前<strong>尚未達到長照補助門檻</strong>（需 CMS 2 級以上）。
+            現在是延緩失能、提前做好準備的重要時機。
           </p>
           <div className="bg-white/80 rounded-[20px] p-6 border border-amber-100/50 text-left mb-6">
             <h4 className="text-[16px] font-bold text-apple-gray-900 mb-3">建議您現在可以做的事：</h4>
@@ -268,7 +270,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
 
       {/* 提示 */}
       <div className="mt-6 text-center text-[13px] text-apple-gray-400">
-        * 外籍看護自付含薪資、就業安定費、健保費等實際支出約 ${FOREIGN_CAREGIVER_EXTRA.toLocaleString()}/月
+        * 外籍看護自付含薪資、就業安定費、健保費等實際支出約 ${FOREIGN_REAL_MONTHLY.toLocaleString()}/月
         {cmsLevel < 4 && "　* 住宿式機構補助需 CMS 4 級以上"}
       </div>
     </div>

@@ -79,7 +79,7 @@ export function calculateCareBudget(
   //   - 資料來源：https://1966.gov.tw/LTC/cp-6457-69925-207.html
   if (careType === 'institution') {
     const institutionMonthlySubsidy = cmsLevel >= 4 ? 10000 : 0;
-    const avgMonthlyFee = 45000; // 全國機構平均月費（含三餐、護理費）
+    const avgMonthlyFee = 40000; // 全國機構平均月費（含三餐、護理費）
     const outOfPocketInstitution = Math.max(0, avgMonthlyFee - institutionMonthlySubsidy);
     return {
       totalSubsidyMonthly: institutionMonthlySubsidy,

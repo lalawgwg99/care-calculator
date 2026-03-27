@@ -15,7 +15,12 @@
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 1.625;
   }
+
+  /* 高齡友善：提升最小字體下限 */
+  small, .text-xs { font-size: 0.8125rem !important; } /* 13px */
 }
 
 /* 螢幕閱讀器專用：視覺隱藏但可被讀取 */

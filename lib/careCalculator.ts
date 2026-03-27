@@ -53,7 +53,7 @@ export function calculateCareBudget(
   if (careType === "institution") {
     // CMS 4+ 適用 12 萬/年補助；CMS 1-3 新申請者不適用此補助
     const monthlySubsidy = cmsLevel >= 4 ? INSTITUTION_SUBSIDY.monthlySubsidy : 0;
-    const avgMonthlyFee = INSTITUTION_SUBSIDY.estimatedMonthlyFee.min;
+    const avgMonthlyFee = INSTITUTION_SUBSIDY.estimatedMonthlyFee.average;
     const outOfPocket = Math.max(0, avgMonthlyFee - monthlySubsidy);
 
     return {

@@ -92,7 +92,7 @@ describe('careData 數據完整性測試', () => {
     test('自負額比例應在合理範圍內', () => {
       SUBSIDY_RULES.forEach(rule => {
         expect(rule.careServiceCopay.general).toBe(0.16);
-        expect(rule.careServiceCopay.midLow).toBe(0.05);
+        expect(rule.careServiceCopay["mid-low"]).toBe(0.05);
         expect(rule.careServiceCopay.low).toBe(0);
       });
     });

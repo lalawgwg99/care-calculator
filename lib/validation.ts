@@ -12,8 +12,8 @@ export const CareBudgetInputSchema = z.object({
     .int('CMS 等級必須是整數')
     .min(1, 'CMS 等級最小為 1')
     .max(8, 'CMS 等級最大為 8'),
-  incomeStatus: z.enum(['general', 'midLow', 'low'], {
-    errorMap: () => ({ message: '收入身份必須是 general、midLow 或 low' }),
+  incomeStatus: z.enum(['general', 'mid-low', 'low'], {
+    errorMap: () => ({ message: '收入身份必須是 general、mid-low 或 low' }),
   }),
   careType: z.enum(['home-care', 'day-care', 'foreign-caregiver', 'institution'], {
     errorMap: () => ({ message: '照顧方式必須是有效的選項' }),

@@ -33,7 +33,7 @@ const CARE_TYPES: { value: CareType; label: string; description: string }[] = [
 
 const INCOME_STATUSES: { value: IncomeStatus; label: string }[] = [
   { value: "general", label: "一般戶" },
-  { value: "midLow", label: "中低收入戶" },
+  { value: "mid-low", label: "中低收入戶" },
   { value: "low", label: "低收入戶" },
 ];
 

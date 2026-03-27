@@ -133,8 +133,8 @@ describe('careLogic 核心計算邏輯測試', () => {
 
       // CMS 5 >= 4：每月補助 $10,000
       expect(result.totalSubsidyMonthly).toBe(10000);
-      // 自付 = 平均月費 $45,000 - 補助 $10,000 = $35,000
-      expect(result.outOfPocketMonthly).toBe(35000);
+      // 自付 = 中位月費 $40,000 - 補助 $10,000 = $30,000
+      expect(result.outOfPocketMonthly).toBe(30000);
       expect(result.hasTransportation).toBe(false);
       expect(result.assistiveDeviceQuota).toBe(0);
     });
@@ -143,14 +143,14 @@ describe('careLogic 核心計算邏輯測試', () => {
       const result = calculateCareBudget(6, 'general', 'institution');
 
       expect(result.totalSubsidyMonthly).toBe(10000);
-      expect(result.outOfPocketMonthly).toBe(35000);
+      expect(result.outOfPocketMonthly).toBe(30000);
     });
 
     test('CMS 1-3 級住宿式機構無補助（新申請者）', () => {
       for (let level = 1; level <= 3; level++) {
         const result = calculateCareBudget(level as CMSLevel, 'general', 'institution');
         expect(result.totalSubsidyMonthly).toBe(0);
-        expect(result.outOfPocketMonthly).toBe(45000);
+        expect(result.outOfPocketMonthly).toBe(40000);
       }
     });
 
@@ -319,13 +319,13 @@ describe('careLogic 核心計算邏輯測試', () => {
       for (let level = 1; level <= 3; level++) {
         const result = calculateCareBudget(level as CMSLevel, 'general', 'institution');
         expect(result.totalSubsidyMonthly).toBe(0);
-        expect(result.outOfPocketMonthly).toBe(45000);
+        expect(result.outOfPocketMonthly).toBe(40000);
       }
       // CMS 4-8：每月補助 $10,000
       for (let level = 4; level <= 8; level++) {
         const result = calculateCareBudget(level as CMSLevel, 'general', 'institution');
         expect(result.totalSubsidyMonthly).toBe(10000);
-        expect(result.outOfPocketMonthly).toBe(35000);
+        expect(result.outOfPocketMonthly).toBe(30000);
       }
     });
   });

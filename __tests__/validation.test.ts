@@ -14,7 +14,7 @@ describe('輸入驗證測試', () => {
     test('有效輸入應通過驗證', () => {
       const validInputs = [
         { cmsLevel: 1, incomeStatus: 'general', careType: 'home-care' },
-        { cmsLevel: 5, incomeStatus: 'midLow', careType: 'day-care' },
+        { cmsLevel: 5, incomeStatus: 'mid-low', careType: 'day-care' },
         { cmsLevel: 8, incomeStatus: 'low', careType: 'foreign-caregiver' },
         { cmsLevel: 4, incomeStatus: 'general', careType: 'institution' },
       ];

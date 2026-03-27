@@ -82,7 +82,7 @@ describe('calculateCareBudget', () => {
 
   describe('收入身份測試', () => {
     test('中低收入戶自負額比例正確', () => {
-      const result = calculateCareBudget(4, 'midLow', 'home-care');
+      const result = calculateCareBudget(4, 'mid-low', 'home-care');
 
       // 第一包：$18,580，自負 5% = $929，補助 = $17,651
       expect(result.breakdown.careServiceSubsidy).toBe(17651);
@@ -172,8 +172,8 @@ describe('calculateCareBudget', () => {
       expect(result.institutionInfo?.yearlySubsidy).toBe(INSTITUTION_SUBSIDY.yearlySubsidy);
       expect(result.institutionInfo?.monthlySubsidy).toBe(INSTITUTION_SUBSIDY.monthlySubsidy);
       expect(result.totalSubsidyMonthly).toBe(10000);
-      // 自付 = 機構最低月費 $35,000 - 補助 $10,000 = $25,000
-      expect(result.outOfPocketMonthly).toBe(25000);
+      // 自付 = 機構中位月費 $40,000 - 補助 $10,000 = $30,000
+      expect(result.outOfPocketMonthly).toBe(30000);
     });
 
     test('CMS 6 級一般戶使用機構補助方案', () => {
@@ -181,7 +181,7 @@ describe('calculateCareBudget', () => {
 
       // CMS 6 >= 4：適用 12 萬/年補助
       expect(result.totalSubsidyMonthly).toBe(10000);
-      expect(result.outOfPocketMonthly).toBe(25000);
+      expect(result.outOfPocketMonthly).toBe(30000);
       expect(result.institutionInfo).toBeDefined();
     });
 
@@ -190,13 +190,13 @@ describe('calculateCareBudget', () => {
 
       // CMS 2 < 4：不適用 12 萬/年補助
       expect(result.totalSubsidyMonthly).toBe(0);
-      expect(result.outOfPocketMonthly).toBe(35000);
+      expect(result.outOfPocketMonthly).toBe(40000);
       expect(result.institutionInfo).toBeUndefined();
     });
 
     test('機構補助不受收入身份影響（已取消排富）', () => {
       const resultGeneral = calculateCareBudget(5, 'general', 'institution');
-      const resultMidLow = calculateCareBudget(5, 'midLow', 'institution');
+      const resultMidLow = calculateCareBudget(5, 'mid-low', 'institution');
       const resultLow = calculateCareBudget(5, 'low', 'institution');
 
       // 所有收入身份的機構補助都相同（已取消排富條款）
@@ -288,7 +288,7 @@ describe('calculateCareBudget', () => {
     test('補助 + 自付 = 總額度', () => {
       const testCases = [
         { cms: 2, income: 'general' as const, care: 'home-care' as const },
-        { cms: 5, income: 'midLow' as const, care: 'day-care' as const },
+        { cms: 5, income: 'mid-low' as const, care: 'day-care' as const },
         { cms: 8, income: 'low' as const, care: 'home-care' as const },
       ];
 
