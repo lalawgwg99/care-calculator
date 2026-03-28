@@ -193,46 +193,6 @@ const jsonLd = {
   },
 };
 
-// FAQ JSON-LD for voice search and featured snippets
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "長照 3.0 四包錢是什麼？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "長照 3.0 四包錢包含：1) 照顧及專業服務、2) 交通接送服務、3) 輔具及居家無障礙環境改善、4) 喘息服務。根據CMS失能等級和收入身份，最高每月可獲得數萬元的補助。",
-      },
-    },
-    {
-      "@type": "Question",
-      "name": "如何申請長照補助？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "申請長照補助需要先撥打1966長照專線，或親自到各縣市照顧管理中心提出申請。申請時需攜帶身心障礙證明或醫療證明，相關單位會派專員到府評估失能等級。",
-      },
-    },
-    {
-      "@type": "Question",
-      "name": "外籍看護工補助有多少？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "聘僱外籍看護工時，長照補助額度為原本的30%。以一般戶CMS第8級為例，原本每月補助36,180元，打3折後約10,854元補助。",
-      },
-    },
-    {
-      "@type": "Question",
-      "name": "喘息服務每年有多少補助？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "喘息服務補助額度：CMS第2-6級每年最高32,340元，CMS第7-8級每年最高48,510元。自負額比例依身份別，一般戶16%、中低收入戶5%、低收入戶0%。",
-      },
-    },
-  ],
-};
-
 // BreadcrumbList JSON-LD
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
@@ -283,6 +243,11 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+        {/* HowTo structured data for application process */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
         />
         {/* Breadcrumb structured data */}
         <script
