@@ -112,9 +112,53 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
     },
   ];
 
-  // 找出自付額最低的方案作為推薦
+  // 找出自付額最低的方案
   const lowestOutPocket = Math.min(...pathways.map(p => p.monthlyOutPocket));
-  const recommendedId = pathways.find(p => p.monthlyOutPocket === lowestOutPocket)?.id;
+  const lowestOutPocketId = pathways.find(p => p.monthlyOutPocket === lowestOutPocket)?.id;
+
+  const getMatchScore = (type: CareType) => {
+    let score = 55;
+    if (type === "institution" && cmsLevel >= 6) score += 30;
+    if (type === "day-care" && cmsLevel >= 4 && cmsLevel <= 6) score += 18;
+    if (type === "home-care" && cmsLevel <= 3) score += 20;
+    if (type === "foreign-caregiver" && cmsLevel >= 4) score += 10;
+    if (incomeStatus === "low" && type === lowestOutPocketId) score += 25;
+    if (incomeStatus === "mid-low" && type === "day-care") score += 10;
+    if (type === "institution" && cmsLevel < 4) score -= 25;
+    if (type === "foreign-caregiver" && incomeStatus === "low") score -= 10;
+    return Math.max(35, Math.min(95, score));
+  };
+
+  // 根據 CMS 等級與收入身分給出決策推薦
+  const getRecommendation = () => {
+    if (incomeStatus === "low") {
+      return {
+        id: lowestOutPocketId ?? "home-care",
+        reason: "低收入戶以自付最低為優先，確保長期可負擔。",
+      };
+    }
+    if (cmsLevel >= 6) {
+      return {
+        id: "institution" as CareType,
+        reason: "失能等級較高，優先考量 24 小時專業照護與安全。",
+      };
+    }
+    if (cmsLevel >= 4) {
+      return {
+        id: "day-care" as CareType,
+        reason: "中重度失能且仍需生活支援，日照可兼顧成本與白天照護。",
+      };
+    }
+    return {
+      id: "home-care" as CareType,
+      reason: "失能程度較輕，居家服務彈性高、成本相對可控。",
+    };
+  };
+
+  const recommendation = getRecommendation();
+  const recommendedId = recommendation.id;
+  const recommendedPath = pathways.find((p) => p.id === recommendedId) ?? pathways[0];
+  const recommendedScore = getMatchScore(recommendedId);
 
   // CMS 1 級：無補助資格
   if (cmsLevel === 1) {
@@ -174,6 +218,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
           {pathways.map((path) => {
             const total5Year = path.monthlyOutPocket * 60;
             const isRecommended = path.id === recommendedId;
+            const isLowestOutPocket = path.id === lowestOutPocketId;
             return (
               <div key={path.id} className={`rounded-[16px] p-4 text-center border ${isRecommended ? "border-emerald-300 bg-emerald-50/50" : "border-apple-gray-100 bg-apple-gray-50/50"}`}>
                 <div className="text-[20px] mb-1">{path.icon}</div>
@@ -181,14 +226,53 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
                 <div className={`text-[18px] sm:text-[20px] font-mono font-bold ${isRecommended ? "text-emerald-700" : "text-apple-gray-900"}`}>
                   {formatMoney(total5Year)}
                 </div>
-                {isRecommended && (
-                  <span className="inline-block mt-2 text-[11px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full">
-                    最省方案
-                  </span>
-                )}
+                <div className="mt-2 flex items-center justify-center gap-1">
+                  {isRecommended && (
+                    <span className="text-[11px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full">
+                      推薦
+                    </span>
+                  )}
+                  {isLowestOutPocket && (
+                    <span className="text-[11px] font-bold bg-amber-600 text-white px-2 py-0.5 rounded-full">
+                      最省
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* 決策推薦提示 */}
+      <div className="bg-emerald-50 border border-emerald-200/70 rounded-[20px] p-5 sm:p-6 mb-8 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <div className="text-[13px] text-emerald-700 font-semibold mb-1">決策推薦提示</div>
+            <div className="text-[18px] font-bold text-apple-gray-900">
+              {recommendedPath.icon} 建議優先考量「{recommendedPath.title}」
+            </div>
+            <p className="text-[13px] text-emerald-800/80 mt-1">
+              {recommendation.reason}
+            </p>
+            <div className="mt-3">
+              <div className="text-[12px] text-emerald-700 mb-1">適配指數（依失能等級與收入推估）</div>
+              <div className="w-full max-w-xs h-2 rounded-full bg-emerald-100 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600"
+                  style={{ width: `${recommendedScore}%` }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 text-[12px] text-emerald-900">
+            <div className="px-3 py-2 rounded-[14px] bg-white border border-emerald-100">
+              政府補助：<strong>{formatMoney(recommendedPath.monthlySubsidy)}</strong>/月
+            </div>
+            <div className="px-3 py-2 rounded-[14px] bg-white border border-emerald-100">
+              家庭自付：<strong>{formatMoney(recommendedPath.monthlyOutPocket)}</strong>/月
+            </div>
+          </div>
         </div>
       </div>
 
@@ -203,7 +287,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
               className={`
                 relative flex flex-col text-left rounded-[24px] shadow-sm border overflow-hidden
                 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg
-                ${isRecommended ? `${path.borderColor} ring-2 ring-emerald-200` : `border-apple-gray-100`}
+                ${isRecommended ? `${path.borderColor} ring-2 ring-emerald-200 soft-glow` : `border-apple-gray-100`}
                 ${path.bgGradient}
               `}
               style={{ WebkitTapHighlightColor: "transparent" }}
@@ -211,7 +295,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
               {/* 推薦標籤 */}
               {isRecommended && (
                 <div className="absolute top-3 right-3 text-[11px] font-bold bg-emerald-600 text-white px-2.5 py-1 rounded-full shadow-sm z-10">
-                  CP 值最高
+                  推薦方案
                 </div>
               )}
 

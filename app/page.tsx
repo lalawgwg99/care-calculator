@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
 import { CONDITION_OPTIONS, type ConditionId } from "@/lib/conditionProfiles";
@@ -41,6 +41,8 @@ export default function Home() {
   const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
   const [showResumeBanner, setShowResumeBanner] = useState(false);
+  const [activeGuide, setActiveGuide] = useState(0);
+  const [showStickyCta, setShowStickyCta] = useState(false);
 
   // 讀取上次試算
   useEffect(() => {
@@ -64,11 +66,24 @@ export default function Home() {
     }
   }, [cmsLevel, incomeStatus]);
 
-  const getBaseCopayRate = () => {
+  useEffect(() => {
+    if (currentStep !== "landing") {
+      setShowStickyCta(false);
+      return;
+    }
+    const handleScroll = () => {
+      setShowStickyCta(window.scrollY > 420);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [currentStep]);
+
+  const baseCopayRate = useMemo(() => {
     if (incomeStatus === "general") return 0.16;
     if (incomeStatus === "mid-low") return 0.05;
     return 0;
-  };
+  }, [incomeStatus]);
 
   const handleStartAnalysis = () => {
     if (cmsLevel && incomeStatus) {
@@ -78,9 +93,58 @@ export default function Home() {
     }
   };
 
-  const currentResult = (cmsLevel && incomeStatus && selectedPathway)
-    ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway)
-    : null;
+  const handleReset = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setCmsLevel(null);
+    setIncomeStatus(null);
+    setSelectedPathway(null);
+    setSelectedConditions([]);
+    setShowResumeBanner(false);
+    setCurrentStep('landing');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleResume = () => {
+    setShowResumeBanner(false);
+    handleStartAnalysis();
+    window.gtag?.('event', 'calculation_resume', { cms_level: cmsLevel, income_status: incomeStatus });
+  };
+
+  const currentResult = useMemo(() => (
+    (cmsLevel && incomeStatus && selectedPathway)
+      ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway)
+      : null
+  ), [cmsLevel, incomeStatus, selectedPathway]);
+
+  const pathwayLabel: Record<CareType, string> = {
+    home: "居家照顧",
+    daycare: "日間照顧",
+    institution: "住宿機構",
+    foreign: "外籍看護",
+  };
+
+  const guideItems = [
+    {
+      title: "四條路，一次比",
+      desc: "居家照顧、日間照顧、住宿機構、外籍看護 — 不用各別查資料，系統同時幫您算好四種方案的費用差異。",
+      result: "30 秒產出四條路徑的月支出比較",
+    },
+    {
+      title: "服務購物車",
+      desc: "算出補助金額後，直接挑選實際的長照服務項目（洗澡、就醫陪同等），計算真正要花多少錢。",
+      result: "把補助變成可執行的照顧清單",
+    },
+    {
+      title: "5 年財務預測",
+      desc: "長照不是一個月的事。系統會幫您推算未來 5 年的總支出，方便跟家人討論分攤。",
+      result: "一次看懂未來 5 年總支出",
+    },
+    {
+      title: "不懂等級？幫您評估",
+      desc: "透過 4 個簡單的日常生活問題（吃飯、走路、洗澡、認知），自動算出最可能的失能等級。",
+      result: "不用懂規則也能快速得到級數",
+    },
+  ];
 
   // ========== STEP 1: LANDING PAGE ========== //
   const renderLandingPage = () => (
@@ -94,13 +158,30 @@ export default function Home() {
             <span className="text-[14px] font-semibold text-amber-800">台灣長照 3.0 ｜ 2026 年最新法規</span>
           </div>
 
-          <h1 className="text-[36px] sm:text-[48px] font-bold tracking-tight text-apple-gray-900 mb-5 leading-[1.15]">
+          <h1 className="text-[36px] sm:text-[48px] font-bold tracking-tight text-apple-gray-900 mb-5 leading-[1.15] animation-fade-in">
             讓我們一起<br />為長輩找到最好的照顧
           </h1>
-          <p className="text-[17px] sm:text-[20px] text-amber-900/70 max-w-xl mx-auto leading-relaxed mb-10">
+          <p className="text-[17px] sm:text-[20px] text-amber-900/70 max-w-xl mx-auto leading-relaxed mb-10 animation-fade-in">
             不用再翻法規、不用再猜數字。只要回答兩個問題，<br className="hidden sm:block" />
             系統就能幫您算出政府補助多少、自己要付多少。
           </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
+            <button
+              onClick={() => {
+                const el = document.getElementById("calculator");
+                el?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="px-8 py-3 rounded-full bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
+            >
+              30 秒開始試算 →
+            </button>
+            <a
+              href="/tools"
+              className="px-6 py-3 rounded-full border border-orange-200 text-[15px] font-semibold text-amber-800 hover:bg-orange-50 transition-colors"
+            >
+              先看看有哪些工具
+            </a>
+          </div>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
@@ -127,7 +208,7 @@ export default function Home() {
       {/* ====== RESUME BANNER ====== */}
       {showResumeBanner && cmsLevel && incomeStatus && (
         <div className="max-w-2xl mx-auto px-4 mb-4 mt-[-20px]">
-          <div className="bg-amber-50 border border-orange-200/70 rounded-[18px] px-5 py-3.5 flex items-center justify-between shadow-sm">
+          <div className="bg-amber-50 border border-orange-200/70 rounded-[18px] px-5 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between shadow-sm gap-3">
             <div className="flex items-center gap-3">
               <span className="text-[20px]">👋</span>
               <div>
@@ -137,13 +218,22 @@ export default function Home() {
                 </span>
               </div>
             </div>
-            <button
-              onClick={() => setShowResumeBanner(false)}
-              className="text-amber-400 hover:text-amber-600 text-[20px] leading-none ml-3"
-              style={{ WebkitTapHighlightColor: "transparent" }}
-            >
-              ×
-            </button>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                onClick={handleResume}
+                className="px-4 py-2 rounded-full bg-apple-orange text-white text-[13px] font-semibold shadow-sm hover:shadow-md transition-shadow"
+                style={{ WebkitTapHighlightColor: "transparent" }}
+              >
+                一鍵繼續
+              </button>
+              <button
+                onClick={handleReset}
+                className="px-3 py-2 rounded-full text-[12px] font-semibold text-amber-700 hover:bg-amber-100/60 transition-colors"
+                style={{ WebkitTapHighlightColor: "transparent" }}
+              >
+                重新開始
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -157,6 +247,11 @@ export default function Home() {
               📋 快速試算您的長照補助
             </h2>
             <p className="text-[15px] text-amber-800/60 mt-1">只需要 2 個步驟，30 秒完成</p>
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-amber-800/70">
+              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 1：選擇等級</span>
+              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 2：選擇收入身份</span>
+              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">完成後：比較四種照顧路徑</span>
+            </div>
           </div>
 
           <div className="p-8 sm:p-10">
@@ -170,6 +265,7 @@ export default function Home() {
                   <button
                     key={level}
                     onClick={() => setCmsLevel(level)}
+                    aria-pressed={cmsLevel === level}
                     className={`
                       py-3 sm:py-4 rounded-[14px] text-center transition-all duration-200 border
                       ${cmsLevel === level
@@ -209,9 +305,10 @@ export default function Home() {
                   };
                   return (
                     <button
-                      key={status}
-                      onClick={() => setIncomeStatus(status)}
-                      className={`
+                    key={status}
+                    onClick={() => setIncomeStatus(status)}
+                    aria-pressed={incomeStatus === status}
+                    className={`
                         p-4 rounded-[16px] text-center transition-all duration-200 border
                         ${incomeStatus === status
                           ? "bg-apple-orange/10 border-apple-orange text-apple-orange shadow-sm"
@@ -250,6 +347,7 @@ export default function Home() {
                             : [...prev, condition.id]
                         );
                       }}
+                      aria-pressed={isSelected}
                       className={`
                         p-3 rounded-[14px] text-center transition-all duration-200 border
                         ${isSelected
@@ -287,22 +385,39 @@ export default function Home() {
 
       {/* ====== FEATURE HIGHLIGHTS ====== */}
       <section className="max-w-4xl mx-auto px-4 mb-16">
-        <h3 className="text-[22px] sm:text-[26px] font-bold text-center text-apple-gray-900 tracking-tight mb-10">
+        <h3 className="text-[22px] sm:text-[26px] font-bold text-center text-apple-gray-900 tracking-tight mb-8">
           這個工具能幫您做什麼？
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {[
-            { emoji: "🏠", title: "四條路，一次比", desc: "居家照顧、日間照顧、住宿機構、外籍看護 — 不用各別查資料，系統同時幫您算好四種方案的費用差異。" },
-            { emoji: "🛒", title: "服務購物車", desc: "算出補助金額後，直接挑選實際的長照服務項目（洗澡、就醫陪同等），計算真正要花多少錢。" },
-            { emoji: "📊", title: "5 年財務預測", desc: "長照不是一個月的事。系統會幫您推算未來 5 年的總支出，方便跟家人討論分攤。" },
-            { emoji: "🤔", title: "不懂等級？幫您評估", desc: "透過 4 個簡單的日常生活問題（吃飯、走路、洗澡、認知），自動算出最可能的失能等級。" },
-          ].map((feat, i) => (
-            <div key={i} className="bg-white rounded-[24px] p-6 sm:p-7 border border-apple-gray-200/50 shadow-sm hover:shadow-apple-warm transition-shadow">
-              <div className="text-[32px] mb-3">{feat.emoji}</div>
-              <h4 className="text-[17px] font-bold text-apple-gray-900 mb-2">{feat.title}</h4>
-              <p className="text-[14px] text-apple-gray-500 leading-relaxed">{feat.desc}</p>
+        <div className="bg-white rounded-[28px] border border-apple-gray-200/60 shadow-sm p-5 sm:p-7">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            {guideItems.map((item, idx) => (
+              <button
+                key={item.title}
+                onClick={() => setActiveGuide(idx)}
+                aria-pressed={activeGuide === idx}
+                className={`
+                  rounded-[16px] p-4 text-left border transition-all
+                  ${activeGuide === idx
+                    ? "bg-apple-orange/10 border-apple-orange text-apple-orange shadow-sm"
+                    : "bg-apple-gray-50 border-apple-gray-200 text-apple-gray-700 hover:bg-orange-50 hover:border-orange-200"}
+                `}
+              >
+                <div className="text-[14px] font-semibold">{item.title}</div>
+                <div className={`text-[12px] mt-1 ${activeGuide === idx ? "text-apple-orange/80" : "text-apple-gray-500"}`}>
+                  點選查看細節
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="rounded-[20px] border border-orange-100 bg-amber-50/50 p-5 sm:p-6">
+            <div className="text-[18px] font-bold text-apple-gray-900 mb-2">{guideItems[activeGuide].title}</div>
+            <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-4">
+              {guideItems[activeGuide].desc}
+            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white border border-orange-100 text-[13px] text-amber-800">
+              ✅ {guideItems[activeGuide].result}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
@@ -415,7 +530,7 @@ export default function Home() {
         </div>
         <ServiceCart
           totalSubsidyMonthly={currentResult.totalSubsidyMonthly}
-          baseCopayRate={getBaseCopayRate()}
+          baseCopayRate={baseCopayRate}
         />
         <div className="mt-8 text-center">
           <button
@@ -460,12 +575,59 @@ export default function Home() {
         </div>
       )}
 
+      {/* Step Summary */}
+      {currentStep !== 'landing' && (
+        <div className="pt-8 sm:pt-10 px-4">
+          <div className="max-w-5xl mx-auto bg-white border border-apple-gray-200/60 rounded-[20px] shadow-sm px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <div className="text-[13px] text-apple-gray-500">目前步驟</div>
+              <div className="text-[18px] font-bold text-apple-gray-900">
+                {currentStep === 'pathway' && "Step 2／4：照顧路徑比較"}
+                {currentStep === 'cart' && "Step 3／4：服務購物車"}
+                {currentStep === 'report' && "Step 4／4：5 年財務報表"}
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-[12px] text-apple-gray-600">
+              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+                CMS {cmsLevel ?? "-"} 級
+              </span>
+              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+                {incomeStatus ? INCOME_LABELS[incomeStatus] : "未選擇收入"}
+              </span>
+              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+                {selectedPathway ? pathwayLabel[selectedPathway] : "尚未選擇路徑"}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={currentStep === 'landing' ? '' : 'pt-8 sm:pt-12 pb-24 px-4'}>
         {currentStep === 'landing' && renderLandingPage()}
         {currentStep === 'pathway' && renderPathwayStep()}
         {currentStep === 'cart' && renderCartStep()}
         {currentStep === 'report' && renderReportStep()}
       </div>
+
+      {/* Sticky CTA for Landing */}
+      {currentStep === 'landing' && showStickyCta && (
+        <div className="fixed bottom-4 left-0 right-0 px-4 z-40">
+          <div className="max-w-2xl mx-auto bg-white border border-apple-gray-200 shadow-lg rounded-full px-4 py-3 flex items-center justify-between gap-3">
+            <div className="text-[13px] text-apple-gray-700">
+              已經滑到中段了，現在就 30 秒完成試算
+            </div>
+            <button
+              onClick={() => {
+                const el = document.getElementById("calculator");
+                el?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="px-4 py-2 rounded-full bg-apple-orange text-white text-[13px] font-semibold shadow-sm hover:shadow-md transition-shadow"
+            >
+              立即開始 →
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
