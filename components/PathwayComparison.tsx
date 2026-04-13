@@ -11,9 +11,6 @@ interface PathwayComparisonProps {
 // 外籍看護真實月支出（含薪資、安定費、健保、加班、仲介）
 const FOREIGN_CAREGIVER_EXTRA = 30000;
 
-// 機構平均月費範圍
-const INSTITUTION_FEE = { min: 35000, max: 45000 };
-
 export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPathway }: PathwayComparisonProps) {
   const homeCareResult = calculateCareBudget(cmsLevel, incomeStatus, "home-care");
   const dayCareResult = calculateCareBudget(cmsLevel, incomeStatus, "day-care");
@@ -274,6 +271,14 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
             </div>
           </div>
         </div>
+        <div className="mt-4">
+          <button
+            onClick={() => onSelectPathway(recommendedId)}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-emerald-600 text-white text-[14px] font-semibold shadow-sm hover:bg-emerald-700 transition-colors"
+          >
+            採用推薦方案並繼續 →
+          </button>
+        </div>
       </div>
 
       {/* 方案卡片 */}
@@ -284,6 +289,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
             <button
               key={path.id}
               onClick={() => onSelectPathway(path.id)}
+              aria-label={`選擇 ${path.title} 方案`}
               className={`
                 relative flex flex-col text-left rounded-[24px] shadow-sm border overflow-hidden
                 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg

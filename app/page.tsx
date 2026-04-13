@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
 import { CONDITION_OPTIONS, type ConditionId } from "@/lib/conditionProfiles";
 
@@ -15,6 +16,11 @@ const INCOME_LABELS: Record<IncomeStatus, string> = {
   "mid-low": "中低收入",
   low: "低收入戶",
 };
+const INCOME_OPTIONS: Array<{ value: IncomeStatus; label: string; sub: string }> = [
+  { value: "general", label: "一般戶", sub: "自付 16%" },
+  { value: "mid-low", label: "中低收入戶", sub: "自付 5%" },
+  { value: "low", label: "低收入戶", sub: "全額補助" },
+];
 
 const StepLoader = () => (
   <div className="flex justify-center items-center py-24">
@@ -43,6 +49,7 @@ export default function Home() {
   const [showResumeBanner, setShowResumeBanner] = useState(false);
   const [activeGuide, setActiveGuide] = useState(0);
   const [showStickyCta, setShowStickyCta] = useState(false);
+  const [isCalculatorInView, setIsCalculatorInView] = useState(false);
 
   // 讀取上次試算
   useEffect(() => {
@@ -79,6 +86,21 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [currentStep]);
 
+  useEffect(() => {
+    if (currentStep !== "landing") {
+      setIsCalculatorInView(false);
+      return;
+    }
+    const target = document.getElementById("calculator");
+    if (!target) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsCalculatorInView(entry.isIntersecting),
+      { threshold: 0.2, rootMargin: "-10% 0px -30% 0px" }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [currentStep]);
+
   const baseCopayRate = useMemo(() => {
     if (incomeStatus === "general") return 0.16;
     if (incomeStatus === "mid-low") return 0.05;
@@ -110,11 +132,22 @@ export default function Home() {
     window.gtag?.('event', 'calculation_resume', { cms_level: cmsLevel, income_status: incomeStatus });
   };
 
+  const scrollToCalculator = () => {
+    const el = document.getElementById("calculator");
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.gtag?.("event", "landing_cta_click");
+  };
+
   const currentResult = useMemo(() => (
     (cmsLevel && incomeStatus && selectedPathway)
       ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway)
       : null
   ), [cmsLevel, incomeStatus, selectedPathway]);
+  const canStart = Boolean(cmsLevel && incomeStatus);
+  const missingFields = [
+    cmsLevel ? null : "失能等級",
+    incomeStatus ? null : "收入身分",
+  ].filter((field): field is string => Boolean(field));
 
   const pathwayLabel: Record<CareType, string> = {
     "home-care": "居家照顧",
@@ -167,20 +200,22 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
             <button
-              onClick={() => {
-                const el = document.getElementById("calculator");
-                el?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
+              onClick={scrollToCalculator}
               className="px-8 py-3 rounded-full bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
             >
               30 秒開始試算 →
             </button>
-            <a
+            <Link
               href="/tools"
               className="px-6 py-3 rounded-full border border-orange-200 text-[15px] font-semibold text-amber-800 hover:bg-orange-50 transition-colors"
             >
               先看看有哪些工具
-            </a>
+            </Link>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+            <span className="px-3 py-1 rounded-full bg-white/75 border border-orange-100 text-[12px] text-amber-800">不需註冊</span>
+            <span className="px-3 py-1 rounded-full bg-white/75 border border-orange-100 text-[12px] text-amber-800">30 秒完成第一輪比較</span>
+            <span className="px-3 py-1 rounded-full bg-white/75 border border-orange-100 text-[12px] text-amber-800">依 2026 長照規範設計</span>
           </div>
 
           {/* Quick Stats */}
@@ -297,28 +332,23 @@ export default function Home() {
                 ❷ 家庭收入身分
               </label>
               <div className="grid grid-cols-3 gap-3">
-                {(["general", "mid-low", "low"] as IncomeStatus[]).map((status) => {
-                  const config: Record<IncomeStatus, { label: string; sub: string }> = {
-                    "general": { label: "一般戶", sub: "自付 16%" },
-                    "mid-low": { label: "中低收入戶", sub: "自付 5%" },
-                    "low": { label: "低收入戶", sub: "全額補助" }
-                  };
+                {INCOME_OPTIONS.map((option) => {
                   return (
                     <button
-                    key={status}
-                    onClick={() => setIncomeStatus(status)}
-                    aria-pressed={incomeStatus === status}
+                    key={option.value}
+                    onClick={() => setIncomeStatus(option.value)}
+                    aria-pressed={incomeStatus === option.value}
                     className={`
                         p-4 rounded-[16px] text-center transition-all duration-200 border
-                        ${incomeStatus === status
+                        ${incomeStatus === option.value
                           ? "bg-apple-orange/10 border-apple-orange text-apple-orange shadow-sm"
                           : "bg-white border-apple-gray-200 text-apple-gray-700 hover:bg-orange-50 hover:border-orange-200"}
                       `}
                       style={{ WebkitTapHighlightColor: "transparent" }}
                     >
-                      <div className="text-[15px] sm:text-[16px] font-semibold">{config[status].label}</div>
-                      <div className={`text-[12px] mt-1 ${incomeStatus === status ? "text-apple-orange/70" : "text-apple-gray-500"}`}>
-                        {config[status].sub}
+                      <div className="text-[15px] sm:text-[16px] font-semibold">{option.label}</div>
+                      <div className={`text-[12px] mt-1 ${incomeStatus === option.value ? "text-apple-orange/70" : "text-apple-gray-500"}`}>
+                        {option.sub}
                       </div>
                     </button>
                   );
@@ -367,18 +397,23 @@ export default function Home() {
             {/* Submit CTA */}
             <button
               onClick={handleStartAnalysis}
-              disabled={!cmsLevel || !incomeStatus}
+              disabled={!canStart}
               className={`
                 w-full py-4.5 text-[17px] font-bold rounded-full transition-all transform active:scale-[0.98]
-                ${cmsLevel && incomeStatus
+                ${canStart
                   ? "bg-gradient-to-r from-apple-orange to-apple-pink text-white shadow-lg shadow-orange-200/50 hover:shadow-xl hover:shadow-orange-300/50"
                   : "bg-apple-gray-200 text-apple-gray-400 cursor-not-allowed"
                 }
               `}
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
-              {cmsLevel && incomeStatus ? "查看 4 種照顧方案的財務對比 →" : "請先完成上方兩個選項"}
+              {canStart ? "查看 4 種照顧方案的財務對比 →" : `請先完成：${missingFields.join("、")}`}
             </button>
+            {canStart && (
+              <div className="mt-3 text-center text-[13px] text-apple-gray-500">
+                已完成設定：CMS {cmsLevel} 級・{incomeStatus ? INCOME_LABELS[incomeStatus] : ""}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -445,7 +480,7 @@ export default function Home() {
             { href: "/tools/caregiverhealth", emoji: "💆", label: "倦怠檢測" },
             { href: "/tools/reablement", emoji: "🌟", label: "復能任務卡" },
           ].map((tool) => (
-            <a
+            <Link
               key={tool.href}
               href={tool.href}
               className="bg-white border border-apple-gray-200 rounded-[18px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
@@ -454,13 +489,13 @@ export default function Home() {
               <div className="text-[13px] font-semibold text-apple-gray-700 group-hover:text-amber-700 transition-colors">
                 {tool.label}
               </div>
-            </a>
+            </Link>
           ))}
         </div>
         <div className="text-center mt-4">
-          <a href="/tools" className="text-[13px] text-amber-600 hover:text-amber-700 font-medium">
+          <Link href="/tools" className="text-[13px] text-amber-600 hover:text-amber-700 font-medium">
             查看全部工具 →
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -597,6 +632,9 @@ export default function Home() {
               <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
                 {selectedPathway ? pathwayLabel[selectedPathway] : "尚未選擇路徑"}
               </span>
+              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+                健康狀況已選 {selectedConditions.length} 項
+              </span>
             </div>
           </div>
         </div>
@@ -610,17 +648,14 @@ export default function Home() {
       </div>
 
       {/* Sticky CTA for Landing */}
-      {currentStep === 'landing' && showStickyCta && (
+      {currentStep === 'landing' && showStickyCta && !isCalculatorInView && (
         <div className="fixed bottom-4 left-0 right-0 px-4 z-40">
           <div className="max-w-2xl mx-auto bg-white border border-apple-gray-200 shadow-lg rounded-full px-4 py-3 flex items-center justify-between gap-3">
             <div className="text-[13px] text-apple-gray-700">
               已經滑到中段了，現在就 30 秒完成試算
             </div>
             <button
-              onClick={() => {
-                const el = document.getElementById("calculator");
-                el?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
+              onClick={scrollToCalculator}
               className="px-4 py-2 rounded-full bg-apple-orange text-white text-[13px] font-semibold shadow-sm hover:shadow-md transition-shadow"
             >
               立即開始 →
