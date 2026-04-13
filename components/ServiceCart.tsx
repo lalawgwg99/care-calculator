@@ -15,6 +15,16 @@ interface ServiceCategory {
   items: CareServiceItem[];
 }
 
+interface ServicePreset {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  targetBudget: number;
+  suggestedConsumables: number;
+  quantities: Record<string, number>;
+}
+
 const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     label: "居家照顧服務",
@@ -52,6 +62,53 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
 ];
 
 const ALL_SERVICES = SERVICE_CATEGORIES.flatMap(c => c.items);
+const SERVICE_PRESETS: ServicePreset[] = [
+  {
+    id: "balanced-home",
+    name: "居家均衡包",
+    icon: "A",
+    description: "日常照顧為主，搭配少量專業支持",
+    targetBudget: 18000,
+    suggestedConsumables: 3500,
+    quantities: {
+      h1: 12,
+      h2: 4,
+      h3: 4,
+      h5: 8,
+      p2: 2,
+    },
+  },
+  {
+    id: "daycare-family",
+    name: "日照減壓包",
+    icon: "B",
+    description: "白天托顧降低家屬白天照顧壓力",
+    targetBudget: 22000,
+    suggestedConsumables: 3000,
+    quantities: {
+      c1: 12,
+      h2: 4,
+      p1: 1,
+      h6: 8,
+    },
+  },
+  {
+    id: "intensive-support",
+    name: "高密度支援包",
+    icon: "C",
+    description: "高頻居家照顧搭配復健與護理",
+    targetBudget: 28000,
+    suggestedConsumables: 5000,
+    quantities: {
+      h1: 20,
+      h2: 6,
+      h4: 8,
+      p1: 2,
+      p2: 4,
+      h6: 12,
+    },
+  },
+];
 
 export interface ServiceCartProps {
   totalSubsidyMonthly: number;
@@ -62,6 +119,8 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [consumablesMonthly, setConsumablesMonthly] = useState(3000);
   const [expandedCategory, setExpandedCategory] = useState<number>(0);
+  const [targetMonthlyBudget, setTargetMonthlyBudget] = useState(20000);
+  const [activePresetId, setActivePresetId] = useState<string | null>(null);
 
   const updateQuantity = (id: string, delta: number) => {
     setQuantities((prev) => {
@@ -89,6 +148,16 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
     : 0;
 
   const selectedCount = Object.values(quantities).reduce((a, b) => a + b, 0);
+  const selectedItems = ALL_SERVICES
+    .filter((item) => (quantities[item.id] || 0) > 0)
+    .map((item) => ({
+      ...item,
+      quantity: quantities[item.id],
+      total: item.cost * quantities[item.id],
+    }))
+    .sort((a, b) => b.total - a.total);
+  const overBudgetAmount = Math.max(0, finalOutOfPocket - targetMonthlyBudget);
+  const topReductionSuggestions = selectedItems.slice(0, 3);
 
   const formatMoney = (amount: number) => {
     return new Intl.NumberFormat("zh-TW", {
@@ -96,6 +165,13 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
       currency: "TWD",
       minimumFractionDigits: 0,
     }).format(Math.round(amount));
+  };
+
+  const applyPreset = (preset: ServicePreset) => {
+    setQuantities(preset.quantities);
+    setConsumablesMonthly(preset.suggestedConsumables);
+    setTargetMonthlyBudget(preset.targetBudget);
+    setActivePresetId(preset.id);
   };
 
   return (
@@ -140,6 +216,75 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
             ⚠ 已超出額度 {formatMoney(exceedingCost)}，超出部分需全額自付
           </p>
         )}
+      </div>
+
+      {/* Budget Console */}
+      <div className="mb-6 bg-apple-gray-50/70 border border-apple-gray-200/70 rounded-[18px] p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+          <div>
+            <h3 className="text-[15px] font-bold text-apple-gray-900">預算控制台</h3>
+            <p className="text-[12px] text-apple-gray-500">先設定家庭可接受月支出，系統會即時提醒是否超標。</p>
+          </div>
+          <div className={`text-[13px] font-semibold px-3 py-1 rounded-full ${
+            overBudgetAmount > 0
+              ? "bg-red-100 text-apple-red"
+              : "bg-emerald-100 text-emerald-700"
+          }`}>
+            {overBudgetAmount > 0
+              ? `超支 ${formatMoney(overBudgetAmount)}`
+              : `低於預算 ${formatMoney(targetMonthlyBudget - finalOutOfPocket)}`}
+          </div>
+        </div>
+        <div className="flex items-center gap-4 mb-2">
+          <input
+            type="range"
+            min={8000}
+            max={50000}
+            step={500}
+            value={targetMonthlyBudget}
+            onChange={(e) => setTargetMonthlyBudget(Number(e.target.value))}
+            className="flex-1 accent-apple-blue h-2 rounded-full"
+          />
+          <div className="w-28 text-right text-[16px] font-mono font-bold text-apple-blue">
+            {formatMoney(targetMonthlyBudget)}
+          </div>
+        </div>
+      </div>
+
+      {/* Recommended Presets */}
+      <div className="mb-7">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-[15px] font-bold text-apple-gray-900">建議服務組合</h3>
+          <button
+            onClick={() => {
+              setQuantities({});
+              setActivePresetId(null);
+            }}
+            className="text-[12px] font-semibold text-apple-gray-500 hover:text-apple-gray-700 transition-colors"
+          >
+            清空重選
+          </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {SERVICE_PRESETS.map((preset) => (
+            <button
+              key={preset.id}
+              onClick={() => applyPreset(preset)}
+              className={`rounded-[16px] border p-4 text-left transition-all ${
+                activePresetId === preset.id
+                  ? "border-apple-orange bg-orange-50 shadow-sm"
+                  : "border-apple-gray-200 bg-white hover:border-orange-200 hover:bg-orange-50/40"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[12px] font-bold text-apple-gray-500">方案 {preset.icon}</span>
+                <span className="text-[11px] font-semibold text-apple-blue">{formatMoney(preset.targetBudget)}/月</span>
+              </div>
+              <div className="text-[14px] font-bold text-apple-gray-900 mb-1">{preset.name}</div>
+              <p className="text-[12px] text-apple-gray-500 leading-relaxed">{preset.description}</p>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Service Categories */}
@@ -229,6 +374,30 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
 
       {/* Summary */}
       <div className="border-t border-apple-gray-100 pt-6">
+        {overBudgetAmount > 0 && topReductionSuggestions.length > 0 && (
+          <div className="mb-5 bg-red-50/70 border border-red-100 rounded-[16px] p-4">
+            <h4 className="text-[14px] font-bold text-apple-red mb-2">超支調整建議</h4>
+            <div className="space-y-2">
+              {topReductionSuggestions.map((item) => (
+                <div key={item.id} className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-[13px] font-semibold text-apple-gray-800">{item.name}</div>
+                    <div className="text-[12px] text-apple-gray-500">
+                      減少 1 次可少 {formatMoney(item.cost)}（目前 {item.quantity} 次）
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => updateQuantity(item.id, -1)}
+                    className="px-3 py-1.5 rounded-full text-[12px] font-semibold text-white bg-apple-red hover:opacity-90 transition-opacity"
+                  >
+                    減 1 次
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="space-y-3 mb-4">
           <div className="flex items-center justify-between">
             <span className="text-[15px] text-apple-gray-500">

@@ -96,9 +96,69 @@ export default function FinancialReport({
   // Opportunity cost (quit job)
   const quitJobLoss5Year = monthlyIncome * months;
   const savingFromNotQuitting = quitJobLoss5Year - total5YearPaid;
+  const extraConditionMonthlyCost = getAdditionalMonthlyCost(selectedConditions);
+  const adjustedMonthlyBurden = totalMonthlyBurden + extraConditionMonthlyCost;
+  const adjustedPerPersonMonthly = Math.max(
+    0,
+    familyMembers > 0
+      ? Math.round((adjustedMonthlyBurden * months - elderlyAssetsCover) / months / familyMembers)
+      : adjustedMonthlyBurden
+  );
+  const burdenRatio = monthlyIncome > 0 ? adjustedPerPersonMonthly / monthlyIncome : 0;
+  const burdenLevel = burdenRatio <= 0.2
+    ? { label: "負擔可控", style: "bg-emerald-100 text-emerald-700", note: "以目前設定，家庭分攤壓力在可控區間。" }
+    : burdenRatio <= 0.35
+    ? { label: "負擔偏高", style: "bg-amber-100 text-amber-800", note: "建議調整服務組合，優先降低固定月支出。" }
+    : { label: "負擔高壓", style: "bg-red-100 text-apple-red", note: "建議重新配置方案或提高分攤人數，避免長期財務風險。" };
+
+  const actionItems = [
+    "先用目前方案執行 1 個月，核對實際帳單與試算差異。",
+    familyMembers > 1
+      ? `與家人確認每人每月分攤 ${formatMoney(Math.max(0, adjustedPerPersonMonthly))} 是否可行。`
+      : "建議增加家庭分攤者，降低單一照顧者長期壓力。",
+    extraConditionMonthlyCost > 0
+      ? `已含疾病相關額外支出 ${formatMoney(extraConditionMonthlyCost)}/月，建議納入家庭固定預算。`
+      : "若後續出現新疾病照顧需求，請即時回來更新估算。",
+  ];
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
+      <div className="bg-gradient-to-br from-apple-gray-900 to-apple-gray-700 rounded-[26px] p-6 sm:p-7 text-white border border-apple-gray-600/40">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+          <div>
+            <div className="text-[12px] tracking-wider uppercase text-white/70">結論先看</div>
+            <h2 className="text-[24px] sm:text-[28px] font-bold tracking-tight">
+              {getCareTypeName(careType)} 財務決策摘要
+            </h2>
+          </div>
+          <div className={`px-3 py-1.5 rounded-full text-[12px] font-bold ${burdenLevel.style}`}>
+            {burdenLevel.label}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+          <div className="rounded-[14px] bg-white/10 border border-white/15 p-4">
+            <div className="text-[12px] text-white/70 mb-1">家庭每月總支出</div>
+            <div className="text-[21px] font-mono font-bold">{formatMoney(adjustedMonthlyBurden)}</div>
+          </div>
+          <div className="rounded-[14px] bg-white/10 border border-white/15 p-4">
+            <div className="text-[12px] text-white/70 mb-1">每人月分攤（含疾病）</div>
+            <div className="text-[21px] font-mono font-bold">{formatMoney(Math.max(0, adjustedPerPersonMonthly))}</div>
+          </div>
+          <div className="rounded-[14px] bg-white/10 border border-white/15 p-4">
+            <div className="text-[12px] text-white/70 mb-1">5 年家庭總支出</div>
+            <div className="text-[21px] font-mono font-bold">{formatMoney(total5YearPaid + extraConditionMonthlyCost * months)}</div>
+          </div>
+        </div>
+        <p className="text-[13px] text-white/80 mb-3">{burdenLevel.note}</p>
+        <div className="space-y-1.5">
+          {actionItems.map((item) => (
+            <p key={item} className="text-[13px] text-white/85">
+              • {item}
+            </p>
+          ))}
+        </div>
+      </div>
+
       <div className="text-center mb-4">
         <h2 className="text-[28px] sm:text-[34px] font-bold tracking-tight text-apple-gray-900 mb-3">
           長照是一場馬拉松
@@ -492,7 +552,7 @@ export default function FinancialReport({
       </div>
 
       {/* ====== NEXT STEPS ====== */}
-      <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100/60 rounded-[24px] p-6 sm:p-7 mb-4">
+      <div id="next-steps" className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100/60 rounded-[24px] p-6 sm:p-7 mb-4">
         <h3 className="text-[17px] font-bold text-emerald-800 mb-4">✅ 算完了，接下來怎麼做？</h3>
         <div className="space-y-3">
           {[
