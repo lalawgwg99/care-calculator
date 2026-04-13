@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { calculateCareBudget, type CMSLevel, type IncomeStatus, type CareType } from "@/lib/careLogic";
 
 interface PathwayComparisonProps {
@@ -156,6 +157,72 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
   const recommendedId = recommendation.id;
   const recommendedPath = pathways.find((p) => p.id === recommendedId) ?? pathways[0];
   const recommendedScore = getMatchScore(recommendedId);
+  const [showAlternativeDetails, setShowAlternativeDetails] = useState(false);
+  const otherPathways = pathways.filter((path) => path.id !== recommendedId);
+
+  const renderPathCard = (path: (typeof pathways)[number], isRecommended: boolean) => (
+    <button
+      key={path.id}
+      onClick={() => onSelectPathway(path.id)}
+      aria-label={`選擇 ${path.title} 方案`}
+      className={`
+        relative flex flex-col text-left rounded-[24px] shadow-sm border overflow-hidden
+        transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg
+        ${isRecommended ? `${path.borderColor} ring-2 ring-emerald-200 soft-glow` : `border-apple-gray-100`}
+        ${path.bgGradient}
+      `}
+      style={{ WebkitTapHighlightColor: "transparent" }}
+    >
+      {isRecommended && (
+        <div className="absolute top-3 right-3 text-[11px] font-bold bg-emerald-600 text-white px-2.5 py-1 rounded-full shadow-sm z-10">
+          推薦方案
+        </div>
+      )}
+      <div className="p-5 sm:p-6 flex-1">
+        <div className="text-[28px] mb-2">{path.icon}</div>
+        <h3 className="text-[18px] font-bold text-apple-gray-900 mb-1">{path.title}</h3>
+        <p className={`text-[13px] font-medium mb-2 ${path.primaryColor}`}>{path.subtitle}</p>
+        <span className="inline-block text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-0.5 mb-4">
+          {path.waitTime}
+        </span>
+        <div className="space-y-3 mb-5">
+          <div>
+            <div className="text-[12px] text-apple-gray-500 mb-0.5">政府每月補助</div>
+            <div className="text-[20px] font-mono font-bold text-emerald-600 tracking-tight">
+              {formatMoney(path.monthlySubsidy)}
+            </div>
+          </div>
+          <div>
+            <div className="text-[12px] text-apple-gray-500 mb-0.5">家庭每月自付</div>
+            <div className="text-[22px] font-mono font-bold text-apple-red tracking-tight">
+              {formatMoney(path.monthlyOutPocket)}
+              {path.id === "foreign-caregiver" && <span className="text-[12px] text-apple-gray-400 font-normal ml-1">(含薪資)</span>}
+            </div>
+          </div>
+        </div>
+        <div className="pt-4 border-t border-apple-gray-200/50">
+          <ul className="space-y-2">
+            {path.features.map((feat, idx) => (
+              <li key={idx} className="flex items-start text-[13px] text-apple-gray-600 leading-snug">
+                <span className="mr-1.5 opacity-60 flex-shrink-0">✓</span>
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+          {path.cons && (
+            <p className={`mt-3 text-[12px] leading-snug ${
+              path.cons.startsWith("⚠️") ? "text-orange-600 font-medium" : "text-apple-gray-400"
+            }`}>
+              {path.cons}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="p-4 bg-white/80 border-t border-apple-gray-100 text-center text-[15px] font-medium text-apple-blue hover:bg-apple-gray-50 transition-colors">
+        選擇此方案 →
+      </div>
+    </button>
+  );
 
   // CMS 1 級：無補助資格
   if (cmsLevel === 1) {
@@ -201,44 +268,11 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
     <div className="w-full animation-fade-in">
       <div className="text-center mb-8 sm:mb-12">
         <h2 className="text-[24px] sm:text-[32px] font-bold tracking-tight text-apple-gray-900 mb-3">
-          4 條路，一次看清楚
+          推薦優先，再展開比較
         </h2>
         <p className="text-[16px] sm:text-[18px] text-apple-gray-500 max-w-2xl mx-auto">
-          系統已根據 <strong className="text-apple-gray-800">CMS {cmsLevel} 級</strong> 試算出四種照顧模式的財務差異。
+          已根據 <strong className="text-apple-gray-800">CMS {cmsLevel} 級</strong> 與收入身分先給建議，再讓你比較其他方案。
         </p>
-      </div>
-
-      {/* 5 年總費用速覽 */}
-      <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5 sm:p-6 mb-8 shadow-sm">
-        <h3 className="text-[15px] font-bold text-apple-gray-700 mb-4">📊 5 年（60 個月）自付總費用速覽</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {pathways.map((path) => {
-            const total5Year = path.monthlyOutPocket * 60;
-            const isRecommended = path.id === recommendedId;
-            const isLowestOutPocket = path.id === lowestOutPocketId;
-            return (
-              <div key={path.id} className={`rounded-[16px] p-4 text-center border ${isRecommended ? "border-emerald-300 bg-emerald-50/50" : "border-apple-gray-100 bg-apple-gray-50/50"}`}>
-                <div className="text-[20px] mb-1">{path.icon}</div>
-                <div className="text-[13px] font-medium text-apple-gray-600 mb-1">{path.title}</div>
-                <div className={`text-[18px] sm:text-[20px] font-mono font-bold ${isRecommended ? "text-emerald-700" : "text-apple-gray-900"}`}>
-                  {formatMoney(total5Year)}
-                </div>
-                <div className="mt-2 flex items-center justify-center gap-1">
-                  {isRecommended && (
-                    <span className="text-[11px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full">
-                      推薦
-                    </span>
-                  )}
-                  {isLowestOutPocket && (
-                    <span className="text-[11px] font-bold bg-amber-600 text-white px-2 py-0.5 rounded-full">
-                      最省
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
       </div>
 
       {/* 決策推薦提示 */}
@@ -281,79 +315,79 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPath
         </div>
       </div>
 
-      {/* 方案卡片 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-        {pathways.map((path) => {
-          const isRecommended = path.id === recommendedId;
-          return (
-            <button
-              key={path.id}
-              onClick={() => onSelectPathway(path.id)}
-              aria-label={`選擇 ${path.title} 方案`}
-              className={`
-                relative flex flex-col text-left rounded-[24px] shadow-sm border overflow-hidden
-                transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg
-                ${isRecommended ? `${path.borderColor} ring-2 ring-emerald-200 soft-glow` : `border-apple-gray-100`}
-                ${path.bgGradient}
-              `}
-              style={{ WebkitTapHighlightColor: "transparent" }}
-            >
-              {/* 推薦標籤 */}
-              {isRecommended && (
-                <div className="absolute top-3 right-3 text-[11px] font-bold bg-emerald-600 text-white px-2.5 py-1 rounded-full shadow-sm z-10">
-                  推薦方案
+      <section className="mb-8">
+        <h3 className="text-[18px] font-bold text-apple-gray-900 mb-3">推薦方案詳情</h3>
+        <div className="grid grid-cols-1">
+          {renderPathCard(recommendedPath, true)}
+        </div>
+      </section>
+
+      <section className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5 sm:p-6 mb-8 shadow-sm">
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <h3 className="text-[16px] font-bold text-apple-gray-900">其他方案快速比較</h3>
+          <button
+            onClick={() => setShowAlternativeDetails((prev) => !prev)}
+            className="text-[13px] font-semibold text-apple-blue hover:text-apple-indigo transition-colors"
+          >
+            {showAlternativeDetails ? "收合詳細比較" : "展開詳細比較"}
+          </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {otherPathways.map((path) => {
+            const monthlyDiff = path.monthlyOutPocket - recommendedPath.monthlyOutPocket;
+            return (
+              <button
+                key={path.id}
+                onClick={() => onSelectPathway(path.id)}
+                className="rounded-[14px] border border-apple-gray-200 bg-apple-gray-50/70 px-4 py-4 text-left hover:border-apple-blue/40 hover:bg-white transition-colors"
+              >
+                <div className="text-[13px] text-apple-gray-500 mb-1">{path.icon} {path.title}</div>
+                <div className="text-[18px] font-bold text-apple-gray-900">{formatMoney(path.monthlyOutPocket)}/月</div>
+                <div className={`text-[12px] mt-1 ${monthlyDiff >= 0 ? "text-apple-red" : "text-emerald-700"}`}>
+                  {monthlyDiff >= 0 ? `比推薦多 ${formatMoney(Math.abs(monthlyDiff))}/月` : `比推薦少 ${formatMoney(Math.abs(monthlyDiff))}/月`}
                 </div>
-              )}
+              </button>
+            );
+          })}
+        </div>
+        {showAlternativeDetails && (
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            {otherPathways.map((path) => renderPathCard(path, false))}
+          </div>
+        )}
+      </section>
 
-              <div className="p-5 sm:p-6 flex-1">
-                <div className="text-[28px] mb-2">{path.icon}</div>
-                <h3 className="text-[18px] font-bold text-apple-gray-900 mb-1">{path.title}</h3>
-                <p className={`text-[13px] font-medium mb-2 ${path.primaryColor}`}>{path.subtitle}</p>
-                <span className="inline-block text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-0.5 mb-4">
-                  {path.waitTime}
-                </span>
-
-                <div className="space-y-3 mb-5">
-                  <div>
-                    <div className="text-[12px] text-apple-gray-500 mb-0.5">政府每月補助</div>
-                    <div className="text-[20px] font-mono font-bold text-emerald-600 tracking-tight">
-                      {formatMoney(path.monthlySubsidy)}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-[12px] text-apple-gray-500 mb-0.5">家庭每月自付</div>
-                    <div className="text-[22px] font-mono font-bold text-apple-red tracking-tight">
-                      {formatMoney(path.monthlyOutPocket)}
-                      {path.id === "foreign-caregiver" && <span className="text-[12px] text-apple-gray-400 font-normal ml-1">(含薪資)</span>}
-                    </div>
-                  </div>
+      {/* 5 年總費用速覽 */}
+      <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5 sm:p-6 mb-8 shadow-sm">
+        <h3 className="text-[15px] font-bold text-apple-gray-700 mb-4">5 年（60 個月）自付總費用速覽</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {pathways.map((path) => {
+            const total5Year = path.monthlyOutPocket * 60;
+            const isRecommended = path.id === recommendedId;
+            const isLowestOutPocket = path.id === lowestOutPocketId;
+            return (
+              <div key={path.id} className={`rounded-[16px] p-4 text-center border ${isRecommended ? "border-emerald-300 bg-emerald-50/50" : "border-apple-gray-100 bg-apple-gray-50/50"}`}>
+                <div className="text-[20px] mb-1">{path.icon}</div>
+                <div className="text-[13px] font-medium text-apple-gray-600 mb-1">{path.title}</div>
+                <div className={`text-[18px] sm:text-[20px] font-mono font-bold ${isRecommended ? "text-emerald-700" : "text-apple-gray-900"}`}>
+                  {formatMoney(total5Year)}
                 </div>
-
-                <div className="pt-4 border-t border-apple-gray-200/50">
-                  <ul className="space-y-2">
-                    {path.features.map((feat, idx) => (
-                      <li key={idx} className="flex items-start text-[13px] text-apple-gray-600 leading-snug">
-                        <span className="mr-1.5 opacity-60 flex-shrink-0">✓</span>
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {path.cons && (
-                    <p className={`mt-3 text-[12px] leading-snug ${
-                      path.cons.startsWith("⚠️") ? "text-orange-600 font-medium" : "text-apple-gray-400"
-                    }`}>
-                      {path.cons}
-                    </p>
+                <div className="mt-2 flex items-center justify-center gap-1">
+                  {isRecommended && (
+                    <span className="text-[11px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full">
+                      推薦
+                    </span>
+                  )}
+                  {isLowestOutPocket && (
+                    <span className="text-[11px] font-bold bg-amber-600 text-white px-2 py-0.5 rounded-full">
+                      最省
+                    </span>
                   )}
                 </div>
               </div>
-
-              <div className="p-4 bg-white/80 border-t border-apple-gray-100 text-center text-[15px] font-medium text-apple-blue hover:bg-apple-gray-50 transition-colors">
-                選擇此方案 →
-              </div>
-            </button>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       {/* 提示 */}

@@ -38,6 +38,12 @@ import CaregiverTips from "@/components/CaregiverTips";
 import EmergencyAccordion from "@/components/EmergencyAccordion";
 
 type WizardStep = 'landing' | 'pathway' | 'cart' | 'report';
+const FLOW_STEPS: Array<{ id: WizardStep; title: string; helper: string }> = [
+  { id: "landing", title: "基本設定", helper: "輸入長輩條件" },
+  { id: "pathway", title: "方案比較", helper: "先看推薦方案" },
+  { id: "cart", title: "服務配置", helper: "客製月支出" },
+  { id: "report", title: "財務報表", helper: "輸出 5 年結論" },
+];
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState<WizardStep>('landing');
@@ -143,6 +149,8 @@ export default function Home() {
       ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway)
       : null
   ), [cmsLevel, incomeStatus, selectedPathway]);
+  const currentStepIndex = FLOW_STEPS.findIndex((step) => step.id === currentStep);
+  const progressPct = ((currentStepIndex + 1) / FLOW_STEPS.length) * 100;
   const canStart = Boolean(cmsLevel && incomeStatus);
   const missingFields = [
     cmsLevel ? null : "失能等級",
@@ -178,6 +186,69 @@ export default function Home() {
       result: "不用懂規則也能快速得到級數",
     },
   ];
+
+  const renderFlowFrame = (isLanding: boolean) => (
+    <section className={`${isLanding ? "max-w-5xl mx-auto px-4 mb-10" : "pt-8 sm:pt-10 px-4"}`}>
+      <div className="max-w-5xl mx-auto bg-white border border-apple-gray-200/70 rounded-[22px] shadow-sm p-5 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+          <div>
+            <div className="text-[12px] text-amber-700 font-semibold tracking-wide">決策流程</div>
+            <h2 className="text-[20px] sm:text-[22px] font-bold text-apple-gray-900">
+              {isLanding ? "先設定條件，再進入推薦比較" : "進度與決策摘要"}
+            </h2>
+          </div>
+          <div className="text-[13px] text-apple-gray-500">
+            目前完成 {currentStepIndex + 1}/{FLOW_STEPS.length} 步
+          </div>
+        </div>
+        <div className="w-full h-2 rounded-full bg-apple-gray-100 overflow-hidden mb-5">
+          <div
+            className="h-full bg-gradient-to-r from-apple-orange to-apple-pink transition-all duration-500"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {FLOW_STEPS.map((step, idx) => {
+            const state = idx < currentStepIndex ? "done" : idx === currentStepIndex ? "active" : "todo";
+            return (
+              <div
+                key={step.id}
+                className={`rounded-[16px] border px-3 py-3 ${
+                  state === "active"
+                    ? "border-apple-orange bg-orange-50"
+                    : state === "done"
+                    ? "border-emerald-200 bg-emerald-50/60"
+                    : "border-apple-gray-200 bg-apple-gray-50"
+                }`}
+              >
+                <div className="text-[12px] text-apple-gray-500">Step {idx + 1}</div>
+                <div className="text-[14px] font-semibold text-apple-gray-900">{step.title}</div>
+                <div className={`text-[12px] mt-1 ${state === "active" ? "text-apple-orange" : "text-apple-gray-500"}`}>
+                  {step.helper}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {!isLanding && (
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-apple-gray-600">
+            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+              CMS {cmsLevel ?? "-"} 級
+            </span>
+            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+              {incomeStatus ? INCOME_LABELS[incomeStatus] : "未選擇收入"}
+            </span>
+            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+              {selectedPathway ? pathwayLabel[selectedPathway] : "尚未選擇路徑"}
+            </span>
+            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+              健康狀況已選 {selectedConditions.length} 項
+            </span>
+          </div>
+        )}
+      </div>
+    </section>
+  );
 
   // ========== STEP 1: LANDING PAGE ========== //
   const renderLandingPage = () => (
@@ -272,6 +343,8 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {renderFlowFrame(true)}
 
       {/* ====== ASSESSMENT FORM ====== */}
       <section className="max-w-2xl mx-auto px-4 mb-16" id="calculator">
@@ -421,7 +494,7 @@ export default function Home() {
       {/* ====== FEATURE HIGHLIGHTS ====== */}
       <section className="max-w-4xl mx-auto px-4 mb-16">
         <h3 className="text-[22px] sm:text-[26px] font-bold text-center text-apple-gray-900 tracking-tight mb-8">
-          這個工具能幫您做什麼？
+          你會先得到什麼，再做什麼？
         </h3>
         <div className="bg-white rounded-[28px] border border-apple-gray-200/60 shadow-sm p-5 sm:p-7">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
@@ -439,7 +512,7 @@ export default function Home() {
               >
                 <div className="text-[14px] font-semibold">{item.title}</div>
                 <div className={`text-[12px] mt-1 ${activeGuide === idx ? "text-apple-orange/80" : "text-apple-gray-500"}`}>
-                  點選查看細節
+                  查看輸出成果
                 </div>
               </button>
             ))}
@@ -597,48 +670,7 @@ export default function Home() {
   // ========== MAIN RENDER ========== //
   return (
     <main className="min-h-screen bg-apple-gray-50">
-      {/* Progress Bar */}
-      {currentStep !== 'landing' && (
-        <div className="fixed top-0 left-0 w-full h-1 bg-apple-gray-200 z-50">
-          <div
-            className="h-full bg-gradient-to-r from-apple-orange to-apple-pink transition-all duration-500 ease-out"
-            style={{
-              width: currentStep === 'pathway' ? '33%' :
-                     currentStep === 'cart' ? '66%' : '100%'
-            }}
-          />
-        </div>
-      )}
-
-      {/* Step Summary */}
-      {currentStep !== 'landing' && (
-        <div className="pt-8 sm:pt-10 px-4">
-          <div className="max-w-5xl mx-auto bg-white border border-apple-gray-200/60 rounded-[20px] shadow-sm px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div>
-              <div className="text-[13px] text-apple-gray-500">目前步驟</div>
-              <div className="text-[18px] font-bold text-apple-gray-900">
-                {currentStep === 'pathway' && "Step 2／4：照顧路徑比較"}
-                {currentStep === 'cart' && "Step 3／4：服務購物車"}
-                {currentStep === 'report' && "Step 4／4：5 年財務報表"}
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 text-[12px] text-apple-gray-600">
-              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
-                CMS {cmsLevel ?? "-"} 級
-              </span>
-              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
-                {incomeStatus ? INCOME_LABELS[incomeStatus] : "未選擇收入"}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
-                {selectedPathway ? pathwayLabel[selectedPathway] : "尚未選擇路徑"}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
-                健康狀況已選 {selectedConditions.length} 項
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
+      {currentStep !== 'landing' && renderFlowFrame(false)}
 
       <div className={currentStep === 'landing' ? '' : 'pt-8 sm:pt-12 pb-24 px-4'}>
         {currentStep === 'landing' && renderLandingPage()}
