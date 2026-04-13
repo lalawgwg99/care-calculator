@@ -117,10 +117,10 @@ export default function Home() {
   ), [cmsLevel, incomeStatus, selectedPathway]);
 
   const pathwayLabel: Record<CareType, string> = {
-    home: "居家照顧",
-    daycare: "日間照顧",
+    "home-care": "居家照顧",
+    "day-care": "日間照顧",
     institution: "住宿機構",
-    foreign: "外籍看護",
+    "foreign-caregiver": "外籍看護",
   };
 
   const guideItems = [
