@@ -36,13 +36,14 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          "-apple-system",
-          "BlinkMacSystemFont",
-          '"SF Pro Text"',
-          '"Segoe UI"',
-          "Roboto",
-          "Helvetica",
-          "Arial",
+          '"Noto Sans TC"',
+          "system-ui",
+          "sans-serif"
+        ],
+        display: [
+          '"Noto Serif TC"',
+          '"Noto Sans TC"',
+          "system-ui",
           "sans-serif"
         ],
       },
