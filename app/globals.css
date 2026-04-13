@@ -9,6 +9,9 @@
     --brand-primary: #d97722;
     --brand-primary-strong: #b85f14;
     --surface-tint: #fdf9f3;
+    --surface-cool: #eef6ff;
+    --surface-deep: #101828;
+    --ink: #141210;
     --font-body: "Noto Sans TC", system-ui, sans-serif;
     --font-display: "Noto Serif TC", "Noto Sans TC", system-ui, sans-serif;
   }
@@ -26,10 +29,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background:
-      radial-gradient(1100px 480px at 8% -10%, rgba(217, 119, 34, 0.12), transparent 60%),
-      radial-gradient(900px 520px at 96% -8%, rgba(217, 81, 115, 0.12), transparent 55%),
+      radial-gradient(1100px 480px at 8% -10%, rgba(217, 119, 34, 0.14), transparent 60%),
+      radial-gradient(900px 520px at 96% -8%, rgba(14, 165, 233, 0.12), transparent 55%),
+      radial-gradient(700px 520px at 50% 0%, rgba(16, 24, 40, 0.05), transparent 70%),
       linear-gradient(180deg, var(--surface-tint) 0%, #fff 220px);
-    color: #141210;
+    color: var(--ink);
   }
 
   h1,
@@ -131,4 +135,48 @@
 
 .soft-glow {
   box-shadow: 0 16px 40px rgba(217, 119, 34, 0.15);
+}
+
+.hero-surface {
+  position: relative;
+  background:
+    radial-gradient(980px 420px at 8% -8%, rgba(249, 115, 22, 0.2), transparent 60%),
+    radial-gradient(740px 380px at 92% -12%, rgba(56, 189, 248, 0.18), transparent 62%),
+    linear-gradient(140deg, #fff7ed 0%, #ffffff 48%, #f3f8ff 100%);
+  border: 1px solid rgba(251, 146, 60, 0.18);
+}
+
+.hero-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(120, 113, 108, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 113, 108, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at 50% 18%, black 28%, transparent 80%);
+}
+
+.section-surface {
+  position: relative;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 250, 245, 0.95) 52%, rgba(244, 249, 255, 0.92) 100%);
+  border: 1px solid rgba(203, 213, 225, 0.45);
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.06);
+}
+
+.section-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.24) 1px, transparent 0);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 95%);
+}
+
+.glass-chip {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(251, 146, 60, 0.2);
 }

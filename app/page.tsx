@@ -189,7 +189,7 @@ export default function Home() {
 
   const renderFlowFrame = (isLanding: boolean) => (
     <section className={`${isLanding ? "max-w-5xl mx-auto px-4 mb-10" : "pt-8 sm:pt-10 px-4"}`}>
-      <div className="max-w-5xl mx-auto bg-white border border-apple-gray-200/70 rounded-[22px] shadow-sm p-5 sm:p-6">
+      <div className="max-w-5xl mx-auto section-surface rounded-[22px] p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
           <div>
             <div className="text-[12px] text-amber-700 font-semibold tracking-wide">決策流程</div>
@@ -254,10 +254,10 @@ export default function Home() {
   const renderLandingPage = () => (
     <div className="w-full">
       {/* ====== HERO SECTION ====== */}
-      <section className="relative overflow-hidden rounded-b-[40px] bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 pt-16 pb-20 px-6 sm:px-10 mb-12">
+      <section className="hero-surface relative overflow-hidden rounded-b-[40px] pt-16 pb-20 px-6 sm:px-10 mb-12">
         <div className="max-w-3xl mx-auto text-center relative z-10">
           {/* Warm Emoji Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-5 py-2.5 shadow-sm mb-8 border border-orange-100">
+          <div className="inline-flex items-center gap-2 glass-chip rounded-full px-5 py-2.5 shadow-sm mb-8">
             <span className="text-[20px]">🧡</span>
             <span className="text-[14px] font-semibold text-amber-800">台灣長照 3.0 ｜ 2026 年最新法規</span>
           </div>
@@ -284,31 +284,32 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
-            <span className="px-3 py-1 rounded-full bg-white/75 border border-orange-100 text-[12px] text-amber-800">不需註冊</span>
-            <span className="px-3 py-1 rounded-full bg-white/75 border border-orange-100 text-[12px] text-amber-800">30 秒完成第一輪比較</span>
-            <span className="px-3 py-1 rounded-full bg-white/75 border border-orange-100 text-[12px] text-amber-800">依 2026 長照規範設計</span>
+            <span className="px-3 py-1 rounded-full glass-chip text-[12px] text-amber-800">不需註冊</span>
+            <span className="px-3 py-1 rounded-full glass-chip text-[12px] text-amber-800">30 秒完成第一輪比較</span>
+            <span className="px-3 py-1 rounded-full glass-chip text-[12px] text-amber-800">依 2026 長照規範設計</span>
           </div>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-            <div className="bg-white/70 backdrop-blur-sm rounded-[20px] p-4 border border-orange-100/50">
+            <div className="glass-chip rounded-[20px] p-4">
               <div className="text-[28px] font-bold text-apple-orange">4 種</div>
               <div className="text-[13px] text-amber-800/60 mt-1">照顧路徑比較</div>
             </div>
-            <div className="bg-white/70 backdrop-blur-sm rounded-[20px] p-4 border border-orange-100/50">
+            <div className="glass-chip rounded-[20px] p-4">
               <div className="text-[28px] font-bold text-apple-green">4 包</div>
               <div className="text-[13px] text-amber-800/60 mt-1">長照補助試算</div>
             </div>
-            <div className="bg-white/70 backdrop-blur-sm rounded-[20px] p-4 border border-orange-100/50">
+            <div className="glass-chip rounded-[20px] p-4">
               <div className="text-[28px] font-bold text-apple-pink">5 年</div>
               <div className="text-[13px] text-amber-800/60 mt-1">財務預測報表</div>
             </div>
           </div>
         </div>
 
-        {/* Decorative warm circles */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-orange-200/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-rose-200/30 rounded-full blur-3xl" />
+        {/* Decorative geometry */}
+        <div className="absolute -top-16 -right-10 w-64 h-64 border border-sky-300/30 rounded-full" />
+        <div className="absolute -top-8 -right-2 w-44 h-44 border border-orange-300/30 rounded-full" />
+        <div className="absolute -bottom-20 -left-10 w-56 h-56 bg-orange-200/30 rounded-full blur-3xl" />
       </section>
 
       {/* ====== RESUME BANNER ====== */}
@@ -496,7 +497,7 @@ export default function Home() {
         <h3 className="text-[22px] sm:text-[26px] font-bold text-center text-apple-gray-900 tracking-tight mb-8">
           你會先得到什麼，再做什麼？
         </h3>
-        <div className="bg-white rounded-[28px] border border-apple-gray-200/60 shadow-sm p-5 sm:p-7">
+        <div className="section-surface rounded-[28px] p-5 sm:p-7">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
             {guideItems.map((item, idx) => (
               <button
@@ -517,7 +518,7 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <div className="rounded-[20px] border border-orange-100 bg-amber-50/50 p-5 sm:p-6">
+          <div className="rounded-[20px] border border-orange-100 bg-white/80 p-5 sm:p-6">
             <div className="text-[18px] font-bold text-apple-gray-900 mb-2">{guideItems[activeGuide].title}</div>
             <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-4">
               {guideItems[activeGuide].desc}
@@ -556,7 +557,7 @@ export default function Home() {
             <Link
               key={tool.href}
               href={tool.href}
-              className="bg-white border border-apple-gray-200 rounded-[18px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
+              className="section-surface rounded-[18px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
             >
               <div className="text-[28px] mb-2">{tool.emoji}</div>
               <div className="text-[13px] font-semibold text-apple-gray-700 group-hover:text-amber-700 transition-colors">
@@ -574,7 +575,7 @@ export default function Home() {
 
       {/* ====== TRUST / FOOTER ====== */}
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
-        <div className="bg-amber-50/50 rounded-[20px] p-6 border border-orange-100/50">
+        <div className="section-surface rounded-[20px] p-6">
           <p className="text-[14px] text-amber-800/60 leading-relaxed">
             📌 本工具依據 <strong>衛生福利部 2026 年長照 3.0 最新法規</strong> 設計。所有數據僅供參考，實際補助金額以各縣市照顧管理中心核定為準。如有任何疑問，請撥打長照專線 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
           </p>
@@ -669,7 +670,7 @@ export default function Home() {
 
   // ========== MAIN RENDER ========== //
   return (
-    <main className="min-h-screen bg-apple-gray-50">
+    <main className="min-h-screen">
       {currentStep !== 'landing' && renderFlowFrame(false)}
 
       <div className={currentStep === 'landing' ? '' : 'pt-8 sm:pt-12 pb-24 px-4'}>
