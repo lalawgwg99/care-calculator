@@ -38,6 +38,7 @@ lerna-debug.log*
 *.swp
 *.swo
 *~
+*.tsbuildinfo
 
 # Prisma
 prisma/migrations

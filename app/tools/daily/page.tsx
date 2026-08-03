@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import MedicalPrep from "@/components/MedicalPrep";
 import CaregiverComm from "@/components/CaregiverComm";
+import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "日常照顧工具 | 長照決策引擎",
   description: "就診準備清單（生命徵象、用藥、問診問題）與家庭溝通模板（交班、會議、緊急通知）。",
+  alternates: pageAlternates("/tools/daily"),
+  openGraph: {
+    title: "日常照顧工具 | 長照決策引擎",
+    description: "就診準備清單與家庭照顧溝通模板。",
+    type: "website",
+    url: absoluteUrl("/tools/daily"),
+  },
 };
 
 export default function DailyPage() {

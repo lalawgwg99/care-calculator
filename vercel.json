@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
@@ -8,5 +9,12 @@
     "NEXT_PUBLIC_API_URL": {
       "description": "API 基礎 URL"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "destination": "https://care.taicalc.com/:path*",
+      "statusCode": 301
+    }
+  ]
 }

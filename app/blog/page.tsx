@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/constants/blogPosts";
+import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "長照知識庫｜費用試算、補助申請、照顧攻略 | 長照決策引擎",
   description:
     "Taiwan elder care articles: 外籍看護費用試算、長照四包錢說明、機構 vs 居家比較、失智症補助攻略、喘息服務申請、CMS 評估全解析。",
   keywords: ["長照知識", "長照補助說明", "照顧資源", "長照文章", "台灣長照3.0"],
+  alternates: pageAlternates("/blog"),
   openGraph: {
     title: "長照知識庫 | 長照決策引擎",
     description: "外籍看護費用、四包錢補助、機構選擇、失智症照顧——全系列深度文章",
     locale: "zh_TW",
     type: "website",
+    url: absoluteUrl("/blog"),
   },
 };
 

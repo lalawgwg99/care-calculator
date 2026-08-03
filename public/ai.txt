@@ -1,8 +1,8 @@
-Site: https://care-calculator.vercel.app
+Site: https://care.taicalc.com
 Language: zh-TW
-Sitemap: https://care-calculator.vercel.app/sitemap.xml
-Robots: https://care-calculator.vercel.app/robots.txt
-LLMs: https://care-calculator.vercel.app/llms.txt
+Sitemap: https://care.taicalc.com/sitemap.xml
+Robots: https://care.taicalc.com/robots.txt
+LLMs: https://care.taicalc.com/llms.txt
 
 Content focus:
 - Taiwan LTC 3.0 subsidy calculation

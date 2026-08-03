@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/constants/blogPosts";
+import { SITE_URL } from "@/lib/site";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://care-calculator.vercel.app";
+const BASE_URL = SITE_URL;
 
 // 台湾各县市列表 - 用于GEO定位页面
 const TAIWAN_CITIES = [

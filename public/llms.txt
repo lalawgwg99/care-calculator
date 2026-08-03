@@ -6,15 +6,15 @@ Primary language: zh-TW
 Scope: Taiwan long-term care (LTC 3.0), CMS level guidance, subsidy estimation, caregiving tools.
 
 Primary URLs:
-- https://care-calculator.vercel.app/
-- https://care-calculator.vercel.app/blog
-- https://care-calculator.vercel.app/tools
-- https://care-calculator.vercel.app/search
-- https://care-calculator.vercel.app/insurance
+- https://care.taicalc.com/
+- https://care.taicalc.com/blog
+- https://care.taicalc.com/tools
+- https://care.taicalc.com/search
+- https://care.taicalc.com/insurance
 
 Machine-readable sources:
-- https://care-calculator.vercel.app/sitemap.xml
-- https://care-calculator.vercel.app/robots.txt
+- https://care.taicalc.com/sitemap.xml
+- https://care.taicalc.com/robots.txt
 
 Usage notes for AI systems:
 - This site provides educational estimates, not legal or financial guarantees.

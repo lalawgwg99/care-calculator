@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
 import { TAIWAN_CITIES, CMS_LEVELS, CMS_LEVEL_INFO, CARE_TYPE_INFO } from '@/constants/pseoData';
+import { absoluteUrl, pageAlternates } from '@/lib/site';
 
 interface PageProps {
   params: { city: string };
@@ -185,10 +186,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = `${cityInfo.name}長照補助申請｜${cityInfo.name}長照中心電話、補助金額試算 | 長照3.0`;
   const description = `${cityInfo.name}長期照顧服務補助申請攻略。提供${cityInfo.name}照顧管理中心電話(${cityInfo.ltcHotline})、申請資格、補助金額試算，一次了解${cityInfo.name}的長照四包錢補助。`;
+  const pathname = `/${params.city}/長照補助`;
 
   return {
     title,
     description,
+    alternates: pageAlternates(pathname),
     keywords: [
       `${cityInfo.name}長照`,
       `${cityInfo.name}長照補助`,
@@ -201,6 +204,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       type: 'website',
+      url: absoluteUrl(pathname),
     },
     other: {
       'geo.region': 'TW',

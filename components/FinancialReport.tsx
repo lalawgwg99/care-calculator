@@ -8,12 +8,11 @@ import FacilityChecklist from "@/components/FacilityChecklist";
 import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
 import InsuranceAddon from "@/components/InsuranceAddon";
 import LegalNavigator from "@/components/LegalNavigator";
+import { SITE_URL } from "@/lib/site";
 
 declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
 }
-
-const SITE_URL = "https://care-calculator.vercel.app";
 
 interface FinancialReportProps {
   careType: CareType;

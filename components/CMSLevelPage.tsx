@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
 import { CMS_LEVELS, CMS_LEVELS_STR, CARE_TYPES, CMS_LEVEL_INFO, type CMSLevel } from '@/constants/pseoData';
+import { absoluteUrl, pageAlternates } from '@/lib/site';
 
 const CARE_TYPE_NAMES: Record<string, { name: string; desc: string }> = {
   'home-care': { name: '居家照顧', desc: '專業照服員到宅服務' },
@@ -9,7 +10,7 @@ const CARE_TYPE_NAMES: Record<string, { name: string; desc: string }> = {
   'institution': { name: '住宿機構', desc: '全日型長照機構' },
 };
 
-interface PageProps {
+export interface PageProps {
   params: { level: string };
 }
 
@@ -23,19 +24,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const level = parseInt(params.level) as CMSLevel;
   const levelInfo = CMS_LEVEL_INFO[level];
 
+  if (!levelInfo) {
+    return {
+      title: "無效頁面",
+      robots: { index: false, follow: false },
+      alternates: pageAlternates("/"),
+    };
+  }
+
+  const pathname = `/cms${level}`;
+
   return {
-    title: `CMS 第${level}級補助多少錢？長照 ${levelInfo?.name || ''} 補助試算 | 長照3.0`,
-    description: `了解 CMS 第${level}級（${levelInfo?.name}）的長照3.0補助金額。每月最高 $${levelInfo?.subsidy?.toLocaleString() || '0'}。支援一般戶、中低收入戶、低收入戶不同身份的自負額計算。`,
+    title: `CMS 第${level}級補助多少錢？長照 ${levelInfo.name} 補助試算 | 長照3.0`,
+    description: `了解 CMS 第${level}級（${levelInfo.name}）的長照3.0補助金額。每月最高 $${levelInfo.subsidy.toLocaleString()}。支援一般戶、中低收入戶、低收入戶不同身份的自負額計算。`,
+    alternates: pageAlternates(pathname),
     keywords: [
       `CMS第${level}級補助`,
       `長照第${level}級`,
-      `${levelInfo?.name}`,
+      `${levelInfo.name}`,
       `長照補助試算`,
       `CMS${level}級`,
     ],
     openGraph: {
       title: `CMS 第${level}級 長照補助試算`,
-      description: `計算您的長照補助。每月最高 $${levelInfo?.subsidy?.toLocaleString() || '0'}`,
+      description: `計算您的長照補助。每月最高 $${levelInfo.subsidy.toLocaleString()}`,
+      url: absoluteUrl(pathname),
     },
   };
 }

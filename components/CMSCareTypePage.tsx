@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
 import { CMS_LEVEL_INFO, CARE_TYPE_INFO, INCOME_TYPE_INFO, CMS_LEVELS_STR, CARE_TYPES, type CareType, type CMSLevel, type IncomeType } from '@/constants/pseoData';
+import { absoluteUrl, pageAlternates } from '@/lib/site';
 
 interface PageProps {
   params: { level: string; 'care-type': string };
+}
+
+function parseCMSLevel(value?: string): CMSLevel {
+  return parseInt((value || '').replace(/^cms/, ''), 10) as CMSLevel;
 }
 
 export async function generateStaticParams() {
@@ -17,7 +22,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const level = parseInt(params.level) as CMSLevel;
+  const level = parseCMSLevel(params.level);
   const careType = params['care-type'];
   const levelInfo = CMS_LEVEL_INFO[level];
   const careInfo = CARE_TYPE_INFO[careType as CareType];
@@ -28,10 +33,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = `CMS第${level}級${careInfo.name}補助多少錢？長照3.0每月補助與自付額試算`;
   const description = `了解CMS第${level}級（${levelInfo.name}）選擇${careInfo.name}的長照3.0補助金額。一般戶、中低收入戶、低收入戶的補助與自付額計算，含喘息服務、輔具補助詳細說明。`;
+  const pathname = `/cms${level}/${careType}`;
 
   return {
     title,
     description,
+    alternates: pageAlternates(pathname),
     keywords: [
       `CMS第${level}級${careInfo.name}`,
       `長照${careInfo.name}補助`,
@@ -43,6 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       type: 'article',
+      url: absoluteUrl(pathname),
     },
   };
 }
@@ -80,7 +88,7 @@ function calculateSubsidy(level: CMSLevel, careType: CareType, incomeType: Incom
 }
 
 export default function CMSCareTypePage({ params }: PageProps) {
-  const level = parseInt(params.level) as CMSLevel;
+  const level = parseCMSLevel(params.level);
   const careType = params['care-type'] as CareType;
   const levelInfo = CMS_LEVEL_INFO[level];
   const careInfo = CARE_TYPE_INFO[careType];

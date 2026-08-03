@@ -4,8 +4,9 @@ import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { SITE_URL, pageAlternates } from "@/lib/site";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://care-calculator.vercel.app";
+const BASE_URL = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -61,10 +62,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: BASE_URL,
-    languages: {
-      "zh-TW": BASE_URL,
-    },
+    ...pageAlternates("/"),
   },
   other: {
     "apple-mobile-web-app-capable": "yes",

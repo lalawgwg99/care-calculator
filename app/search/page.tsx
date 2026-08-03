@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
 import ResourceSearch from "@/components/ResourceSearch";
+import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "資源搜尋 | 長照決策引擎",
   description: "搜尋台灣各縣市長照資源，包含政府服務、民間機構、支持團體、法律資源與教育資源。",
+  alternates: pageAlternates("/search"),
+  openGraph: {
+    title: "台灣長照資源搜尋 | 長照決策引擎",
+    description: "搜尋各縣市政府服務、支持團體、法律與教育資源。",
+    type: "website",
+    url: absoluteUrl("/search"),
+  },
 };
 
 export default function SearchPage() {

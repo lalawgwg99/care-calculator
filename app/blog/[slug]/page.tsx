@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { BLOG_POSTS, getBlogPost, type ContentBlock } from "@/constants/blogPosts";
+import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 // ─── Static generation ────────────────────────────────────────────────────────
 
@@ -14,11 +15,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const post = getBlogPost(params.slug);
   if (!post) return {};
+  const pathname = `/blog/${post.slug}`;
   return {
     title: post.title,
     description: post.description,
     keywords: post.keywords,
     authors: [{ name: "長照決策引擎" }],
+    alternates: pageAlternates(pathname),
     openGraph: {
       title: post.title,
       description: post.description,
@@ -27,6 +30,7 @@ export async function generateMetadata(
       modifiedTime: post.updatedAt,
       locale: "zh_TW",
       tags: post.tags,
+      url: absoluteUrl(pathname),
     },
     twitter: { card: "summary_large_image", title: post.title, description: post.description },
   };
@@ -149,15 +153,17 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     dateModified: post.updatedAt,
     inLanguage: "zh-TW",
     keywords: post.keywords.join(", "),
+    url: absoluteUrl(`/blog/${post.slug}`),
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
   };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "首頁", item: "https://care-calculator.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "知識庫", item: "https://care-calculator.vercel.app/blog" },
-      { "@type": "ListItem", position: 3, name: post.title, item: `https://care-calculator.vercel.app/blog/${post.slug}` },
+      { "@type": "ListItem", position: 1, name: "首頁", item: absoluteUrl("/") },
+      { "@type": "ListItem", position: 2, name: "知識庫", item: absoluteUrl("/blog") },
+      { "@type": "ListItem", position: 3, name: post.title, item: absoluteUrl(`/blog/${post.slug}`) },
     ],
   };
 

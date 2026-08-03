@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import InsuranceAddon from "@/components/InsuranceAddon";
 import LegalNavigator from "@/components/LegalNavigator";
+import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "保險補充 & 法律引導 | 長照決策引擎",
   description: "計算私人保險補足長照缺口，以及監護宣告、安養信託、遺囑規劃等法律事項逐步引導。",
+  alternates: pageAlternates("/insurance"),
+  openGraph: {
+    title: "保險補充與法律引導 | 長照決策引擎",
+    description: "計算私人保險補足長照缺口，並逐步整理長照家庭需要準備的法律事項。",
+    type: "website",
+    url: absoluteUrl("/insurance"),
+  },
 };
 
 export default function InsurancePage() {
