@@ -2,21 +2,25 @@
 
 import { useState } from "react";
 import { calculateCareBudget, type CMSLevel, type IncomeStatus, type CareType } from "@/lib/careLogic";
+import type { AssistiveDeviceGroup, TransportRegion } from "@/lib/policyData";
 
 interface PathwayComparisonProps {
   cmsLevel: CMSLevel;
   incomeStatus: IncomeStatus;
+  transportRegion: TransportRegion;
+  assistiveDeviceGroup: AssistiveDeviceGroup;
   onSelectPathway: (type: CareType) => void;
 }
 
 // 外籍看護真實月支出（含薪資、安定費、健保、加班、仲介）
-const FOREIGN_CAREGIVER_EXTRA = 30000;
+const FOREIGN_CAREGIVER_EXTRA = 26896;
 
-export default function PathwayComparison({ cmsLevel, incomeStatus, onSelectPathway }: PathwayComparisonProps) {
-  const homeCareResult = calculateCareBudget(cmsLevel, incomeStatus, "home-care");
-  const dayCareResult = calculateCareBudget(cmsLevel, incomeStatus, "day-care");
-  const institutionResult = calculateCareBudget(cmsLevel, incomeStatus, "institution");
-  const foreignResult = calculateCareBudget(cmsLevel, incomeStatus, "foreign-caregiver");
+export default function PathwayComparison({ cmsLevel, incomeStatus, transportRegion, assistiveDeviceGroup, onSelectPathway }: PathwayComparisonProps) {
+  const options = { transportRegion, assistiveDeviceGroup };
+  const homeCareResult = calculateCareBudget(cmsLevel, incomeStatus, "home-care", options);
+  const dayCareResult = calculateCareBudget(cmsLevel, incomeStatus, "day-care", options);
+  const institutionResult = calculateCareBudget(cmsLevel, incomeStatus, "institution", options);
+  const foreignResult = calculateCareBudget(cmsLevel, incomeStatus, "foreign-caregiver", options);
 
   const formatMoney = (amount: number) => {
     return new Intl.NumberFormat("zh-TW", {

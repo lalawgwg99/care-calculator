@@ -242,7 +242,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
             <span className="text-apple-orange">照顧管理中心</span>
           </h1>
           <p className="text-[16px] text-amber-900/70 leading-relaxed">
-            {cityInfo.description}。依據衛福部2026年長照3.0最新法規，全台灣補助標準一致。
+            {cityInfo.description}。照顧及喘息額度採中央標準；交通接送會依居住鄉鎮分區，地方服務與申請窗口也可能不同。
           </p>
         </div>
 
@@ -324,7 +324,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
               </h3>
               <p className="text-[14px] text-amber-800 leading-relaxed">
                 依據衛福部公告，長照3.0的四包錢補助額度在全國各縣市皆相同。
-                {cityInfo.name}的補助金額與台北市、高雄市完全一致。
+                照顧與喘息採中央額度；交通接送須依{cityInfo.name}實際居住鄉鎮分區，不能直接套用其他縣市。
                 差異主要在於服務提供的可近性與等待時間。
               </p>
             </div>

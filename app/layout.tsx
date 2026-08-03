@@ -84,7 +84,7 @@ const faqJsonLd = {
       "name": "什麼是長照 2.0 / 3.0？跟我有什麼關係？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "長照是政府針對失能、失智長輩提供的照顧補助制度。只要家中長輩經評估為 CMS 2 級以上，就可以獲得居家照顧、交通接送、喘息服務等補助。長照 3.0 是 2026 年起的最新版本，擴大了補助範圍與額度。"
+        "text": "長照是政府針對失能、失智者提供的照顧服務制度。長照 3.0 自 2026 年起分階段實施，1 月與 7 月分別調整部分服務對象及智慧輔具等措施。實際資格與補助仍須由照管中心依 CMS 等級、身分與服務項目評估。"
       }
     },
     {
@@ -108,7 +108,7 @@ const faqJsonLd = {
       "name": "長照補助的四包錢是什麼意思？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "政府將長照補助分為四大類：照顧及專業服務（每月定額）、交通接送（CMS 4級以上）、輔具及無障礙改造（每3年上限4萬）、喘息服務（讓主要照顧者休息的臨時替代照顧）。"
+        "text": "政府將長照補助分為照顧及專業服務、交通接送、輔具及居家無障礙改善、喘息服務。交通額度依居住地分區；輔具自2026年7月起分為每3年4萬元與6萬元兩組。"
       }
     },
     {
@@ -116,7 +116,7 @@ const faqJsonLd = {
       "name": "聘外籍看護還能申請長照補助嗎？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可以，但補助額度會縮減為原本的 30%，且只能用於專業服務（如復健指導、營養諮詢等），不能用於一般的居家照顧服務。"
+        "text": "可以。照顧及專業服務原則上為原核定額度30%，不得使用一般居家服務；另可依資格使用日間照顧、家庭托顧、交通、輔具評估與外籍看護休假時的喘息服務。"
       }
     }
   ]
@@ -220,7 +220,7 @@ const voiceFaqJsonLd = {
       "name": "外籍看護工補助有多少？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "聘僱外籍看護工時，長照補助額度為原本的30%。以一般戶CMS第8級為例，原本每月補助36,180元，打3折後約10,854元補助。",
+        "text": "聘僱外籍看護工時，照顧及專業服務原則上為原核定額度30%，仍須再依收入身分計算自付額；其他服務則按個案資格核定。",
       },
     },
     {
@@ -278,21 +278,6 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        {/* FAQ structured data for voice search */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(voiceFaqJsonLd) }}
-        />
-        {/* HowTo structured data for application process */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
-        />
-        {/* Breadcrumb structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
       </head>
       <body className="antialiased bg-apple-gray-50 text-[17px] text-apple-gray-900">

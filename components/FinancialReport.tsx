@@ -9,6 +9,15 @@ import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
 import InsuranceAddon from "@/components/InsuranceAddon";
 import LegalNavigator from "@/components/LegalNavigator";
 import { SITE_URL } from "@/lib/site";
+import {
+  ASSISTIVE_DEVICE_GROUPS,
+  FOREIGN_CAREGIVER_2026,
+  POLICY_SOURCES,
+  POLICY_VERSION,
+  TRANSPORT_REGIONS,
+  type AssistiveDeviceGroup,
+  type TransportRegion,
+} from "@/lib/policyData";
 
 declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
@@ -22,14 +31,16 @@ interface FinancialReportProps {
   assistiveDeviceQuota?: number;
   selectedConditions?: ConditionId[];
   cmsLevel?: number;
+  transportRegion?: TransportRegion;
+  assistiveDeviceGroup?: AssistiveDeviceGroup;
 }
 
 // True cost breakdown for foreign caregiver (real-world numbers from labor ministry)
 const FOREIGN_CAREGIVER_REAL_COSTS = [
-  { label: "基本薪資（2026 基本工資）", amount: 27470 },
-  { label: "就業安定費（雇主負擔）", amount: 2000 },
-  { label: "健保費（雇主自付）", amount: 826 },
-  { label: "假日加班費估算（每週 2 小時）", amount: 1200 },
+  { label: "契約月薪（新聘／續轉聘基準）", amount: FOREIGN_CAREGIVER_2026.contractMonthlyWage },
+  { label: "就業安定費（一般家庭看護工）", amount: FOREIGN_CAREGIVER_2026.employmentStabilityFee },
+  { label: "健保費（2026 第一級雇主負擔估算）", amount: FOREIGN_CAREGIVER_2026.employerNhiEstimate },
+  { label: "休假日工作加給估算（每月 4 日）", amount: 2668 },
   { label: "仲介費月攤+機票費月攤", amount: 800 },
 ];
 const FOREIGN_REAL_MONTHLY = FOREIGN_CAREGIVER_REAL_COSTS.reduce((s, i) => s + i.amount, 0);
@@ -59,6 +70,8 @@ export default function FinancialReport({
   assistiveDeviceQuota = 0,
   selectedConditions = [],
   cmsLevel,
+  transportRegion = "region1",
+  assistiveDeviceGroup = "group1",
 }: FinancialReportProps) {
   const [familyMembers, setFamilyMembers] = useState(1);
   const [elderlyAssets, setElderlyAssets] = useState(0);
@@ -122,6 +135,14 @@ export default function FinancialReport({
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
+      <div className="rounded-[18px] border border-emerald-200 bg-emerald-50/70 px-5 py-4 text-[13px] text-emerald-900">
+        <div className="font-bold mb-1">資料版本 {POLICY_VERSION}・可追溯官方來源</div>
+        <p className="leading-relaxed">
+          交通採 {TRANSPORT_REGIONS[transportRegion].label}（每月 {TRANSPORT_REGIONS[transportRegion].monthlyQuota.toLocaleString()} 元）；
+          輔具採 {ASSISTIVE_DEVICE_GROUPS[assistiveDeviceGroup].label}（3 年 {ASSISTIVE_DEVICE_GROUPS[assistiveDeviceGroup].threeYearQuota.toLocaleString()} 元）。
+          <a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="ml-1 font-semibold underline underline-offset-2">官方額度表</a>
+        </p>
+      </div>
       <div className="bg-gradient-to-br from-apple-gray-900 to-apple-gray-700 rounded-[26px] p-6 sm:p-7 text-white border border-apple-gray-600/40">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
           <div>
@@ -232,7 +253,7 @@ export default function FinancialReport({
                     <span className="font-mono text-blue-700">{formatMoney(FOREIGN_REAL_MONTHLY)}</span>
                   </div>
                   <p className="text-[12px] text-blue-600/60 mt-1">
-                    * 帳面月薪看似 $27,470，實際家庭每月需支出約 <strong>${FOREIGN_REAL_MONTHLY.toLocaleString()}</strong>
+                    * 契約月薪與休假安排因個案而異；本試算以新聘／續轉聘月薪 $20,000，加上官方費率與上述透明假設估算。<a href={POLICY_SOURCES.foreignCaregiverWage} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">查看勞動部說明</a>
                   </p>
                 </div>
               )}

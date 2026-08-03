@@ -1,3 +1,5 @@
+import { CMS_CARE_QUOTAS, CO_PAY_RATES, getRespiteYearlyQuota } from "@/lib/policyData";
+
 // 台湾各县市列表 - 用于GEO定位页面
 export const TAIWAN_CITIES = [
   { name: '台北市', slug: 'taipei', region: '北部' },
@@ -31,14 +33,14 @@ export const CMS_LEVELS_STR = CMS_LEVELS.map(String);
 
 // CMS等级详情
 export const CMS_LEVEL_INFO: Record<CMSLevel, { name: string; description: string; subsidy: number; hasTransport: boolean; respite: number }> = {
-  1: { name: '輕度失能', description: '日常生活活動能力輕微受限', subsidy: 0, hasTransport: false, respite: 0 },
-  2: { name: '輕度失能', description: '日常生活活動能力輕微受限', subsidy: 10020, hasTransport: false, respite: 32340 },
-  3: { name: '中度失能', description: '日常生活活動能力中度受限', subsidy: 15460, hasTransport: false, respite: 32340 },
-  4: { name: '中度失能', description: '日常生活活動能力中度受限', subsidy: 18580, hasTransport: true, respite: 32340 },
-  5: { name: '重度失能', description: '日常生活活動能力重度受限', subsidy: 24100, hasTransport: true, respite: 32340 },
-  6: { name: '重度失能', description: '日常生活活動能力重度受限', subsidy: 28070, hasTransport: true, respite: 32340 },
-  7: { name: '極重度失能', description: '日常生活活動能力極度受限', subsidy: 32090, hasTransport: true, respite: 48510 },
-  8: { name: '極重度失能', description: '日常生活活動能力極度受限', subsidy: 36180, hasTransport: true, respite: 48510 },
+  1: { name: '輕度失能', description: '日常生活活動能力輕微受限', subsidy: CMS_CARE_QUOTAS[1], hasTransport: false, respite: getRespiteYearlyQuota(1) },
+  2: { name: '輕度失能', description: '日常生活活動能力輕微受限', subsidy: CMS_CARE_QUOTAS[2], hasTransport: false, respite: getRespiteYearlyQuota(2) },
+  3: { name: '中度失能', description: '日常生活活動能力中度受限', subsidy: CMS_CARE_QUOTAS[3], hasTransport: false, respite: getRespiteYearlyQuota(3) },
+  4: { name: '中度失能', description: '日常生活活動能力中度受限', subsidy: CMS_CARE_QUOTAS[4], hasTransport: true, respite: getRespiteYearlyQuota(4) },
+  5: { name: '重度失能', description: '日常生活活動能力重度受限', subsidy: CMS_CARE_QUOTAS[5], hasTransport: true, respite: getRespiteYearlyQuota(5) },
+  6: { name: '重度失能', description: '日常生活活動能力重度受限', subsidy: CMS_CARE_QUOTAS[6], hasTransport: true, respite: getRespiteYearlyQuota(6) },
+  7: { name: '極重度失能', description: '日常生活活動能力極度受限', subsidy: CMS_CARE_QUOTAS[7], hasTransport: true, respite: getRespiteYearlyQuota(7) },
+  8: { name: '極重度失能', description: '日常生活活動能力極度受限', subsidy: CMS_CARE_QUOTAS[8], hasTransport: true, respite: getRespiteYearlyQuota(8) },
 };
 
 // 照護方式列表
@@ -59,7 +61,7 @@ export type IncomeType = typeof INCOME_TYPES[number];
 
 // 收入身份詳情
 export const INCOME_TYPE_INFO: Record<IncomeType, { name: string; copayRate: number }> = {
-  'general': { name: '一般戶', copayRate: 0.16 },
-  'mid-low': { name: '中低收入戶', copayRate: 0.05 },
-  'low': { name: '低收入戶', copayRate: 0 },
+  'general': { name: '一般戶', copayRate: CO_PAY_RATES.general.care },
+  'mid-low': { name: '中低收入戶', copayRate: CO_PAY_RATES.midLow.care },
+  'low': { name: '低收入戶', copayRate: CO_PAY_RATES.low.care },
 };

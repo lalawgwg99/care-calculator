@@ -1,5 +1,13 @@
 // constants/careData.ts
-// 2026 年台灣長照 3.0 補助規則 (高雄市都會區標準)
+// 2026 年台灣長照 3.0 補助規則（未指定分區／組別時採第一區、第一組）
+
+import {
+  ASSISTIVE_DEVICE_GROUPS,
+  CMS_CARE_QUOTAS,
+  CO_PAY_RATES,
+  TRANSPORT_REGIONS,
+  getRespiteYearlyQuota,
+} from "@/lib/policyData";
 
 export type IncomeStatus = "general" | "midLow" | "low";
 export type CareType = "home-care" | "day-care" | "foreign-caregiver" | "institution";
@@ -86,97 +94,37 @@ export const CMS_LEVELS: CMSLevelData[] = [
   },
 ];
 
-// 長照 3.0 補助規則 (高雄市都會區)
-export const SUBSIDY_RULES: SubsidyRuleData[] = [
-  {
-    cmsLevel: 1,
-    careServiceMonthly: 0,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: null,
-    transportCopay: null,
-    assistiveDeviceQuota: null,
-    assistiveDeviceCopay: null,
-    respiteYearly: null,
-    respiteCopay: null,
-  },
-  {
-    cmsLevel: 2,
-    careServiceMonthly: 10020,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: null,
-    transportCopay: null,
-    assistiveDeviceQuota: 40000,
-    assistiveDeviceCopay: { general: 0.3, midLow: 0.1, low: 0 },
-    respiteYearly: 32340,
-    respiteCopay: { general: 0.16, midLow: 0.05, low: 0 },
-  },
-  {
-    cmsLevel: 3,
-    careServiceMonthly: 15460,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: null,
-    transportCopay: null,
-    assistiveDeviceQuota: 40000,
-    assistiveDeviceCopay: { general: 0.3, midLow: 0.1, low: 0 },
-    respiteYearly: 32340,
-    respiteCopay: { general: 0.16, midLow: 0.05, low: 0 },
-  },
-  {
-    cmsLevel: 4,
-    careServiceMonthly: 18580,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: 1680,
-    transportCopay: { general: 0.21, midLow: 0.07, low: 0 },
-    assistiveDeviceQuota: 40000,
-    assistiveDeviceCopay: { general: 0.3, midLow: 0.1, low: 0 },
-    respiteYearly: 32340,
-    respiteCopay: { general: 0.16, midLow: 0.05, low: 0 },
-  },
-  {
-    cmsLevel: 5,
-    careServiceMonthly: 24100,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: 1680,
-    transportCopay: { general: 0.21, midLow: 0.07, low: 0 },
-    assistiveDeviceQuota: 40000,
-    assistiveDeviceCopay: { general: 0.3, midLow: 0.1, low: 0 },
-    respiteYearly: 32340,
-    respiteCopay: { general: 0.16, midLow: 0.05, low: 0 },
-  },
-  {
-    cmsLevel: 6,
-    careServiceMonthly: 28070,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: 1680,
-    transportCopay: { general: 0.21, midLow: 0.07, low: 0 },
-    assistiveDeviceQuota: 40000,
-    assistiveDeviceCopay: { general: 0.3, midLow: 0.1, low: 0 },
-    respiteYearly: 32340,
-    respiteCopay: { general: 0.16, midLow: 0.05, low: 0 },
-  },
-  {
-    cmsLevel: 7,
-    careServiceMonthly: 32090,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: 1680,
-    transportCopay: { general: 0.21, midLow: 0.07, low: 0 },
-    assistiveDeviceQuota: 40000,
-    assistiveDeviceCopay: { general: 0.3, midLow: 0.1, low: 0 },
-    respiteYearly: 48510,
-    respiteCopay: { general: 0.16, midLow: 0.05, low: 0 },
-  },
-  {
-    cmsLevel: 8,
-    careServiceMonthly: 36180,
-    careServiceCopay: { general: 0.16, midLow: 0.05, low: 0 },
-    transportMonthly: 1680,
-    transportCopay: { general: 0.21, midLow: 0.07, low: 0 },
-    assistiveDeviceQuota: 40000,
-    assistiveDeviceCopay: { general: 0.3, midLow: 0.1, low: 0 },
-    respiteYearly: 48510,
-    respiteCopay: { general: 0.16, midLow: 0.05, low: 0 },
-  },
-];
+const careCopay = {
+  general: CO_PAY_RATES.general.care,
+  midLow: CO_PAY_RATES.midLow.care,
+  low: CO_PAY_RATES.low.care,
+};
+const transportCopay = {
+  general: CO_PAY_RATES.general.transport,
+  midLow: CO_PAY_RATES.midLow.transport,
+  low: CO_PAY_RATES.low.transport,
+};
+const deviceCopay = {
+  general: CO_PAY_RATES.general.device,
+  midLow: CO_PAY_RATES.midLow.device,
+  low: CO_PAY_RATES.low.device,
+};
+
+export const SUBSIDY_RULES: SubsidyRuleData[] = CMS_LEVELS.map(({ level }) => {
+  const eligible = level >= 2;
+  const hasTransport = level >= 4;
+  return {
+    cmsLevel: level,
+    careServiceMonthly: CMS_CARE_QUOTAS[level as keyof typeof CMS_CARE_QUOTAS],
+    careServiceCopay: careCopay,
+    transportMonthly: hasTransport ? TRANSPORT_REGIONS.region1.monthlyQuota : null,
+    transportCopay: hasTransport ? transportCopay : null,
+    assistiveDeviceQuota: eligible ? ASSISTIVE_DEVICE_GROUPS.group1.threeYearQuota : null,
+    assistiveDeviceCopay: eligible ? deviceCopay : null,
+    respiteYearly: eligible ? getRespiteYearlyQuota(level) : null,
+    respiteCopay: eligible ? careCopay : null,
+  };
+});
 
 // 機構住宿式服務補助方案 (全日型住宿機構)
 // 衛福部自 112 年（2023）起取消排富條款

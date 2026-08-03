@@ -16,7 +16,7 @@ export default function Footer() {
               免費、無廣告的長照財務試算工具，幫助台灣家庭做出最適合的照顧決策。
             </p>
             <p className="text-[12px] text-apple-gray-400 leading-relaxed">
-              資料依據：衛生福利部 2026 年長照 3.0 最新法規
+              資料依據：衛生福利部公開資訊｜最後核對 2026-07-22
             </p>
           </div>
 

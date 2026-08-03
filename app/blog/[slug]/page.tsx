@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { BLOG_POSTS, getBlogPost, type ContentBlock } from "@/constants/blogPosts";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
+import { POLICY_SOURCES, POLICY_VERSION } from "@/lib/policyData";
 
 // ─── Static generation ────────────────────────────────────────────────────────
 
@@ -216,6 +217,15 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         {/* Article Body */}
         <article className="max-w-3xl mx-auto px-4 py-8">
           {post.content.map((block, i) => renderBlock(block, i))}
+          <aside className="mt-10 rounded-[18px] border border-emerald-200 bg-emerald-50/70 p-5 text-[13px] text-emerald-900">
+            <div className="font-bold mb-2">資料核對與官方來源</div>
+            <p className="leading-relaxed mb-2">全站中央政策資料最後核對日：{POLICY_VERSION}。文章情境用於解釋，實際資格與金額以主管機關核定為準。</p>
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              <a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-2">衛福部長照額度表</a>
+              <a href={POLICY_SOURCES.longTermCareAmendment} target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-2">長照 3.0 修正說明</a>
+              <a href={POLICY_SOURCES.longTermCareTax} target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-2">財政部長照扣除額</a>
+            </div>
+          </aside>
         </article>
 
         {/* FAQ Section */}

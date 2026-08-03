@@ -5,6 +5,14 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
 import { CONDITION_OPTIONS, type ConditionId } from "@/lib/conditionProfiles";
+import {
+  ASSISTIVE_DEVICE_GROUPS,
+  POLICY_SOURCES,
+  POLICY_VERSION,
+  TRANSPORT_REGIONS,
+  type AssistiveDeviceGroup,
+  type TransportRegion,
+} from "@/lib/policyData";
 
 declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
@@ -49,6 +57,8 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState<WizardStep>('landing');
   const [cmsLevel, setCmsLevel] = useState<CMSLevel | null>(null);
   const [incomeStatus, setIncomeStatus] = useState<IncomeStatus | null>(null);
+  const [transportRegion, setTransportRegion] = useState<TransportRegion>("region1");
+  const [assistiveDeviceGroup, setAssistiveDeviceGroup] = useState<AssistiveDeviceGroup>("group1");
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
   const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
@@ -62,10 +72,12 @@ export default function Home() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        const { cmsLevel: c, incomeStatus: i } = JSON.parse(saved);
+        const { cmsLevel: c, incomeStatus: i, transportRegion: t, assistiveDeviceGroup: a } = JSON.parse(saved);
         if (c && i) {
           setCmsLevel(c as CMSLevel);
           setIncomeStatus(i as IncomeStatus);
+          if (t && t in TRANSPORT_REGIONS) setTransportRegion(t as TransportRegion);
+          if (a && a in ASSISTIVE_DEVICE_GROUPS) setAssistiveDeviceGroup(a as AssistiveDeviceGroup);
           setShowResumeBanner(true);
         }
       }
@@ -75,9 +87,9 @@ export default function Home() {
   // 儲存試算選擇
   useEffect(() => {
     if (cmsLevel && incomeStatus) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ cmsLevel, incomeStatus }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ cmsLevel, incomeStatus, transportRegion, assistiveDeviceGroup }));
     }
-  }, [cmsLevel, incomeStatus]);
+  }, [cmsLevel, incomeStatus, transportRegion, assistiveDeviceGroup]);
 
   useEffect(() => {
     if (currentStep !== "landing") {
@@ -125,6 +137,8 @@ export default function Home() {
     localStorage.removeItem(STORAGE_KEY);
     setCmsLevel(null);
     setIncomeStatus(null);
+    setTransportRegion("region1");
+    setAssistiveDeviceGroup("group1");
     setSelectedPathway(null);
     setSelectedConditions([]);
     setShowResumeBanner(false);
@@ -146,9 +160,9 @@ export default function Home() {
 
   const currentResult = useMemo(() => (
     (cmsLevel && incomeStatus && selectedPathway)
-      ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway)
+      ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway, { transportRegion, assistiveDeviceGroup })
       : null
-  ), [cmsLevel, incomeStatus, selectedPathway]);
+  ), [cmsLevel, incomeStatus, selectedPathway, transportRegion, assistiveDeviceGroup]);
   const currentStepIndex = FLOW_STEPS.findIndex((step) => step.id === currentStep);
   const progressPct = ((currentStepIndex + 1) / FLOW_STEPS.length) * 100;
   const canStart = Boolean(cmsLevel && incomeStatus);
@@ -259,14 +273,14 @@ export default function Home() {
           {/* Warm Emoji Badge */}
           <div className="inline-flex items-center gap-2 glass-chip rounded-full px-5 py-2.5 shadow-sm mb-8">
             <span className="text-[20px]">🧡</span>
-            <span className="text-[14px] font-semibold text-amber-800">台灣長照 3.0 ｜ 2026 年最新法規</span>
+            <span className="text-[14px] font-semibold text-amber-800">台灣長照 3.0 ｜ 資料核對至 {POLICY_VERSION}</span>
           </div>
 
           <h1 className="text-[36px] sm:text-[48px] font-bold tracking-tight text-apple-gray-900 mb-5 leading-[1.15] animation-fade-in">
             讓我們一起<br />為長輩找到最好的照顧
           </h1>
           <p className="text-[17px] sm:text-[20px] text-amber-900/70 max-w-xl mx-auto leading-relaxed mb-10 animation-fade-in">
-            不用再翻法規、不用再猜數字。只要回答兩個問題，<br className="hidden sm:block" />
+            不用再翻法規、不用再猜數字。只要設定四個基本條件，<br className="hidden sm:block" />
             系統就能幫您算出政府補助多少、自己要付多少。
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
@@ -355,10 +369,11 @@ export default function Home() {
             <h2 className="text-[22px] font-bold tracking-tight text-apple-gray-900">
               📋 快速試算您的長照補助
             </h2>
-            <p className="text-[15px] text-amber-800/60 mt-1">只需要 2 個步驟，30 秒完成</p>
+            <p className="text-[15px] text-amber-800/60 mt-1">4 個條件，約 30 秒完成</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-amber-800/70">
               <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 1：選擇等級</span>
               <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 2：選擇收入身份</span>
+              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 3：交通與輔具組別</span>
               <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">完成後：比較四種照顧路徑</span>
             </div>
           </div>
@@ -430,10 +445,39 @@ export default function Home() {
               </div>
             </div>
 
+            <div className="mb-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <label className="block">
+                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">❸ 交通接送分區</span>
+                <select
+                  value={transportRegion}
+                  onChange={(event) => setTransportRegion(event.target.value as TransportRegion)}
+                  className="w-full rounded-[14px] border border-apple-gray-200 bg-white px-4 py-3 text-[14px] text-apple-gray-800 focus:border-apple-orange focus:outline-none focus:ring-2 focus:ring-orange-100"
+                >
+                  {Object.entries(TRANSPORT_REGIONS).map(([value, region]) => (
+                    <option key={value} value={value}>{region.label}・每月 {region.monthlyQuota.toLocaleString()} 元</option>
+                  ))}
+                </select>
+                <span className="block text-[12px] text-apple-gray-500 mt-2">分區以照管中心依居住鄉鎮核定為準。</span>
+              </label>
+              <label className="block">
+                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">❹ 輔具額度組別</span>
+                <select
+                  value={assistiveDeviceGroup}
+                  onChange={(event) => setAssistiveDeviceGroup(event.target.value as AssistiveDeviceGroup)}
+                  className="w-full rounded-[14px] border border-apple-gray-200 bg-white px-4 py-3 text-[14px] text-apple-gray-800 focus:border-apple-orange focus:outline-none focus:ring-2 focus:ring-orange-100"
+                >
+                  {Object.entries(ASSISTIVE_DEVICE_GROUPS).map(([value, group]) => (
+                    <option key={value} value={value}>{group.label}・3 年 {group.threeYearQuota.toLocaleString()} 元</option>
+                  ))}
+                </select>
+                <span className="block text-[12px] text-apple-gray-500 mt-2">第二組自 2026/7/1 實施，適用資格與換組時點以核定為準。</span>
+              </label>
+            </div>
+
             {/* Condition Selection (Optional) */}
             <div className="mb-10">
               <label className="block text-[16px] font-semibold text-apple-gray-800 mb-2">
-                ❸ 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
+                ❺ 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
               </label>
               <p className="text-[13px] text-apple-gray-500 mb-4">
                 選擇後，系統會針對疾病給出專屬的照顧建議、時間軸和注意事項。
@@ -577,7 +621,7 @@ export default function Home() {
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
         <div className="section-surface rounded-[20px] p-6">
           <p className="text-[14px] text-amber-800/60 leading-relaxed">
-            📌 本工具依據 <strong>衛生福利部 2026 年長照 3.0 最新法規</strong> 設計。所有數據僅供參考，實際補助金額以各縣市照顧管理中心核定為準。如有任何疑問，請撥打長照專線 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
+            📌 政策資料最後核對：<strong>{POLICY_VERSION}</strong>。依據衛福部公開資料，實際補助仍以照管中心核定為準。<a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="font-semibold text-apple-orange hover:underline underline-offset-2">查看官方額度表</a>，或撥打 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
           </p>
         </div>
       </section>
@@ -609,6 +653,8 @@ export default function Home() {
       <PathwayComparison
         cmsLevel={cmsLevel!}
         incomeStatus={incomeStatus!}
+        transportRegion={transportRegion}
+        assistiveDeviceGroup={assistiveDeviceGroup}
         onSelectPathway={(path) => {
           setSelectedPathway(path);
           window.gtag?.('event', 'pathway_selected', { care_type: path });
@@ -664,6 +710,8 @@ export default function Home() {
         assistiveDeviceQuota={currentResult.assistiveDeviceQuota}
         selectedConditions={selectedConditions}
         cmsLevel={cmsLevel ?? undefined}
+        transportRegion={transportRegion}
+        assistiveDeviceGroup={assistiveDeviceGroup}
       />
     );
   };

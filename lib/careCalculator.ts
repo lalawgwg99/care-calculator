@@ -5,6 +5,12 @@ import {
   CareType,
   INSTITUTION_SUBSIDY,
 } from "@/constants/careData";
+import {
+  ASSISTIVE_DEVICE_GROUPS,
+  TRANSPORT_REGIONS,
+  type AssistiveDeviceGroup,
+  type TransportRegion,
+} from "@/lib/policyData";
 
 export interface CareBudgetResult {
   totalSubsidyMonthly: number;
@@ -37,7 +43,8 @@ export interface CareBudgetResult {
 export function calculateCareBudget(
   cmsLevel: number,
   incomeStatus: IncomeStatus,
-  careType: CareType
+  careType: CareType,
+  options: { transportRegion?: TransportRegion; assistiveDeviceGroup?: AssistiveDeviceGroup } = {}
 ): CareBudgetResult {
   // 驗證輸入
   if (cmsLevel < 1 || cmsLevel > 8) {
@@ -111,7 +118,7 @@ export function calculateCareBudget(
   const hasTransportation = rule.transportMonthly !== null && cmsLevel >= 4;
 
   if (hasTransportation && rule.transportCopay) {
-    transportTotal = rule.transportMonthly!;
+    transportTotal = TRANSPORT_REGIONS[options.transportRegion ?? "region1"].monthlyQuota;
     const transportCopayRate = rule.transportCopay[incomeStatus];
     transportCopay = Math.floor(transportTotal * transportCopayRate);
     transportSubsidy = transportTotal - transportCopay;
@@ -142,7 +149,7 @@ export function calculateCareBudget(
   // ========== 第三包：輔具及無障礙改造 (三年額度，獨立顯示) ==========
   let assistiveDeviceQuota = 0;
   if (rule.assistiveDeviceQuota !== null && cmsLevel >= 2) {
-    assistiveDeviceQuota = rule.assistiveDeviceQuota;
+    assistiveDeviceQuota = ASSISTIVE_DEVICE_GROUPS[options.assistiveDeviceGroup ?? "group1"].threeYearQuota;
   }
 
   return {

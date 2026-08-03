@@ -36,10 +36,10 @@ function makeInput(overrides?: Partial<HiddenSavingsInput['elderly']> & { taxBra
 
 describe('calculateHiddenSavings', () => {
   describe('一、健保費減免', () => {
-    test('65 歲以上，台北市，應有年齡減免 $826/月', () => {
+    test('地方高齡健保補助未取得完整資格時不自動估值', () => {
       const result = calculateHiddenSavings(makeInput({ age: 65, city: '台北市' }));
-      expect(result.nhiAgeSavingsMonthly).toBe(826);
-      expect(result.nhiTotalYearly).toBe(826 * 12);
+      expect(result.nhiAgeSavingsMonthly).toBe(0);
+      expect(result.nhiTotalYearly).toBe(0);
     });
 
     test('64 歲不符合年齡減免', () => {
@@ -47,9 +47,9 @@ describe('calculateHiddenSavings', () => {
       expect(result.nhiAgeSavingsMonthly).toBe(0);
     });
 
-    test('原住民 55 歲即符合年齡減免', () => {
+    test('原住民仍須地方資格，不自動估值', () => {
       const result = calculateHiddenSavings(makeInput({ age: 55, isIndigenous: true }));
-      expect(result.nhiAgeSavingsMonthly).toBe(826);
+      expect(result.nhiAgeSavingsMonthly).toBe(0);
     });
 
     test('原住民 54 歲不符合', () => {
@@ -57,27 +57,26 @@ describe('calculateHiddenSavings', () => {
       expect(result.nhiAgeSavingsMonthly).toBe(0);
     });
 
-    test('身障輕度減免 25%', () => {
+    test('身障健保補助缺少投保類別時不自動估值', () => {
       const result = calculateHiddenSavings(makeInput({ disabilityLevel: 'mild' }));
-      expect(result.nhiDisabilitySavingsMonthly).toBe(Math.round(826 * 0.25));
+      expect(result.nhiDisabilitySavingsMonthly).toBe(0);
     });
 
     test('身障中度減免 50%', () => {
       const result = calculateHiddenSavings(makeInput({ disabilityLevel: 'moderate' }));
-      expect(result.nhiDisabilitySavingsMonthly).toBe(Math.round(826 * 0.50));
+      expect(result.nhiDisabilitySavingsMonthly).toBe(0);
     });
 
     test('身障重度/極重度減免 100%', () => {
       const severe = calculateHiddenSavings(makeInput({ disabilityLevel: 'severe' }));
       const profound = calculateHiddenSavings(makeInput({ disabilityLevel: 'profound' }));
-      expect(severe.nhiDisabilitySavingsMonthly).toBe(826);
-      expect(profound.nhiDisabilitySavingsMonthly).toBe(826);
+      expect(severe.nhiDisabilitySavingsMonthly).toBe(0);
+      expect(profound.nhiDisabilitySavingsMonthly).toBe(0);
     });
 
-    test('年齡減免與身障減免取較高者', () => {
-      // 65 歲 + 輕度身障：年齡 826 > 身障 207 → 取 826
+    test('地方與投保條件未確認時健保合計為零', () => {
       const result = calculateHiddenSavings(makeInput({ age: 65, disabilityLevel: 'mild' }));
-      expect(result.nhiTotalYearly).toBe(826 * 12);
+      expect(result.nhiTotalYearly).toBe(0);
     });
   });
 
@@ -90,12 +89,12 @@ describe('calculateHiddenSavings', () => {
 
     test('輕度身障保費減免 25%', () => {
       const result = calculateHiddenSavings(makeInput({ disabilityLevel: 'mild' }));
-      expect(result.laborInsuranceSavingsMonthly).toBe(Math.round(1186 * 0.25));
+      expect(result.laborInsuranceSavingsMonthly).toBe(Math.round(1329 * 0.25));
     });
 
     test('重度身障保費減免 100%', () => {
       const result = calculateHiddenSavings(makeInput({ disabilityLevel: 'severe' }));
-      expect(result.laborInsuranceSavingsMonthly).toBe(Math.round(1186 * 1.0));
+      expect(result.laborInsuranceSavingsMonthly).toBe(1329);
     });
 
     test('仍在勞保加保期間時顯示失能給付提醒', () => {
@@ -110,9 +109,9 @@ describe('calculateHiddenSavings', () => {
   });
 
   describe('三、稅務扣除額', () => {
-    test('70 歲以上扶養免稅額 $135,000', () => {
+    test('70 歲以上扶養免稅額 $145,500', () => {
       const result = calculateHiddenSavings(makeInput({ age: 70, isClaiming: true }));
-      expect(result.taxDependentExemption).toBe(135000);
+      expect(result.taxDependentExemption).toBe(145500);
     });
 
     test('70 歲以下扶養免稅額 $97,000', () => {
@@ -135,9 +134,9 @@ describe('calculateHiddenSavings', () => {
       expect(result.taxDisabilityDeduction).toBe(0);
     });
 
-    test('符合長照資格 → 長照特別扣除 $120,000', () => {
+    test('符合長照資格且未觸及稅率排富 → 長照特別扣除 $180,000', () => {
       const result = calculateHiddenSavings(makeInput({ hasLongTermCareQualification: true }));
-      expect(result.taxLongTermCareDeduction).toBe(120000);
+      expect(result.taxLongTermCareDeduction).toBe(180000);
     });
 
     test('不符合長照資格 → 長照扣除為 0', () => {
@@ -145,18 +144,26 @@ describe('calculateHiddenSavings', () => {
       expect(result.taxLongTermCareDeduction).toBe(0);
     });
 
-    test('完整扣除總額計算：70+ 歲 + 身障 + 長照 = $473,000', () => {
+    test('未列報同一申報戶時不計入長照扣除額', () => {
+      const result = calculateHiddenSavings(makeInput({
+        hasLongTermCareQualification: true,
+        isClaiming: false,
+      }));
+      expect(result.taxLongTermCareDeduction).toBe(0);
+    });
+
+    test('完整扣除總額計算：70+ 歲 + 身障 + 長照 = $543,500', () => {
       const result = calculateHiddenSavings(makeInput({
         age: 75,
         disabilityLevel: 'moderate',
         hasLongTermCareQualification: true,
         isClaiming: true,
       }));
-      expect(result.taxTotalDeduction).toBe(135000 + 218000 + 120000);
-      expect(result.taxTotalDeduction).toBe(473000);
+      expect(result.taxTotalDeduction).toBe(145500 + 218000 + 180000);
+      expect(result.taxTotalDeduction).toBe(543500);
     });
 
-    test('稅率 12% 實際省稅 = $473,000 × 12% = $56,760', () => {
+    test('稅率 12% 實際省稅 = $543,500 × 12% = $65,220', () => {
       const result = calculateHiddenSavings(makeInput({
         age: 75,
         disabilityLevel: 'moderate',
@@ -164,11 +171,11 @@ describe('calculateHiddenSavings', () => {
         isClaiming: true,
         taxBracket: 0.12,
       }));
-      expect(result.taxActualSaving).toBe(Math.round(473000 * 0.12));
-      expect(result.taxActualSaving).toBe(56760);
+      expect(result.taxActualSaving).toBe(Math.round(543500 * 0.12));
+      expect(result.taxActualSaving).toBe(65220);
     });
 
-    test('稅率 20% 實際省稅更多', () => {
+    test('稅率 20% 觸及長照扣除額排富條件', () => {
       const result = calculateHiddenSavings(makeInput({
         age: 75,
         disabilityLevel: 'moderate',
@@ -176,17 +183,18 @@ describe('calculateHiddenSavings', () => {
         isClaiming: true,
         taxBracket: 0.20,
       }));
-      expect(result.taxActualSaving).toBe(Math.round(473000 * 0.20));
+      expect(result.taxLongTermCareDeduction).toBe(0);
+      expect(result.taxActualSaving).toBe(Math.round((145500 + 218000) * 0.20));
     });
   });
 
   describe('四、日常生活減免', () => {
-    test('有身障 + 有車 → 牌照稅免徵 $11,230', () => {
+    test('僅有身障與車輛排氣量不足以判定牌照稅免徵', () => {
       const result = calculateHiddenSavings(makeInput({
         disabilityLevel: 'mild',
         hasVehicleUnder2400cc: true,
       }));
-      expect(result.vehicleTaxSavingsYearly).toBe(11230);
+      expect(result.vehicleTaxSavingsYearly).toBe(0);
     });
 
     test('無身障 → 無牌照稅免徵', () => {
@@ -205,14 +213,14 @@ describe('calculateHiddenSavings', () => {
       expect(result.vehicleTaxSavingsYearly).toBe(0);
     });
 
-    test('台北市 65 歲以上 → 敬老卡 480 點/月', () => {
+    test('敬老卡地方資格未確認時不自動估值', () => {
       const result = calculateHiddenSavings(makeInput({ age: 65, city: '台北市' }));
-      expect(result.seniorCardMonthly).toBe(480);
+      expect(result.seniorCardMonthly).toBe(0);
     });
 
-    test('台中市 65 歲以上 → 敬老卡 1000 點/月', () => {
+    test('不同縣市同樣不預設敬老卡金額', () => {
       const result = calculateHiddenSavings(makeInput({ age: 65, city: '台中市' }));
-      expect(result.seniorCardMonthly).toBe(1000);
+      expect(result.seniorCardMonthly).toBe(0);
     });
 
     test('64 歲 → 無敬老卡', () => {
@@ -220,9 +228,9 @@ describe('calculateHiddenSavings', () => {
       expect(result.seniorCardMonthly).toBe(0);
     });
 
-    test('有身障 → 停車優惠為 true', () => {
+    test('僅有身障等級不足以判定停車優惠', () => {
       const result = calculateHiddenSavings(makeInput({ disabilityLevel: 'mild' }));
-      expect(result.parkingBenefit).toBe(true);
+      expect(result.parkingBenefit).toBe(false);
     });
 
     test('無身障 → 停車優惠為 false', () => {
@@ -280,8 +288,8 @@ describe('calculateHiddenSavings', () => {
     });
   });
 
-  describe('震撼力測試案例：最大省錢情境', () => {
-    test('75 歲 + 中度身障 + 長照 + 有車 + 稅率 20% → 年省超過 10 萬', () => {
+  describe('保守估值案例', () => {
+    test('不把未確認地方福利與牌照稅計入總額', () => {
       const result = calculateHiddenSavings(makeInput({
         age: 75,
         city: '台中市',
@@ -293,15 +301,10 @@ describe('calculateHiddenSavings', () => {
         taxBracket: 0.20,
       }));
 
-      // 健保：$826/月 × 12 = $9,912
-      // 國保：$1,186 × 50% × 12 = $7,116
-      // 稅務：$473,000 × 20% = $94,600
-      // 牌照稅：$11,230
-      // 敬老卡：$1,000 × 12 = $12,000
-      // 輔具：$40,000 / 3 = $13,333
-      // 合計 > $100,000
-
-      expect(result.totalYearlySavings).toBeGreaterThan(100000);
+      expect(result.nhiTotalYearly).toBe(0);
+      expect(result.vehicleTaxSavingsYearly).toBe(0);
+      expect(result.seniorCardMonthly).toBe(0);
+      expect(result.totalYearlySavings).toBe(94013);
     });
   });
 });

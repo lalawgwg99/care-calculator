@@ -37,7 +37,7 @@ export default function BlogListPage() {
             把複雜的長照制度<br />說清楚、算明白
           </h1>
           <p className="text-[16px] text-amber-900/70 leading-relaxed">
-            依據衛生福利部 2026 年最新法規，逐一拆解每個照顧家庭都需要知道的事。
+            依據主管機關公開資料逐一核對，並標示文章更新日期；實際資格仍以主管機關核定為準。
           </p>
         </div>
       </section>

@@ -98,7 +98,7 @@ export default function HiddenSavingsPanel({
               年齡減免與身障減免取較高者計算，每年可省 {formatMoney(savings.nhiTotalYearly)}
             </p>
           ) : (
-            <p className="text-[13px] text-apple-gray-500">目前長輩條件不符合健保減免資格</p>
+            <p className="text-[13px] text-apple-gray-500">健保補助須依投保類別、眷口與地方資格核定，本試算不以單一固定金額自動計入。</p>
           )}
         </div>
       ),
@@ -132,7 +132,7 @@ export default function HiddenSavingsPanel({
     },
     {
       icon: "📊",
-      title: "報稅扣除額（最強！）",
+      title: "報稅扣除額",
       yearlyAmount: savings.taxActualSaving,
       color: "orange",
       details: (
@@ -165,7 +165,7 @@ export default function HiddenSavingsPanel({
               </div>
               <div className="bg-orange-50 rounded-[12px] p-3 border border-orange-200/50">
                 <p className="text-[13px] text-orange-800">
-                  以您的稅率 {Math.round(taxBracket * 100)}% 計算，明年 5 月報稅可實際拿回{" "}
+                  以所選稅率單純估算，可能減少的稅額上限為{" "}
                   <strong className="text-apple-orange">{formatMoney(savings.taxActualSaving)}</strong>
                 </p>
               </div>
@@ -173,6 +173,12 @@ export default function HiddenSavingsPanel({
           )}
           {savings.taxTotalDeduction === 0 && (
             <p className="text-[13px] text-apple-gray-500">請勾選「列報扶養」以計算稅務減免</p>
+          )}
+          {hasLongTermCareQualification && taxBracket >= 0.2 && (
+            <p className="text-[12px] text-orange-700">適用稅率達 20% 時，長照特別扣除額受排富條款限制，本試算已不計入該 18 萬元。</p>
+          )}
+          {hasLongTermCareQualification && taxBracket < 0.2 && (
+            <p className="text-[12px] text-orange-700">若選擇股利 28% 分開計稅或基本所得額超過法定門檻，也可能無法適用長照扣除額；本工具未蒐集這兩項資料。</p>
           )}
         </div>
       ),
@@ -212,7 +218,7 @@ export default function HiddenSavingsPanel({
             </div>
           )}
           {savings.vehicleTaxSavingsYearly === 0 && savings.seniorCardMonthly === 0 && !savings.parkingBenefit && savings.assistiveDeviceQuota === 0 && (
-            <p className="text-[13px] text-apple-gray-500">目前長輩條件不符合日常減免資格</p>
+            <p className="text-[13px] text-apple-gray-500">敬老卡、健保與牌照稅另有地方及個案資格，本試算不把未確認的金額列入省下總額。</p>
           )}
         </div>
       ),
@@ -365,7 +371,7 @@ export default function HiddenSavingsPanel({
                     onChange={(e) => setIsIndigenous(e.target.checked)}
                     className="w-5 h-5 rounded border-apple-gray-300 text-emerald-500 focus:ring-emerald-300/50"
                   />
-                  <span className="text-[14px] text-apple-gray-700">長輩為原住民（健保減免門檻降至 55 歲）</span>
+                  <span className="text-[14px] text-apple-gray-700">長輩為原住民（僅作資格提醒，不自動估健保金額）</span>
                 </label>
 
                 <label className="flex items-center gap-3 cursor-pointer">
@@ -395,7 +401,7 @@ export default function HiddenSavingsPanel({
                     onChange={(e) => setHasVehicle(e.target.checked)}
                     className="w-5 h-5 rounded border-apple-gray-300 text-emerald-500 focus:ring-emerald-300/50"
                   />
-                  <span className="text-[14px] text-apple-gray-700">同戶有 2400cc 以下汽車（可免牌照稅）</span>
+                  <span className="text-[14px] text-apple-gray-700">同戶有 2400cc 以下汽車（仍須確認車主、駕照與同戶條件；不列入金額）</span>
                 </label>
               </div>
             </div>
@@ -441,9 +447,8 @@ export default function HiddenSavingsPanel({
         {/* ====== 提醒文字 ====== */}
         <div className="mt-6 bg-white/60 rounded-[16px] p-4 border border-emerald-100/50">
           <p className="text-[12px] text-emerald-700/60 leading-relaxed">
-            * 以上數字為依據 2025-2026 年法規估算，實際金額以各主管機關核定為準。
-            稅務扣除額以最新年度標準計算，實際節稅金額視個人綜合所得稅申報情形而定。
-            各縣市敬老卡額度可能因政策調整而異動。
+            * 稅務與國保採 2026 年可核對的中央標準；地方健保、敬老卡、停車與牌照稅因資格條件不足，不列入省下總額。
+            實際節稅金額仍以綜合所得稅申報及國稅局核定為準。
           </p>
         </div>
       </div>

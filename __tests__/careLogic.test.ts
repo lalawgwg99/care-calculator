@@ -195,6 +195,24 @@ describe('careLogic 核心計算邏輯測試', () => {
         expect(result.assistiveDeviceQuota).toBe(40000);
       }
     });
+
+    test('2026-07-01 第二組智慧輔具額度為 60000', () => {
+      const result = calculateCareBudget(5, 'general', 'home-care', {
+        assistiveDeviceGroup: 'group2',
+      });
+      expect(result.assistiveDeviceQuota).toBe(60000);
+      expect(result.policyVersion).toBe('2026-07-22');
+    });
+  });
+
+  describe('calculateCareBudget - 交通接送分區', () => {
+    test('第四區月額度為 2400，且補助與自付同步調整', () => {
+      const region1 = calculateCareBudget(5, 'general', 'home-care', { transportRegion: 'region1' });
+      const region4 = calculateCareBudget(5, 'general', 'home-care', { transportRegion: 'region4' });
+      expect(region4.transportQuotaMonthly).toBe(2400);
+      expect(region4.totalSubsidyMonthly - region1.totalSubsidyMonthly).toBe(569);
+      expect(region4.outOfPocketMonthly - region1.outOfPocketMonthly).toBe(151);
+    });
   });
 
   describe('calculateCareBudget - 喘息服務', () => {

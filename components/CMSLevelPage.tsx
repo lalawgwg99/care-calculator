@@ -85,7 +85,7 @@ export default function CMSLevelPage({ params }: PageProps) {
             <span className="text-apple-orange">{levelInfo.name}</span>補助多少？
           </h1>
           <p className="text-[16px] text-amber-900/70 leading-relaxed">
-            依據衛福部2026年長照3.0最新法規，計算第{level}級的完整補助金額
+            依據衛福部公開額度，說明第{level}級中央補助基準；交通分區與實際資格另依核定
           </p>
         </div>
       </section>
@@ -113,14 +113,14 @@ export default function CMSLevelPage({ params }: PageProps) {
               <div className={`${info.transport ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'} rounded-[20px] p-5 border text-center`}>
                 <div className={`text-[13px] ${info.transport ? 'text-blue-700' : 'text-gray-500'} font-medium mb-2`}>交通接送</div>
                 <div className={`text-[24px] font-bold ${info.transport ? 'text-blue-900' : 'text-gray-400'}`}>
-                  {info.transport ? '$1,680' : '無'}
+                  {info.transport ? '$1,680～2,400' : '無'}
                 </div>
                 <div className={`text-[11px] ${info.transport ? 'text-blue-600' : 'text-gray-400'} mt-1`}>{info.transport ? '/月' : '需4級以上'}</div>
               </div>
               <div className="bg-purple-50 rounded-[20px] p-5 border border-purple-200 text-center">
                 <div className="text-[13px] text-purple-700 font-medium mb-2">輔具額度</div>
                 <div className="text-[24px] font-bold text-purple-900">
-                  {level >= 2 ? '$40,000' : '$0'}
+                  {level >= 2 ? '$40,000～60,000' : '$0'}
                 </div>
                 <div className="text-[11px] text-purple-600 mt-1">每3年</div>
               </div>

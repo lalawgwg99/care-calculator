@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from 'next/link';
 import { CMS_LEVEL_INFO, CARE_TYPE_INFO, INCOME_TYPE_INFO, CMS_LEVELS_STR, CARE_TYPES, type CareType, type CMSLevel, type IncomeType } from '@/constants/pseoData';
 import { absoluteUrl, pageAlternates } from '@/lib/site';
+import { ASSISTIVE_DEVICE_GROUPS, TRANSPORT_REGIONS } from '@/lib/policyData';
 
 interface PageProps {
   params: { level: string; 'care-type': string };
@@ -68,8 +69,9 @@ function calculateSubsidy(level: CMSLevel, careType: CareType, incomeType: Incom
   const copay = Math.floor(baseSubsidy * copayRate);
   const actualSubsidy = baseSubsidy - copay;
 
-  const transportSubsidy = levelInfo.hasTransport ? Math.floor(1680 * (1 - (incomeType === 'general' ? 0.21 : incomeType === 'mid-low' ? 0.07 : 0))) : 0;
-  const assistiveDeviceQuota = level >= 2 ? 40000 : 0;
+  const defaultTransportQuota = TRANSPORT_REGIONS.region1.monthlyQuota;
+  const transportSubsidy = levelInfo.hasTransport ? Math.floor(defaultTransportQuota * (1 - (incomeType === 'general' ? 0.21 : incomeType === 'mid-low' ? 0.07 : 0))) : 0;
+  const assistiveDeviceQuota = level >= 2 ? ASSISTIVE_DEVICE_GROUPS.group1.threeYearQuota : 0;
   const respiteYearly = levelInfo.respite;
   const respiteMonthly = Math.floor(respiteYearly / 12);
   const respiteCopay = Math.floor(respiteMonthly * copayRate);
@@ -83,7 +85,7 @@ function calculateSubsidy(level: CMSLevel, careType: CareType, incomeType: Incom
     respiteMonthly,
     respiteCopay,
     totalSubsidy: actualSubsidy + transportSubsidy + (respiteMonthly - respiteCopay),
-    totalCopay: copay + (levelInfo.hasTransport ? Math.floor(1680 * (incomeType === 'general' ? 0.21 : incomeType === 'mid-low' ? 0.07 : 0)) : 0) + respiteCopay,
+    totalCopay: copay + (levelInfo.hasTransport ? Math.floor(defaultTransportQuota * (incomeType === 'general' ? 0.21 : incomeType === 'mid-low' ? 0.07 : 0)) : 0) + respiteCopay,
   };
 }
 
@@ -191,7 +193,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                     <div className="flex justify-between items-center py-3 border-b border-gray-100">
                       <span className="text-[15px] text-apple-gray-600">交通接送服務</span>
                       <span className="text-[15px] font-semibold text-green-700">
-                        補助 $1,344 / 自付 $336
+                        補助 ${calculateSubsidy(level, careType, 'general')?.transportSubsidy.toLocaleString()} / 自付 ${Math.floor(TRANSPORT_REGIONS.region1.monthlyQuota * 0.21).toLocaleString()}
                       </span>
                     </div>
                   )}
@@ -207,7 +209,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                     <div className="flex justify-between items-center py-3">
                       <span className="text-[15px] text-apple-gray-600">輔具及無障礙改造</span>
                       <span className="text-[15px] font-semibold text-blue-700">
-                        每3年最高 $40,000
+                        每3年 $40,000～$60,000
                       </span>
                     </div>
                   )}

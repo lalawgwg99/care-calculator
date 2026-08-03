@@ -9,6 +9,12 @@
  * 4. 日常生活減免（牌照稅、敬老卡、輔具等）
  */
 
+import {
+  ASSISTIVE_DEVICE_GROUPS,
+  NATIONAL_PENSION_2026,
+  TAX_POLICY_2025_INCOME,
+} from "@/lib/policyData";
+
 // ====== 型別定義 ======
 
 export type DisabilityLevel = 'none' | 'mild' | 'moderate' | 'severe' | 'profound';
@@ -65,11 +71,10 @@ export interface SavingsBreakdown {
 
 // ====== 常數定義 ======
 
-/** 健保第六類保險對象月自付額（地方政府補助額度） */
-const NHI_AGE_SUBSIDY_MONTHLY = 826;
-
-/** 健保平均月保費（依附被保險人，第六類） */
-const NHI_BASE_PREMIUM_MONTHLY = 826;
+// 健保高齡與身障補助會依投保類別、眷口及地方資格而異。
+// 未蒐集完整投保條件前不自動估金額，避免把地方方案誤當全國固定補助。
+const NHI_AGE_SUBSIDY_MONTHLY = 0;
+const NHI_BASE_PREMIUM_MONTHLY = 0;
 
 /** 身障健保減免比例 */
 const DISABILITY_NHI_DISCOUNT: Record<DisabilityLevel, number> = {
@@ -90,57 +95,40 @@ const DISABILITY_LABOR_DISCOUNT: Record<DisabilityLevel, number> = {
 };
 
 /** 國民年金月保費（2026 年標準） */
-const NATIONAL_PENSION_MONTHLY = 1186;
+const NATIONAL_PENSION_MONTHLY = NATIONAL_PENSION_2026.generalMonthlyCopay;
 
 /** 稅務扣除額（2025 年度報稅，2026 年 5 月申報適用） */
-const TAX_DEPENDENT_EXEMPTION_UNDER70 = 97000;
-const TAX_DEPENDENT_EXEMPTION_OVER70 = 135000;
-const TAX_DISABILITY_DEDUCTION = 218000;
-const TAX_LONG_TERM_CARE_DEDUCTION = 120000;
+const TAX_DEPENDENT_EXEMPTION_UNDER70 = TAX_POLICY_2025_INCOME.dependentExemptionUnder70;
+const TAX_DEPENDENT_EXEMPTION_OVER70 = TAX_POLICY_2025_INCOME.dependentExemptionOver70;
+const TAX_DISABILITY_DEDUCTION = TAX_POLICY_2025_INCOME.disabilityDeduction;
+const TAX_LONG_TERM_CARE_DEDUCTION = TAX_POLICY_2025_INCOME.longTermCareDeduction;
 
-/** 汽車牌照稅（2400cc 以下自用小客車年稅額） */
-const VEHICLE_LICENSE_TAX_YEARLY = 11230;
+// 牌照稅免徵另涉及車主、駕照、同戶與每戶一車等條件，不以排氣量單獨判定。
+const VEHICLE_LICENSE_TAX_YEARLY = 0;
 
 /**
  * 各縣市健保年齡減免資格與敬老卡額度
  * eligible: 是否有地方政府健保補助
  * seniorCardMonthly: 敬老卡每月點數（元）
  */
-const CITY_BENEFITS: Record<string, { nhiEligible: boolean; seniorCardMonthly: number }> = {
-  '台北市': { nhiEligible: true, seniorCardMonthly: 480 },
-  '新北市': { nhiEligible: true, seniorCardMonthly: 480 },
-  '桃園市': { nhiEligible: true, seniorCardMonthly: 600 },
-  '台中市': { nhiEligible: true, seniorCardMonthly: 1000 },
-  '台南市': { nhiEligible: true, seniorCardMonthly: 500 },
-  '高雄市': { nhiEligible: true, seniorCardMonthly: 600 },
-  '基隆市': { nhiEligible: true, seniorCardMonthly: 480 },
-  '新竹市': { nhiEligible: true, seniorCardMonthly: 500 },
-  '新竹縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '苗栗縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '彰化縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '南投縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '雲林縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '嘉義市': { nhiEligible: true, seniorCardMonthly: 480 },
-  '嘉義縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '屏東縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '宜蘭縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '花蓮縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '台東縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '澎湖縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '金門縣': { nhiEligible: true, seniorCardMonthly: 480 },
-  '連江縣': { nhiEligible: true, seniorCardMonthly: 480 },
-};
+const SUPPORTED_CITY_NAMES = [
+  '台北市', '新北市', '桃園市', '台中市', '台南市', '高雄市', '基隆市',
+  '新竹市', '新竹縣', '苗栗縣', '彰化縣', '南投縣', '雲林縣', '嘉義市',
+  '嘉義縣', '屏東縣', '宜蘭縣', '花蓮縣', '台東縣', '澎湖縣', '金門縣', '連江縣',
+] as const;
+const CITY_BENEFITS: Record<string, { nhiEligible: boolean; seniorCardMonthly: number }> =
+  Object.fromEntries(SUPPORTED_CITY_NAMES.map((city) => [city, { nhiEligible: false, seniorCardMonthly: 0 }]));
 
 /** 所有支援的縣市列表（供前端下拉選單使用） */
 export const SUPPORTED_CITIES = Object.keys(CITY_BENEFITS);
 
 /** 稅率選項（供前端下拉選單使用） */
 export const TAX_BRACKET_OPTIONS: { value: TaxBracket; label: string; description: string }[] = [
-  { value: 0.05, label: '5%', description: '年所得 56 萬以下' },
-  { value: 0.12, label: '12%', description: '年所得 56～126 萬' },
-  { value: 0.20, label: '20%', description: '年所得 126～252 萬' },
-  { value: 0.30, label: '30%', description: '年所得 252～472 萬' },
-  { value: 0.40, label: '40%', description: '年所得 472 萬以上' },
+  { value: 0.05, label: '5%', description: '所得淨額 59 萬以下' },
+  { value: 0.12, label: '12%', description: '所得淨額 59～133 萬' },
+  { value: 0.20, label: '20%', description: '所得淨額 133～266 萬' },
+  { value: 0.30, label: '30%', description: '所得淨額 266～498 萬' },
+  { value: 0.40, label: '40%', description: '所得淨額 498 萬以上' },
 ];
 
 /** 身障等級選項（供前端下拉選單使用） */
@@ -202,7 +190,9 @@ export function calculateHiddenSavings(input: HiddenSavingsInput): SavingsBreakd
 
   // 長照特別扣除額
   const taxLongTermCareDeduction =
-    elderly.hasLongTermCareQualification ? TAX_LONG_TERM_CARE_DEDUCTION : 0;
+    taxPayer.isClaiming && elderly.hasLongTermCareQualification && taxPayer.taxBracket < 0.2
+      ? TAX_LONG_TERM_CARE_DEDUCTION
+      : 0;
   taxTotalDeduction += taxLongTermCareDeduction;
 
   // 實際省下的稅金 = 扣除總額 × 適用稅率
@@ -222,10 +212,12 @@ export function calculateHiddenSavings(input: HiddenSavingsInput): SavingsBreakd
       : 0;
 
   // 身障停車優惠
-  const parkingBenefit = elderly.disabilityLevel !== 'none';
+  const parkingBenefit = false;
 
-  // 輔具補助（每 3 年 4 萬）
-  const assistiveDeviceQuota = elderly.hasLongTermCareQualification ? 40000 : 0;
+  // 未提供組別時採第一組 4 萬的保守估算；第二組最高 6 萬於主試算選擇。
+  const assistiveDeviceQuota = elderly.hasLongTermCareQualification
+    ? ASSISTIVE_DEVICE_GROUPS.group1.threeYearQuota
+    : 0;
 
   // ========== 總計 ==========
   const totalYearlySavings =
