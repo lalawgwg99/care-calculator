@@ -1,8 +1,8 @@
-Site: https://care.taicalc.com
+Site: https://carepilot1966.com
 Language: zh-TW
-Sitemap: https://care.taicalc.com/sitemap.xml
-Robots: https://care.taicalc.com/robots.txt
-LLMs: https://care.taicalc.com/llms.txt
+Sitemap: https://carepilot1966.com/sitemap.xml
+Robots: https://carepilot1966.com/robots.txt
+LLMs: https://carepilot1966.com/llms.txt
 
 Content focus:
 - Taiwan LTC 3.0 subsidy calculation

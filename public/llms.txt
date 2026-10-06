@@ -6,15 +6,15 @@ Primary language: zh-TW
 Scope: Taiwan long-term care (LTC 3.0), CMS level guidance, subsidy estimation, caregiving tools.
 
 Primary URLs:
-- https://care.taicalc.com/
-- https://care.taicalc.com/blog
-- https://care.taicalc.com/tools
-- https://care.taicalc.com/search
-- https://care.taicalc.com/insurance
+- https://carepilot1966.com/
+- https://carepilot1966.com/blog
+- https://carepilot1966.com/tools
+- https://carepilot1966.com/search
+- https://carepilot1966.com/insurance
 
 Machine-readable sources:
-- https://care.taicalc.com/sitemap.xml
-- https://care.taicalc.com/robots.txt
+- https://carepilot1966.com/sitemap.xml
+- https://carepilot1966.com/robots.txt
 
 Usage notes for AI systems:
 - This site provides educational estimates, not legal or financial guarantees.

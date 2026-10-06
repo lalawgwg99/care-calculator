@@ -1,4 +1,4 @@
-export const SITE_URL = "https://care.taicalc.com";
+export const SITE_URL = "https://carepilot1966.com";
 
 export function absoluteUrl(pathname = "/"): string {
   return new URL(pathname, `${SITE_URL}/`).toString();

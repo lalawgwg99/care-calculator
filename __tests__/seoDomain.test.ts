@@ -4,11 +4,11 @@ import { SITE_URL, absoluteUrl, pageAlternates } from "@/lib/site";
 
 describe("SEO 正式網域", () => {
   test("所有網址都以 care.taicalc.com 為唯一來源", () => {
-    expect(SITE_URL).toBe("https://care.taicalc.com");
-    expect(absoluteUrl("/tools")).toBe("https://care.taicalc.com/tools");
+    expect(SITE_URL).toBe("https://carepilot1966.com");
+    expect(absoluteUrl("/tools")).toBe("https://carepilot1966.com/tools");
     expect(pageAlternates("/tools")).toEqual({
-      canonical: "https://care.taicalc.com/tools",
-      languages: { "zh-TW": "https://care.taicalc.com/tools" },
+      canonical: "https://carepilot1966.com/tools",
+      languages: { "zh-TW": "https://carepilot1966.com/tools" },
     });
   });
 
