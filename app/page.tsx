@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Icon, { type IconName } from "../components/Icon";
-import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
+import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget } from "@/lib/careLogic";
 import { CONDITION_OPTIONS, type ConditionId } from "@/lib/conditionProfiles";
 import {
   ASSISTIVE_DEVICE_GROUPS,
@@ -25,12 +25,6 @@ const INCOME_LABELS: Record<IncomeStatus, string> = {
   "mid-low": "中低收入",
   low: "低收入戶",
 };
-const INCOME_OPTIONS: Array<{ value: IncomeStatus; label: string; sub: string }> = [
-  { value: "general", label: "一般戶", sub: "自付 16%" },
-  { value: "mid-low", label: "中低收入戶", sub: "自付 5%" },
-  { value: "low", label: "低收入戶", sub: "全額補助" },
-];
-
 const StepLoader = () => (
   <div className="flex justify-center items-center py-24">
     <div className="w-8 h-8 border-4 border-orange-200 border-t-apple-orange rounded-full animate-spin" />
@@ -43,6 +37,7 @@ const ServiceCart = dynamic(() => import("@/components/ServiceCart"), { loading:
 const FinancialReport = dynamic(() => import("@/components/FinancialReport"), { loading: StepLoader });
 const ApplicationGuide = dynamic(() => import("@/components/ApplicationGuide"), { loading: StepLoader });
 import FAQ from "@/components/FAQ";
+import QuickWizard from "@/components/QuickWizard";
 import CaregiverTips from "@/components/CaregiverTips";
 import EmergencyAccordion from "@/components/EmergencyAccordion";
 
@@ -63,6 +58,8 @@ export default function Home() {
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
   const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
+  const [estimatorFromWizard, setEstimatorFromWizard] = useState(false);
+  const [wizardCmsSignal, setWizardCmsSignal] = useState<CMSLevel | null>(null);
   const [showResumeBanner, setShowResumeBanner] = useState(false);
   const [activeGuide, setActiveGuide] = useState(0);
   const [showStickyCta, setShowStickyCta] = useState(false);
@@ -134,6 +131,15 @@ export default function Home() {
     }
   };
 
+  const handleQuickComplete = (careType: CareType, cms: CMSLevel, income: IncomeStatus) => {
+    setSelectedPathway(careType);
+    setCmsLevel(cms);
+    setIncomeStatus(income);
+    setCurrentStep('pathway');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.gtag?.('event', 'quick_wizard_start', { care_type: careType, cms_level: cms, income_status: income });
+  };
+
   const handleReset = () => {
     localStorage.removeItem(STORAGE_KEY);
     setCmsLevel(null);
@@ -166,11 +172,6 @@ export default function Home() {
   ), [cmsLevel, incomeStatus, selectedPathway, transportRegion, assistiveDeviceGroup]);
   const currentStepIndex = FLOW_STEPS.findIndex((step) => step.id === currentStep);
   const progressPct = ((currentStepIndex + 1) / FLOW_STEPS.length) * 100;
-  const canStart = Boolean(cmsLevel && incomeStatus);
-  const missingFields = [
-    cmsLevel ? null : "失能等級",
-    incomeStatus ? null : "收入身分",
-  ].filter((field): field is string => Boolean(field));
 
   const pathwayLabel: Record<CareType, string> = {
     "home-care": "居家照顧",
@@ -371,7 +372,7 @@ export default function Home() {
               <Icon name="clipboard" size={22} className="text-amber-700 shrink-0" />
               快速試算你的長照補助
             </h2>
-            <p className="text-[15px] text-amber-800/60 mt-1">4 個條件，約 30 秒完成</p>
+            <p className="text-[15px] text-amber-800/60 mt-1">3 個問題，約 30 秒完成</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-amber-800/70">
               <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 1：選擇等級</span>
               <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 2：選擇收入身份</span>
@@ -381,72 +382,20 @@ export default function Home() {
           </div>
 
           <div className="p-8 sm:p-10">
-            {/* CMS Level */}
-            <div className="mb-8">
-              <label className="block text-[16px] font-semibold text-apple-gray-800 mb-4">
-                ❶ 長輩的失能等級 <span className="text-[14px] font-normal text-apple-gray-500">(CMS 等級)</span>
-              </label>
-              <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-4">
-                {([1, 2, 3, 4, 5, 6, 7, 8] as CMSLevel[]).map((level) => (
-                  <button
-                    key={level}
-                    onClick={() => setCmsLevel(level)}
-                    aria-pressed={cmsLevel === level}
-                    className={`
-                      py-3 sm:py-4 rounded-[14px] text-center transition-all duration-200 border
-                      ${cmsLevel === level
-                        ? "bg-apple-orange text-white border-apple-orange shadow-md font-bold"
-                        : "bg-apple-gray-50 text-apple-gray-700 border-apple-gray-200 hover:bg-orange-50 hover:border-orange-200"
-                      }
-                    `}
-                    style={{ WebkitTapHighlightColor: "transparent" }}
-                  >
-                    <div className="text-[16px] sm:text-[18px] font-semibold">{level} 級</div>
-                    <div className={`text-[11px] sm:text-[12px] mt-0.5 ${cmsLevel === level ? "text-white/80" : "text-apple-gray-500"}`}>
-                      {getCMSLevelName(level)}
-                    </div>
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={() => setShowEstimatorModal(true)}
-                className="w-full py-3 rounded-[14px] border-2 border-dashed border-orange-200 text-apple-orange text-[15px] font-semibold hover:bg-orange-50 transition-colors"
-                style={{ WebkitTapHighlightColor: "transparent" }}
-              >
-                不知道等級？30 秒幫你快速評估
-              </button>
-            </div>
+            <QuickWizard
+              onComplete={handleQuickComplete}
+              onOpenEstimator={() => { setEstimatorFromWizard(true); setShowEstimatorModal(true); }}
+              estimatorResult={wizardCmsSignal}
+              onEstimatorConsumed={() => setWizardCmsSignal(null)}
+            />
 
-            {/* Income */}
-            <div className="mb-10">
-              <label className="block text-[16px] font-semibold text-apple-gray-800 mb-4">
-                ❷ 家庭收入身分
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {INCOME_OPTIONS.map((option) => {
-                  return (
-                    <button
-                    key={option.value}
-                    onClick={() => setIncomeStatus(option.value)}
-                    aria-pressed={incomeStatus === option.value}
-                    className={`
-                        p-4 rounded-[16px] text-center transition-all duration-200 border
-                        ${incomeStatus === option.value
-                          ? "bg-apple-orange/10 border-apple-orange text-apple-orange shadow-sm"
-                          : "bg-white border-apple-gray-200 text-apple-gray-700 hover:bg-orange-50 hover:border-orange-200"}
-                      `}
-                      style={{ WebkitTapHighlightColor: "transparent" }}
-                    >
-                      <div className="text-[14px] sm:text-[16px] font-semibold whitespace-nowrap">{option.label}</div>
-                      <div className={`text-[12px] mt-1 ${incomeStatus === option.value ? "text-apple-orange/70" : "text-apple-gray-500"}`}>
-                        {option.sub}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
+            {/* 進階設定：交通分區、輔具、疾病勾選 */}
+            <details className="mt-8 rounded-[18px] border border-apple-gray-200 bg-apple-gray-50/60 px-5 py-4 group">
+              <summary className="cursor-pointer list-none flex items-center justify-between text-[14px] font-semibold text-apple-gray-600 hover:text-apple-gray-900">
+                <span>進階設定：交通分區、輔具額度、疾病勾選（可不填）</span>
+                <span className="text-apple-gray-400 group-open:rotate-180 transition-transform">▾</span>
+              </summary>
+              <div className="pt-6">
             <div className="mb-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
                 <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">❸ 交通接送分區</span>
@@ -513,27 +462,8 @@ export default function Home() {
                 })}
               </div>
             </div>
-
-            {/* Submit CTA */}
-            <button
-              onClick={handleStartAnalysis}
-              disabled={!canStart}
-              className={`
-                w-full py-4.5 text-[17px] font-bold rounded-full transition-all transform active:scale-[0.98]
-                ${canStart
-                  ? "bg-gradient-to-r from-apple-orange to-apple-pink text-white shadow-lg shadow-orange-200/50 hover:shadow-xl hover:shadow-orange-300/50"
-                  : "bg-apple-gray-200 text-apple-gray-400 cursor-not-allowed"
-                }
-              `}
-              style={{ WebkitTapHighlightColor: "transparent" }}
-            >
-              {canStart ? "查看 4 種照顧方案的財務對比 →" : `請先完成：${missingFields.join("、")}`}
-            </button>
-            {canStart && (
-              <div className="mt-3 text-center text-[13px] text-apple-gray-500">
-                已完成設定：CMS {cmsLevel} 級・{incomeStatus ? INCOME_LABELS[incomeStatus] : ""}
               </div>
-            )}
+            </details>
           </div>
         </div>
       </section>
@@ -634,8 +564,12 @@ export default function Home() {
           onComplete={(level) => {
             setCmsLevel(level);
             setShowEstimatorModal(false);
+            if (estimatorFromWizard) {
+              setWizardCmsSignal(level);
+              setEstimatorFromWizard(false);
+            }
           }}
-          onCancel={() => setShowEstimatorModal(false)}
+          onCancel={() => { setShowEstimatorModal(false); setEstimatorFromWizard(false); }}
         />
       )}
     </div>
