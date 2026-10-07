@@ -5,7 +5,7 @@
  * 避免法規更新後出現同站不同答案。
  */
 
-export const POLICY_VERSION = "2026-07-22";
+export const POLICY_VERSION = "2026-10-07";
 export const POLICY_EFFECTIVE_DATE = "2026-07-01";
 
 export const POLICY_SOURCES = {
@@ -34,15 +34,17 @@ export const TRANSPORT_REGIONS: Record<
 
 export const ASSISTIVE_DEVICE_GROUPS: Record<
   AssistiveDeviceGroup,
-  { label: string; threeYearQuota: number; description: string }
+  { label: string; short: string; threeYearQuota: number; description: string }
 > = {
   group1: {
     label: "第一組（一般輔具／居家改善）",
+    short: "第一組",
     threeYearQuota: 40000,
     description: "傳統輔具購置與居家無障礙改善",
   },
   group2: {
     label: "第二組（智慧輔具租賃）",
+    short: "第二組",
     threeYearQuota: 60000,
     description: "指定輔具購置、智慧輔具租賃及居家改善；適用資格以核定為準",
   },

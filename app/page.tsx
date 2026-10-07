@@ -411,7 +411,7 @@ export default function Home() {
                 className="w-full py-3 rounded-[14px] border-2 border-dashed border-orange-200 text-apple-orange text-[15px] font-semibold hover:bg-orange-50 transition-colors"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
-                🤔 不知道等級？ 花 30 秒幫您免費評估
+                不知道等級？30 秒幫你快速評估
               </button>
             </div>
 
@@ -435,7 +435,7 @@ export default function Home() {
                       `}
                       style={{ WebkitTapHighlightColor: "transparent" }}
                     >
-                      <div className="text-[15px] sm:text-[16px] font-semibold">{option.label}</div>
+                      <div className="text-[14px] sm:text-[16px] font-semibold whitespace-nowrap">{option.label}</div>
                       <div className={`text-[12px] mt-1 ${incomeStatus === option.value ? "text-apple-orange/70" : "text-apple-gray-500"}`}>
                         {option.sub}
                       </div>
@@ -467,7 +467,7 @@ export default function Home() {
                   className="w-full rounded-[14px] border border-apple-gray-200 bg-white px-4 py-3 text-[14px] text-apple-gray-800 focus:border-apple-orange focus:outline-none focus:ring-2 focus:ring-orange-100"
                 >
                   {Object.entries(ASSISTIVE_DEVICE_GROUPS).map(([value, group]) => (
-                    <option key={value} value={value}>{group.label}・3 年 {group.threeYearQuota.toLocaleString()} 元</option>
+                    <option key={value} value={value}>{group.short}・3 年 {group.threeYearQuota.toLocaleString()} 元</option>
                   ))}
                 </select>
                 <span className="block text-[12px] text-apple-gray-500 mt-2">第二組自 2026/7/1 實施，適用資格與換組時點以核定為準。</span>
@@ -480,7 +480,7 @@ export default function Home() {
                 ❺ 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
               </label>
               <p className="text-[13px] text-apple-gray-500 mb-4">
-                選擇後，系統會針對疾病給出專屬的照顧建議、時間軸和注意事項。
+                選填。選了會給你對應疾病的照顧建議和注意事項。
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {CONDITION_OPTIONS.map((condition) => {
