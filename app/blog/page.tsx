@@ -31,7 +31,7 @@ export default function BlogListPage() {
       <section className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 px-4 pt-14 pb-16 text-center border-b border-orange-100/50">
         <div className="max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm mb-6 border border-orange-100 text-[13px] font-semibold text-amber-800">
-            📚 長照知識庫
+            長照知識庫
           </div>
           <h1 className="text-[32px] sm:text-[40px] font-bold tracking-tight text-apple-gray-900 mb-4 leading-tight">
             把複雜的長照制度<br />說清楚、算明白
