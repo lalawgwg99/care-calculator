@@ -5,7 +5,7 @@
  * 避免法規更新後出現同站不同答案。
  */
 
-export const POLICY_VERSION = "2026-10-07";
+export const POLICY_VERSION = "2026-10-08";
 export const POLICY_EFFECTIVE_DATE = "2026-07-01";
 
 export const POLICY_SOURCES = {
