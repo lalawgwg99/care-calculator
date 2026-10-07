@@ -96,7 +96,13 @@ export default function AboutPage() {
         </p>
         <p className="text-[15px] text-apple-gray-600 leading-relaxed">
           網站功能或內容建議，歡迎來信：
-          <span className="font-semibold text-apple-gray-800">網站信箱籌備中，近期公布</span>。
+          <a
+            href="mailto:hello@carepilot1966.com"
+            className="font-semibold text-apple-orange hover:underline underline-offset-4"
+          >
+            hello@carepilot1966.com
+          </a>
+          。
         </p>
       </section>
 
