@@ -204,6 +204,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </span>
             <span className="text-[12px] text-apple-gray-400">約 {post.readingMinutes} 分鐘</span>
             <span className="text-[12px] text-apple-gray-400">·</span>
+            <span className="text-[12px] text-apple-gray-400">CarePilot 編輯團隊</span>
+            <span className="text-[12px] text-apple-gray-400">·</span>
             <span className="text-[12px] text-apple-gray-400">更新 {post.updatedAt}</span>
           </div>
           <h1 className="text-[24px] sm:text-[30px] font-bold tracking-tight text-apple-gray-900 leading-snug mb-4">

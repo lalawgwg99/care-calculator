@@ -32,6 +32,7 @@ export default function Footer() {
                 { href: "/tools", label: "實用工具" },
                 { href: "/search", label: "資源搜尋" },
                 { href: "/insurance", label: "保險缺口試算" },
+                { href: "/about", label: "關於我們" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
