@@ -80,7 +80,7 @@ export default function CareCalculator() {
       // 更新螢幕閱讀器報讀內容
       if (announcementRef.current) {
         announcementRef.current.textContent = 
-          `計算完成。政府每月補助 ${formatCurrency(result.totalSubsidyMonthly)}，您每月自付額 ${formatCurrency(result.outOfPocketMonthly)}`;
+          `計算完成。政府每月補助 ${formatCurrency(result.totalSubsidyMonthly)}，你每月自付額 ${formatCurrency(result.outOfPocketMonthly)}`;
       }
     }
   }, [result]);
@@ -133,7 +133,7 @@ export default function CareCalculator() {
             CarePilot 長照領航員
           </h1>
           <p className="text-lg text-gray-600">
-            快速了解您的政府補助與自付額
+            快速了解你的政府補助與自付額
           </p>
         </motion.div>
 
@@ -148,7 +148,7 @@ export default function CareCalculator() {
             {/* 失能等級選擇 */}
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4" id="cms-level-label">
-                1. 您的失能等級
+                1. 你的失能等級
               </h2>
               <div 
                 className="grid grid-cols-2 gap-3"
@@ -349,7 +349,7 @@ export default function CareCalculator() {
                     className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg shadow-lg p-6 border-2 border-red-200"
                   >
                     <div className="text-sm text-red-700 font-semibold mb-1">
-                      您每月自付額
+                      你每月自付額
                     </div>
                     <div className="text-3xl font-bold text-red-900">
                       {formatCurrency(result.outOfPocketMonthly)}
@@ -399,7 +399,7 @@ export default function CareCalculator() {
                       💡 一次性額度
                     </h3>
                     <p className="text-blue-800">
-                      您目前有{" "}
+                      你目前有{" "}
                       <span className="font-bold">
                         {formatCurrency(result.assistiveDeviceQuota)}
                       </span>

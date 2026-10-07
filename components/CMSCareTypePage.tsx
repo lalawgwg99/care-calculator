@@ -158,7 +158,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                     <div className="text-[12px] text-green-600 mt-1">照顧服務</div>
                   </div>
                   <div className="bg-red-50 rounded-[20px] p-5 border border-red-200 text-center">
-                    <div className="text-[13px] text-red-700 font-medium mb-2">您每月自付</div>
+                    <div className="text-[13px] text-red-700 font-medium mb-2">你每月自付</div>
                     <div className="text-[32px] font-bold text-red-900">
                       ${calculateSubsidy(level, careType, 'general')?.copay.toLocaleString() || '0'}
                     </div>
@@ -259,7 +259,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
             開始完整試算
           </h3>
           <p className="text-[15px] text-amber-900/70 mb-5">
-            選擇您的實際情況，產生詳細的5年財務預測
+            選擇你的實際情況，產生詳細的5年財務預測
           </p>
           <Link
             href={`/?cms=${level}&income=${careType === 'foreign-caregiver' ? 'general' : 'general'}`}

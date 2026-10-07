@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ],
     openGraph: {
       title: `CMS 第${level}級 長照補助試算`,
-      description: `計算您的長照補助。每月最高 $${levelInfo.subsidy.toLocaleString()}`,
+      description: `計算你的長照補助。每月最高 $${levelInfo.subsidy.toLocaleString()}`,
       url: absoluteUrl(pathname),
     },
   };
@@ -171,10 +171,10 @@ export default function CMSLevelPage({ params }: PageProps) {
         {/* CTA */}
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
           <h3 className="text-[20px] font-bold text-apple-gray-900 mb-3">
-            開始試算您的實際補助
+            開始試算你的實際補助
           </h3>
           <p className="text-[15px] text-amber-900/70 mb-5">
-            選擇您的收入身份，計算精確的自付額
+            選擇你的收入身份，計算精確的自付額
           </p>
           <Link
             href={`/?cms=${level}`}

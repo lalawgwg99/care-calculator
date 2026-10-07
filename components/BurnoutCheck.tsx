@@ -52,8 +52,8 @@ export default function BurnoutCheck() {
   };
 
   const burnoutLevel =
-    burnoutRate >= 70 ? { label: "高度倦怠", color: "text-rose-700", bg: "bg-rose-50", emoji: "🆘", advice: "您正面臨嚴重的照顧倦怠，請立即尋求專業支持。照顧好自己，才能照顧長輩。" }
-    : burnoutRate >= 45 ? { label: "中度倦怠", color: "text-amber-700", bg: "bg-amber-50", emoji: "⚠️", advice: "您已有明顯倦怠跡象。請積極利用喘息服務，並與家人分擔照顧責任。" }
+    burnoutRate >= 70 ? { label: "高度倦怠", color: "text-rose-700", bg: "bg-rose-50", emoji: "🆘", advice: "你正面臨嚴重的照顧倦怠，請立即尋求專業支持。照顧好自己，才能照顧長輩。" }
+    : burnoutRate >= 45 ? { label: "中度倦怠", color: "text-amber-700", bg: "bg-amber-50", emoji: "⚠️", advice: "你已有明顯倦怠跡象。請積極利用喘息服務，並與家人分擔照顧責任。" }
     : { label: "低度風險", color: "text-emerald-700", bg: "bg-emerald-50", emoji: "✅", advice: "目前狀況還好，但請繼續關注自身健康，適時使用支持資源。" };
 
   const handleAnswer = (questionId: number, value: number) => {
@@ -82,10 +82,10 @@ export default function BurnoutCheck() {
         {phase === "intro" && (
           <div className="text-center space-y-4">
             <div className="text-[48px]">🤗</div>
-            <h3 className="text-[20px] font-bold text-apple-gray-900">您還好嗎？</h3>
+            <h3 className="text-[20px] font-bold text-apple-gray-900">你還好嗎？</h3>
             <p className="text-[15px] text-apple-gray-600 max-w-md mx-auto leading-relaxed">
               照顧家人是一份充滿愛的工作，但也可能讓自己身心俱疲。
-              以下 10 個問題，幫助您評估目前的照顧壓力程度。
+              以下 10 個問題，幫助你評估目前的照顧壓力程度。
             </p>
             <div className="bg-pink-50 border border-pink-100 rounded-[16px] p-4 text-sm text-rose-800 text-left">
               此評估不作為醫療診斷，如有嚴重情緒困擾，請諮詢心理健康專業人員。

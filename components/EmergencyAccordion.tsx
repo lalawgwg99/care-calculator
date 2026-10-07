@@ -32,7 +32,7 @@ export default function EmergencyAccordion() {
       >
         <div className="bg-red-50/60 border border-red-200/40 border-t-0 rounded-b-[20px] px-5 pb-6 pt-4">
           <p className="text-[14px] text-red-800/70 mb-5 leading-relaxed">
-            骨折、中風、重病出院⋯⋯突發狀況讓家屬措手不及。以下 4 步驟，協助您在最短時間安排好照顧。
+            骨折、中風、重病出院⋯⋯突發狀況讓家屬措手不及。以下 4 步驟，協助你在最短時間安排好照顧。
           </p>
           <div className="space-y-4">
             {[
@@ -62,7 +62,7 @@ export default function EmergencyAccordion() {
               },
               {
                 num: "4",
-                title: "您也需要支持",
+                title: "你也需要支持",
                 desc: "照顧者的情緒同樣重要。任何時間都可撥打安心專線，24 小時免費心理陪伴。",
                 cta: "💙 撥打 1925",
                 href: "tel:1925",

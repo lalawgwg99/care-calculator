@@ -243,7 +243,7 @@ export default function HiddenSavingsPanel({
           </h3>
         </div>
         <p className="text-[15px] text-emerald-800/60 mb-6">
-          除了長照補助，您的家庭可能還有這些「看不見的省錢」正在等您領取。
+          除了長照補助，你的家庭可能還有這些「看不見的省錢」正在等你領取。
         </p>
 
         {/* ====== 總金額預覽 ====== */}

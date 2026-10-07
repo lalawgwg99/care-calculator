@@ -184,7 +184,7 @@ export default function FinancialReport({
           長照是一場馬拉松
         </h2>
         <p className="text-[16px] sm:text-[18px] text-apple-gray-500">
-          以平均 5 年的照顧期計算，這是您家庭未來的財務總覽。
+          以平均 5 年的照顧期計算，這是你家庭未來的財務總覽。
         </p>
       </div>
 
@@ -333,7 +333,7 @@ export default function FinancialReport({
             <div>
               <h4 className="text-[16px] font-bold text-apple-gray-900">疾病相關額外支出</h4>
               <p className="text-[13px] text-apple-gray-500">
-                依您選擇的健康狀況，可能產生的額外費用
+                依你選擇的健康狀況，可能產生的額外費用
               </p>
             </div>
           </div>
@@ -523,7 +523,7 @@ export default function FinancialReport({
         <div className={`overflow-hidden transition-all duration-300 ${showOpportunityCost ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}>
           <div className="px-6 pb-6 space-y-4">
             <div className="bg-apple-gray-50 rounded-[16px] p-4">
-              <label className="block text-[13px] font-semibold text-apple-gray-700 mb-2">您目前的月薪（辭職後的機會成本）</label>
+              <label className="block text-[13px] font-semibold text-apple-gray-700 mb-2">你目前的月薪（辭職後的機會成本）</label>
               <div className="flex items-center gap-2">
                 <span className="text-apple-gray-500">NT$</span>
                 <input
@@ -556,14 +556,14 @@ export default function FinancialReport({
                 </p>
                 <p className="text-[32px] font-mono font-bold text-apple-green">{formatMoney(savingFromNotQuitting)}</p>
                 <p className="text-[13px] text-green-700/70 mt-2">
-                  （薪水損失 − 長照自付費用 = 您真正可以保住的財富）
+                  （薪水損失 − 長照自付費用 = 你真正可以保住的財富）
                 </p>
               </div>
             )}
 
             <div className="bg-amber-50/60 rounded-[14px] p-4 border border-orange-100/30">
               <p className="text-[13px] text-amber-800/70 leading-relaxed">
-                💡 <strong>另外別忘了：</strong>辭職會中斷勞保年資，影響您未來的老年年金，
+                💡 <strong>另外別忘了：</strong>辭職會中斷勞保年資，影響你未來的老年年金，
                 以及不孝的標籤還沒算…善用政府長照資源，才是對全家最好的選擇。
               </p>
             </div>

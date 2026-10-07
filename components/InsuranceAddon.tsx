@@ -171,10 +171,10 @@ export default function InsuranceAddon({
               <span className="text-[22px] flex-shrink-0">💡</span>
               <div>
                 <p className="text-[15px] font-bold text-apple-gray-900 mb-1">
-                  填補缺口：您還差 <span className="text-blue-600">{fmt(gap)} / 月</span>
+                  填補缺口：你還差 <span className="text-blue-600">{fmt(gap)} / 月</span>
                 </p>
                 <p className="text-[13px] text-apple-gray-500 leading-relaxed">
-                  現有保障不足以覆蓋自付費用。以下是適合您情況的長照保障方案供參考：
+                  現有保障不足以覆蓋自付費用。以下是適合你情況的長照保障方案供參考：
                 </p>
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function InsuranceAddon({
             </div>
 
             <p className="text-[11px] text-apple-gray-400 leading-relaxed">
-              以上為合作夥伴推薦連結，點擊可能使本站獲得少量佣金，不影響您的費用與選擇。
+              以上為合作夥伴推薦連結，點擊可能使本站獲得少量佣金，不影響你的費用與選擇。
             </p>
           </div>
         )}

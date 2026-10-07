@@ -94,7 +94,7 @@ export default function BlogListPage() {
 
         {/* CTA */}
         <div className="mt-14 bg-gradient-to-r from-amber-50 to-orange-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
-          <p className="text-[15px] text-amber-900/70 mb-4">看完文章，直接試算您的情況</p>
+          <p className="text-[15px] text-amber-900/70 mb-4">看完文章，直接試算你的情況</p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-bold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"

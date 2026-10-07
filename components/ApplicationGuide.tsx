@@ -27,7 +27,7 @@ const STEPS = [
   {
     num: "4",
     title: "與服務單位簽約",
-    desc: "照管專員會推薦合適的長照服務單位（居服中心、日照中心等），協助您簽約。",
+    desc: "照管專員會推薦合適的長照服務單位（居服中心、日照中心等），協助你簽約。",
     tip: "可以先參觀 2～3 間單位，選擇服務態度最好的那間。",
     icon: "✍️",
   },
@@ -167,7 +167,7 @@ export default function ApplicationGuide() {
         {/* 1966 CTA */}
         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-[24px] p-6 border border-emerald-200/50 text-center">
           <p className="text-[15px] text-emerald-800 font-medium mb-3">
-            不知道從何開始？撥打長照專線，專人引導您
+            不知道從何開始？撥打長照專線，專人引導你
           </p>
           <a
             href="tel:1966"

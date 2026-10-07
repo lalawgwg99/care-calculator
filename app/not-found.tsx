@@ -9,8 +9,8 @@ export default function NotFound() {
           找不到這個頁面
         </h1>
         <p className="text-[16px] text-apple-gray-500 leading-relaxed mb-8">
-          您要找的頁面不存在，可能已移除或網址有誤。
-          不用擔心，從下方繼續您的長照規劃。
+          你要找的頁面不存在，可能已移除或網址有誤。
+          不用擔心，從下方繼續你的長照規劃。
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">

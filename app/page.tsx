@@ -181,7 +181,7 @@ export default function Home() {
   const guideItems = [
     {
       title: "四條路，一次比",
-      desc: "居家照顧、日間照顧、住宿機構、外籍看護 — 不用各別查資料，系統同時幫您算好四種方案的費用差異。",
+      desc: "居家照顧、日間照顧、住宿機構、外籍看護 — 不用各別查資料，系統同時幫你算好四種方案的費用差異。",
       result: "30 秒產出四條路徑的月支出比較",
     },
     {
@@ -191,11 +191,11 @@ export default function Home() {
     },
     {
       title: "5 年財務預測",
-      desc: "長照不是一個月的事。系統會幫您推算未來 5 年的總支出，方便跟家人討論分攤。",
+      desc: "長照不是一個月的事。系統會幫你推算未來 5 年的總支出，方便跟家人討論分攤。",
       result: "一次看懂未來 5 年總支出",
     },
     {
-      title: "不懂等級？幫您評估",
+      title: "不懂等級？幫你評估",
       desc: "透過 4 個簡單的日常生活問題（吃飯、走路、洗澡、認知），自動算出最可能的失能等級。",
       result: "不用懂規則也能快速得到級數",
     },
@@ -367,7 +367,7 @@ export default function Home() {
           {/* Form Header */}
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 sm:px-10 py-6 border-b border-orange-100/50">
             <h2 className="text-[22px] font-bold tracking-tight text-apple-gray-900">
-              📋 快速試算您的長照補助
+              📋 快速試算你的長照補助
             </h2>
             <p className="text-[15px] text-amber-800/60 mt-1">4 個條件，約 30 秒完成</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-amber-800/70">
@@ -681,7 +681,7 @@ export default function Home() {
           >
             ←
           </button>
-          <h2 className="text-[24px] font-bold text-apple-gray-900">客製化您的服務計畫</h2>
+          <h2 className="text-[24px] font-bold text-apple-gray-900">客製化你的服務計畫</h2>
         </div>
         <ServiceCart
           totalSubsidyMonthly={currentResult.totalSubsidyMonthly}

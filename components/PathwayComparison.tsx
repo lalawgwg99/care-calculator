@@ -242,7 +242,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
             但這代表長輩的身體功能還不錯，是延緩退化的好時機！
           </p>
           <div className="bg-white/80 rounded-[20px] p-6 border border-amber-100/50 text-left mb-6">
-            <h4 className="text-[16px] font-bold text-apple-gray-900 mb-3">建議您現在可以做的事：</h4>
+            <h4 className="text-[16px] font-bold text-apple-gray-900 mb-3">建議你現在可以做的事：</h4>
             <ul className="space-y-2.5">
               {[
                 "帶長輩到社區的「巷弄長照站」參加免費活動，延緩失能",

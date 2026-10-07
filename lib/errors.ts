@@ -43,7 +43,7 @@ export const ErrorMessages = {
   NETWORK_ERROR: {
     code: 'NETWORK_ERROR',
     message: 'Network request failed',
-    userMessage: '網路連線發生問題，請檢查您的網路連線',
+    userMessage: '網路連線發生問題，請檢查你的網路連線',
   },
   UNKNOWN_ERROR: {
     code: 'UNKNOWN_ERROR',
