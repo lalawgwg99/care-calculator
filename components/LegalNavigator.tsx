@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Icon, { type IconName } from "./Icon";
 
 interface LegalItem {
   id: string;
-  icon: string;
+  icon: IconName;
   title: string;
   subtitle: string;
   color: string;
@@ -17,7 +18,7 @@ interface LegalItem {
 const LEGAL_ITEMS: LegalItem[] = [
   {
     id: "guardianship",
-    icon: "🏛️",
+    icon: "landmark",
     title: "監護宣告",
     subtitle: "保護失能長輩的法律權益",
     color: "text-indigo-700",
@@ -39,7 +40,7 @@ const LEGAL_ITEMS: LegalItem[] = [
   },
   {
     id: "trust",
-    icon: "🏦",
+    icon: "shield",
     title: "安養信託",
     subtitle: "確保照顧費用安全且專款專用",
     color: "text-emerald-700",
@@ -61,7 +62,7 @@ const LEGAL_ITEMS: LegalItem[] = [
   },
   {
     id: "will",
-    icon: "📜",
+    icon: "scroll",
     title: "遺囑規劃",
     subtitle: "預先安排財產與照顧意願",
     color: "text-amber-700",
@@ -83,7 +84,7 @@ const LEGAL_ITEMS: LegalItem[] = [
   },
   {
     id: "assets",
-    icon: "💰",
+    icon: "coins",
     title: "財產管理",
     subtitle: "整理並保障長輩名下財產",
     color: "text-rose-700",
@@ -120,7 +121,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
     <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-5 border-b border-indigo-100/50">
         <div className="flex items-center gap-3">
-          <span className="text-[28px]">⚖️</span>
+          <span className="text-indigo-700 shrink-0"><Icon name="scale" size={28} /></span>
           <div>
             <h2 className="text-[18px] font-bold text-apple-gray-900">法律事項引導</h2>
             <p className="text-[13px] text-indigo-800/60 mt-0.5">為長輩的未來做好法律準備</p>
@@ -141,7 +142,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
                 className="w-full flex items-center justify-between p-4 text-left"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-[24px]">{item.icon}</span>
+                  <span className={`${item.color} shrink-0`}><Icon name={item.icon} size={26} /></span>
                   <div>
                     <div className={`font-bold text-[15px] ${item.color}`}>{item.title}</div>
                     <div className="text-[12px] text-apple-gray-500">{item.subtitle}</div>
@@ -162,7 +163,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
                 <div className="px-4 pb-4 space-y-4">
                   {/* Steps */}
                   <div>
-                    <div className="text-[13px] font-semibold text-apple-gray-600 mb-2">📌 辦理流程</div>
+                    <div className="text-[13px] font-semibold text-apple-gray-600 mb-2">辦理流程</div>
                     <ol className="space-y-2">
                       {item.steps.map((step, i) => (
                         <li key={i} className="flex gap-2 text-[13px] text-apple-gray-700">
@@ -177,7 +178,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
 
                   {/* Checklist */}
                   <div>
-                    <div className="text-[13px] font-semibold text-apple-gray-600 mb-2">✅ 準備清單</div>
+                    <div className="text-[13px] font-semibold text-apple-gray-600 mb-2">準備清單</div>
                     <div className="space-y-2">
                       {item.checklist.map((c, i) => {
                         const key = `${item.id}-${i}`;
@@ -201,7 +202,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
                   {/* Note */}
                   <div className="bg-white/70 rounded-[12px] p-3 border border-white">
                     <p className="text-[12px] text-apple-gray-500 leading-relaxed">
-                      💡 <strong>注意：</strong>{item.note}
+                      <strong>注意：</strong>{item.note}
                     </p>
                   </div>
                 </div>

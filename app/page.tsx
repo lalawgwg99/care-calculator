@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Icon, { type IconName } from "../components/Icon";
 import { type CMSLevel, type IncomeStatus, type CareType, calculateCareBudget, getCMSLevelName } from "@/lib/careLogic";
 import { CONDITION_OPTIONS, type ConditionId } from "@/lib/conditionProfiles";
 import {
@@ -272,7 +273,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center relative z-10">
           {/* Warm Emoji Badge */}
           <div className="inline-flex items-center gap-2 glass-chip rounded-full px-5 py-2.5 shadow-sm mb-8">
-            <span className="text-[20px]">🧡</span>
+            <Icon name="heart" size={18} className="text-amber-700 shrink-0" />
             <span className="text-[14px] font-semibold text-amber-800">台灣長照 3.0 ｜ 資料核對至 {POLICY_VERSION}</span>
           </div>
 
@@ -331,7 +332,7 @@ export default function Home() {
         <div className="max-w-2xl mx-auto px-4 mb-4 mt-[-20px]">
           <div className="bg-amber-50 border border-orange-200/70 rounded-[18px] px-5 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between shadow-sm gap-3">
             <div className="flex items-center gap-3">
-              <span className="text-[20px]">👋</span>
+              <Icon name="hand" size={20} className="text-amber-700 shrink-0" />
               <div>
                 <span className="text-[14px] font-semibold text-amber-900">繼續上次試算</span>
                 <span className="text-[13px] text-amber-700/70 ml-2">
@@ -366,8 +367,9 @@ export default function Home() {
         <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
           {/* Form Header */}
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 sm:px-10 py-6 border-b border-orange-100/50">
-            <h2 className="text-[22px] font-bold tracking-tight text-apple-gray-900">
-              📋 快速試算你的長照補助
+            <h2 className="text-[22px] font-bold tracking-tight text-apple-gray-900 flex items-center gap-2">
+              <Icon name="clipboard" size={22} className="text-amber-700 shrink-0" />
+              快速試算你的長照補助
             </h2>
             <p className="text-[15px] text-amber-800/60 mt-1">4 個條件，約 30 秒完成</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-amber-800/70">
@@ -568,7 +570,7 @@ export default function Home() {
               {guideItems[activeGuide].desc}
             </p>
             <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white border border-orange-100 text-[13px] text-amber-800">
-              ✅ {guideItems[activeGuide].result}
+              <Icon name="checkCircle" size={16} className="text-emerald-600 shrink-0" /> {guideItems[activeGuide].result}
             </div>
           </div>
         </div>
@@ -592,18 +594,18 @@ export default function Home() {
           更多照顧工具
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { href: "/insurance", emoji: "🛡️", label: "保險補充計算" },
-            { href: "/tools/conditions", emoji: "🫀", label: "疾病照顧檔案" },
-            { href: "/tools/caregiverhealth", emoji: "💆", label: "倦怠檢測" },
-            { href: "/tools/reablement", emoji: "🌟", label: "復能任務卡" },
-          ].map((tool) => (
+          {([
+            { href: "/insurance", icon: "shield", label: "保險補充計算" },
+            { href: "/tools/conditions", icon: "hospital", label: "疾病照顧檔案" },
+            { href: "/tools/caregiverhealth", icon: "users", label: "倦怠檢測" },
+            { href: "/tools/reablement", icon: "sparkles", label: "復能任務卡" },
+          ] as { href: string; icon: IconName; label: string }[]).map((tool) => (
             <Link
               key={tool.href}
               href={tool.href}
               className="section-surface rounded-[18px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
             >
-              <div className="text-[28px] mb-2">{tool.emoji}</div>
+              <div className="mb-2 flex justify-center text-amber-600"><Icon name={tool.icon} size={30} /></div>
               <div className="text-[13px] font-semibold text-apple-gray-700 group-hover:text-amber-700 transition-colors">
                 {tool.label}
               </div>
@@ -621,7 +623,7 @@ export default function Home() {
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
         <div className="section-surface rounded-[20px] p-6">
           <p className="text-[14px] text-amber-800/60 leading-relaxed">
-            📌 政策資料最後核對：<strong>{POLICY_VERSION}</strong>。依據衛福部公開資料，實際補助仍以照管中心核定為準。<a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="font-semibold text-apple-orange hover:underline underline-offset-2">查看官方額度表</a>，或撥打 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
+            政策資料最後核對：<strong>{POLICY_VERSION}</strong>。依據衛福部公開資料，實際補助仍以照管中心核定為準。<a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="font-semibold text-apple-orange hover:underline underline-offset-2">查看官方額度表</a>，或撥打 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
           </p>
         </div>
       </section>
