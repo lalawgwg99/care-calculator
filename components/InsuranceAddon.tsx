@@ -6,11 +6,8 @@ declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
 }
 
-// TODO: 申請到聯盟帳號後，替換為帶有 tracking 參數的實際 affiliate URL
-const AFFILIATE_LINKS = {
-  ltc: "https://www.comparemo.com.tw/ltc?ref=care-calculator",
-  disability: "https://www.comparemo.com.tw/disability?ref=care-calculator",
-};
+// 保險合作方案：目前無。未來若有真實合作，在此補上實際連結後再渲染按鈕，
+// 切勿先放佔位連結＋傭金聲明（虛假聲明會毀掉網站信任）。
 
 function fmt(n: number) {
   return new Intl.NumberFormat("zh-TW", { style: "currency", currency: "TWD", maximumFractionDigits: 0 }).format(Math.round(n));
@@ -164,48 +161,48 @@ export default function InsuranceAddon({
           )}
         </div>
 
-        {/* ====== 保險聯盟 CTA ====== */}
+        {/* ====== 保險缺口指引（中立資訊：本站目前沒有保險合作方案） ====== */}
         {gap > 0 && (
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[20px] border border-blue-100/60 p-5">
-            <div className="flex items-start gap-3 mb-4">
-              <span className="text-[22px] flex-shrink-0">💡</span>
-              <div>
-                <p className="text-[15px] font-bold text-apple-gray-900 mb-1">
-                  填補缺口：你還差 <span className="text-blue-600">{fmt(gap)} / 月</span>
-                </p>
+            <p className="text-[15px] font-bold text-apple-gray-900 mb-1">
+              填補缺口：你還差 <span className="text-blue-600">{fmt(gap)} / 月</span>
+            </p>
+            <p className="text-[13px] text-apple-gray-500 leading-relaxed mb-4">
+              現有保障不足以覆蓋自付費用。先搞懂兩種保單的差別，再去問業務員：
+            </p>
+
+            <div className="space-y-2.5 mb-4">
+              <div className="bg-white/70 rounded-xl px-4 py-3">
+                <p className="text-[13px] font-semibold text-apple-gray-900 mb-0.5">長照險</p>
                 <p className="text-[13px] text-apple-gray-500 leading-relaxed">
-                  現有保障不足以覆蓋自付費用。以下是適合你情況的長照保障方案供參考：
+                  符合保單條款的「長期照顧狀態」才理賠，多為分期給付，適合補每月的照顧缺口。
+                </p>
+              </div>
+              <div className="bg-white/70 rounded-xl px-4 py-3">
+                <p className="text-[13px] font-semibold text-apple-gray-900 mb-0.5">失能險</p>
+                <p className="text-[13px] text-apple-gray-500 leading-relaxed">
+                  按失能等級表理賠；舊式終身型多已停售，現售多為一年期附約，買前先問保費會不會隨年齡調漲。
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2.5 mb-3">
-              <a
-                href={AFFILIATE_LINKS.ltc}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-white border border-blue-200 rounded-full text-[14px] font-semibold text-blue-700 hover:bg-blue-50 shadow-sm transition-all"
-                onClick={() => window.gtag?.('event', 'insurance_cta_click', {
-                  insurance_type: 'ltc', gap_amount: gap, cms_level: cmsLevel,
-                })}
-              >
-                🔍 比較長照險方案 →
-              </a>
-              <a
-                href={AFFILIATE_LINKS.disability}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-white border border-blue-200 rounded-full text-[14px] font-semibold text-blue-700 hover:bg-blue-50 shadow-sm transition-all"
-                onClick={() => window.gtag?.('event', 'insurance_cta_click', {
-                  insurance_type: 'disability', gap_amount: gap, cms_level: cmsLevel,
-                })}
-              >
-                🔍 比較失能險 →
-              </a>
-            </div>
+            <p className="text-[13px] font-semibold text-apple-gray-900 mb-2">問業務員的 3 個問題</p>
+            <ol className="text-[13px] text-apple-gray-500 leading-relaxed list-decimal list-inside space-y-1.5 mb-4">
+              <li>理賠看的是「失能等級」還是「長照狀態」？認定標準是什麼？</li>
+              <li>理賠金一次給還是分期給？金額跟我每月 {fmt(gap)} 的缺口對得上嗎？</li>
+              <li>保費固定還是會漲？要繳到幾歲？</li>
+            </ol>
 
-            <p className="text-[11px] text-apple-gray-400 leading-relaxed">
-              以上為合作夥伴推薦連結，點擊可能使本站獲得少量佣金，不影響你的費用與選擇。
+            <a
+              href="https://www.ib.gov.tw/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-white border border-blue-200 rounded-full text-[14px] font-semibold text-blue-700 hover:bg-blue-50 shadow-sm transition-all"
+            >
+              金管會保險局 →
+            </a>
+            <p className="text-[11px] text-apple-gray-400 leading-relaxed mt-3">
+              本站目前沒有保險合作方案，以上為中立資訊整理，實際商品以各保險公司條款為準。
             </p>
           </div>
         )}
