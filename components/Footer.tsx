@@ -9,14 +9,14 @@ export default function Footer() {
           {/* 左欄：品牌說明 */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Image src="/logo-mark.svg" alt="長照決策引擎 Logo" width={24} height={24} className="rounded-[7px]" />
-              <span className="text-[16px] font-bold text-apple-gray-900">長照決策引擎</span>
+              <Image src="/logo-mark.svg" alt="CarePilot 長照領航員 Logo" width={24} height={24} className="rounded-[7px]" />
+              <span className="text-[16px] font-bold text-apple-gray-900">CarePilot 長照領航員</span>
             </div>
             <p className="text-[13px] text-apple-gray-500 leading-relaxed mb-3">
-              免費、無廣告的長照財務試算工具，幫助台灣家庭做出最適合的照顧決策。
+              免費試算長照補助。數字先幫你算清楚，決定你自己做。
             </p>
             <p className="text-[12px] text-apple-gray-400 leading-relaxed">
-              資料依據：衛生福利部公開資訊｜最後核對 2026-07-22
+              資料依據：衛生福利部公開資訊｜最後核對 2026-10-07
             </p>
           </div>
 
@@ -86,7 +86,7 @@ export default function Footer() {
         {/* 底部版權 */}
         <div className="pt-6 border-t border-apple-gray-200/40 text-center">
           <p className="text-[12px] text-apple-gray-400 leading-relaxed">
-            © 2026 長照決策引擎 · 本工具依 2026 衛福部長照 3.0 法規設計，實際補助金額以各縣市照顧管理中心核定為準。
+            © 2026 CarePilot 長照領航員 · 本工具依 2026 衛福部長照 3.0 法規設計，實際補助金額以各縣市照顧管理中心核定為準。
           </p>
         </div>
       </div>

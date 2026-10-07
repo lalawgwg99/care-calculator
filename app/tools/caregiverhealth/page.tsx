@@ -4,11 +4,11 @@ import BurnoutCheck from "@/components/BurnoutCheck";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "照顧者健康工具 | 長照決策引擎",
+  title: "照顧者健康工具 | CarePilot 長照領航員",
   description: "失智症體驗模擬培養同理心，照顧者倦怠檢測評估身心狀態並配對支持資源。",
   alternates: pageAlternates("/tools/caregiverhealth"),
   openGraph: {
-    title: "照顧者健康工具 | 長照決策引擎",
+    title: "照顧者健康工具 | CarePilot 長照領航員",
     description: "評估照顧壓力、理解失智症並配對支持資源。",
     type: "website",
     url: absoluteUrl("/tools/caregiverhealth"),

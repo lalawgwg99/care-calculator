@@ -130,7 +130,7 @@ export default function CareCalculator() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            長照 3.0 財務決策引擎
+            CarePilot 長照領航員
           </h1>
           <p className="text-lg text-gray-600">
             快速了解您的政府補助與自付額

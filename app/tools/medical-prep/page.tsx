@@ -79,7 +79,7 @@ export default function MedicalPrepPage() {
         ``,
       ] : []),
       `━━━━━━━━━━━━━━━━━━`,
-      `由「長照 3.0 財務決策引擎」生成`,
+      `由「CarePilot 長照領航員」生成`,
     ].join("\n");
   };
 

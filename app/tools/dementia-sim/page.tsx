@@ -290,7 +290,7 @@ export default function DementiaSimPage() {
       `📊 照顧溝通力：${finalScore} 分`,
       `✅ 正確應對：${goodAnswers}/${answers.length} 題`,
       ``,
-      `你也來測測看 👉 長照 3.0 財務決策引擎`,
+      `你也來測測看 👉 CarePilot 長照領航員`,
     ].join("\n");
 
     return (

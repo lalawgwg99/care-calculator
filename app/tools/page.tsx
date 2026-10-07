@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "實用工具 | 長照決策引擎",
+  title: "實用工具 | CarePilot 長照領航員",
   description: "保險補充計算、法律事項引導、疾病照顧檔案、遊戲化評估工具、就診準備清單、復能任務卡等長照實用工具。",
   alternates: pageAlternates("/tools"),
   openGraph: {
-    title: "長照實用工具 | 長照決策引擎",
+    title: "長照實用工具 | CarePilot 長照領航員",
     description: "長照家庭需要的財務、法律、照顧與健康工具。",
     type: "website",
     url: absoluteUrl("/tools"),
@@ -115,7 +115,7 @@ export default function ToolsPage() {
           <span className="text-[13px] font-semibold text-amber-800">實用工具箱</span>
         </div>
         <h1 className="text-[32px] font-bold text-apple-gray-900 mb-3">
-          長照照顧工具
+          照顧工具
         </h1>
         <p className="text-[16px] text-apple-gray-500 max-w-xl mx-auto">
           從財務規劃到日常照顧，提供照顧家庭最需要的實用工具

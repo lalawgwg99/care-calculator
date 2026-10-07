@@ -253,7 +253,7 @@ export default function BurnoutCheckPage() {
                 `📞 照顧者專線 0800-507-272`,
                 `📞 長照專線 1966`,
                 ``,
-                `你也來測測看 👉 長照 3.0 財務決策引擎`,
+                `你也來測測看 👉 CarePilot 長照領航員`,
               ].join("\n");
               if (navigator.share) {
                 navigator.share({ title: "照顧者壓力檢測", text: summary }).catch(() => {});

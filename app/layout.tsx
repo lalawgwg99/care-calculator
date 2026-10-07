@@ -11,14 +11,14 @@ const BASE_URL = SITE_URL;
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "長照 3.0 財務決策引擎 | 快速試算政府補助與自付額",
-    template: "%s | 長照 3.0 財務決策引擎",
+    default: "CarePilot 長照領航員 | 快速試算政府補助與自付額",
+    template: "%s | CarePilot 長照領航員",
   },
   description: "台灣長照 3.0 補助試算工具，支援 CMS 1-8 級失能等級，即時計算政府補助與自付額。一次比較居家照顧、日間照顧、外籍看護、住宿式機構四種方案。",
   keywords: ["長照", "長照補助", "長照2.0", "長照3.0", "CMS等級", "居家照顧", "外籍看護", "住宿式機構", "日間照顧", "長照試算", "政府補助", "1966", "長照四包錢", "喘息服務", "輔具補助"],
-  authors: [{ name: "長照決策引擎團隊" }],
-  creator: "長照決策引擎",
-  publisher: "長照決策引擎",
+  authors: [{ name: "CarePilot 團隊" }],
+  creator: "CarePilot 長照領航員",
+  publisher: "CarePilot 長照領航員",
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
@@ -28,10 +28,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "長照 3.0 財務決策引擎 — 30 秒算出政府補助多少",
+    title: "CarePilot 長照領航員 — 30 秒算出政府補助多少",
     description: "不用再翻法規、不用再猜數字。輸入失能等級和收入身份，系統馬上算出四種照顧方案的補助與自付費用。",
     url: BASE_URL,
-    siteName: "長照 3.0 財務決策引擎",
+    siteName: "CarePilot 長照領航員",
     locale: "zh_TW",
     type: "website",
     images: [
@@ -39,16 +39,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "長照 3.0 財務決策引擎",
+        alt: "CarePilot 長照領航員",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "長照 3.0 財務決策引擎 — 30 秒算出政府補助多少",
+    title: "CarePilot 長照領航員 — 30 秒算出政府補助多少",
     description: "比較居家、日照、機構、外看四種方案，5 年財務預測一次看清。",
     images: ["/og-image.png"],
-    creator: "@carecalculator",
   },
   robots: {
     index: true,
@@ -167,7 +166,7 @@ const howToJsonLd = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "長照 3.0 財務決策引擎",
+  "name": "CarePilot 長照領航員",
   "description": "台灣長照 3.0 補助試算工具，即時計算政府補助與自付額，比較四種照顧方案。",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any",
@@ -189,7 +188,7 @@ const jsonLd = {
   },
   "provider": {
     "@type": "Organization",
-    "name": "長照決策引擎",
+    "name": "CarePilot 長照領航員",
     "url": BASE_URL,
   },
 };

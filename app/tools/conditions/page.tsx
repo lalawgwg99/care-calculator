@@ -5,11 +5,11 @@ import FacilityChecklist from "@/components/FacilityChecklist";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "疾病照顧指引 | 長照決策引擎",
+  title: "疾病照顧指引 | CarePilot 長照領航員",
   description: "失智症、中風、帕金森氏症、骨折等常見疾病的照顧檔案、照顧歷程時間軸與機構評估清單。",
   alternates: pageAlternates("/tools/conditions"),
   openGraph: {
-    title: "疾病照顧指引 | 長照決策引擎",
+    title: "疾病照顧指引 | CarePilot 長照領航員",
     description: "常見疾病的照顧檔案、歷程時間軸與機構評估清單。",
     type: "website",
     url: absoluteUrl("/tools/conditions"),

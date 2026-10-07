@@ -21,7 +21,7 @@ export async function generateMetadata(
     title: post.title,
     description: post.description,
     keywords: post.keywords,
-    authors: [{ name: "長照決策引擎" }],
+    authors: [{ name: "CarePilot 長照領航員" }],
     alternates: pageAlternates(pathname),
     openGraph: {
       title: post.title,
@@ -149,7 +149,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     "@type": "Article",
     headline: post.title,
     description: post.description,
-    author: { "@type": "Organization", name: "長照決策引擎" },
+    author: { "@type": "Organization", name: "CarePilot 長照領航員" },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     inLanguage: "zh-TW",

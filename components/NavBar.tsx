@@ -6,10 +6,10 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { href: "/", label: "首頁試算", icon: "🧮" },
-  { href: "/blog", label: "知識庫", icon: "📚" },
-  { href: "/tools", label: "實用工具", icon: "🛠️" },
-  { href: "/search", label: "資源搜尋", icon: "🔍" },
+  { href: "/", label: "首頁試算" },
+  { href: "/blog", label: "知識庫" },
+  { href: "/tools", label: "實用工具" },
+  { href: "/search", label: "資源搜尋" },
 ];
 
 export default function NavBar() {
@@ -21,8 +21,8 @@ export default function NavBar() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-[17px] text-apple-gray-900 hover:opacity-80 transition-opacity">
-          <Image src="/logo-mark.svg" alt="長照決策引擎 Logo" width={24} height={24} className="rounded-[7px]" priority />
-          <span className="hidden sm:block">長照決策引擎</span>
+          <Image src="/logo-mark.svg" alt="CarePilot 長照領航員 Logo" width={24} height={24} className="rounded-[7px]" priority />
+          <span className="hidden sm:block">CarePilot</span>
         </Link>
 
         {/* Desktop Links */}
@@ -33,13 +33,12 @@ export default function NavBar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[14px] font-medium transition-all ${
+                className={`flex items-center px-4 py-2 rounded-full text-[14px] font-medium transition-all ${
                   isActive
                     ? "bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border border-orange-200/60 shadow-sm"
                     : "text-apple-gray-600 hover:bg-white hover:text-apple-gray-900 hover:shadow-sm"
                 }`}
               >
-                <span>{link.icon}</span>
                 <span>{link.label}</span>
               </Link>
             );
@@ -76,13 +75,12 @@ export default function NavBar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-[14px] text-[15px] font-medium transition-all mb-1 ${
+                className={`flex items-center px-4 py-3 rounded-[14px] text-[15px] font-medium transition-all mb-1 ${
                   isActive
                     ? "bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border border-orange-200/60"
                     : "text-apple-gray-700 hover:bg-apple-gray-100"
                 }`}
               >
-                <span className="text-[20px]">{link.icon}</span>
                 <span>{link.label}</span>
               </Link>
             );

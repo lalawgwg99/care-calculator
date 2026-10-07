@@ -3,11 +3,11 @@ import ReablementCards from "@/components/ReablementCards";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "微光復能任務卡 | 長照決策引擎",
+  title: "微光復能任務卡 | CarePilot 長照領航員",
   description: "每週復能活動卡片，身體活動、認知訓練、社交互動、日常生活四大面向，幫助長輩維持功能。",
   alternates: pageAlternates("/tools/reablement"),
   openGraph: {
-    title: "微光復能任務卡 | 長照決策引擎",
+    title: "微光復能任務卡 | CarePilot 長照領航員",
     description: "以每週活動任務幫助長輩維持身心功能。",
     type: "website",
     url: absoluteUrl("/tools/reablement"),

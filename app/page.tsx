@@ -277,11 +277,11 @@ export default function Home() {
           </div>
 
           <h1 className="text-[36px] sm:text-[48px] font-bold tracking-tight text-apple-gray-900 mb-5 leading-[1.15] animation-fade-in">
-            讓我們一起<br />為長輩找到最好的照顧
+            長照一個月<br />到底要花多少錢？
           </h1>
           <p className="text-[17px] sm:text-[20px] text-amber-900/70 max-w-xl mx-auto leading-relaxed mb-10 animation-fade-in">
-            不用再翻法規、不用再猜數字。只要設定四個基本條件，<br className="hidden sm:block" />
-            系統就能幫您算出政府補助多少、自己要付多少。
+            輸入失能等級和收入狀況，30 秒算出政府補助多少、自己要貼多少。<br className="hidden sm:block" />
+            居家、日照、機構、外看，四種方式一次比給你看。
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
             <button

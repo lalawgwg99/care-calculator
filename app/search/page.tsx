@@ -3,11 +3,11 @@ import ResourceSearch from "@/components/ResourceSearch";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "資源搜尋 | 長照決策引擎",
+  title: "資源搜尋 | CarePilot 長照領航員",
   description: "搜尋台灣各縣市長照資源，包含政府服務、民間機構、支持團體、法律資源與教育資源。",
   alternates: pageAlternates("/search"),
   openGraph: {
-    title: "台灣長照資源搜尋 | 長照決策引擎",
+    title: "台灣長照資源搜尋 | CarePilot 長照領航員",
     description: "搜尋各縣市政府服務、支持團體、法律與教育資源。",
     type: "website",
     url: absoluteUrl("/search"),
@@ -27,7 +27,7 @@ export default function SearchPage() {
           台灣長照資源搜尋
         </h1>
         <p className="text-[15px] text-apple-gray-500 max-w-md mx-auto">
-          找到您需要的政府服務、民間機構、支持團體與法律資源
+          找到你需要的政府服務、民間機構、支持團體與法律資源
         </p>
       </div>
 
