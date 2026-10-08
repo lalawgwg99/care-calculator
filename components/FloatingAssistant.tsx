@@ -12,6 +12,54 @@ const QUICK_ASKS = [
   "請外籍看護有補助嗎",
 ];
 
+// 本站核實知識庫：命中關鍵字就直接回正確答案，不經 AI（避免胡說）
+const LOCAL_KB: { keys: string[]; answer: string }[] = [
+  {
+    keys: ["喘息"],
+    answer:
+      "喘息服務是讓「照顧者」休息的服務：政府出錢安排替代人力來照顧長者，讓天天照顧的家人可以喘口氣、處理自己的事。\nCMS 2-6 級每年額度 $32,340，7-8 級 $48,510，可用於居家喘息、日間照顧或機構喘息。",
+  },
+  {
+    keys: ["怎麼申請", "如何申請", "申請流程", "去哪申請"],
+    answer:
+      "打 1966 長照專線申請，照管中心會派專員到府評估失能等級（CMS 1-8 級），再依等級擬定照顧計畫、媒合服務單位。",
+  },
+  {
+    keys: ["CMS", "分級", "失能等級", "幾級"],
+    answer:
+      "CMS 是長照需要等級，共 1-8 級：數字越大失能越重、補助額度越高。1 級沒有補助資格，2 級起才有。實際等級由照管中心專員到府評估認定，不是自己填了算。",
+  },
+  {
+    keys: ["外籍", "外勞", "看護工"],
+    answer:
+      "聘僱外籍看護的家庭也可以申請長照，但照顧及專業服務額度只給 30%，且限用於專業服務、到宅沐浴車等。目前外籍看護每月薪資約 $20,000，另有就業安定費 $2,000。",
+  },
+  {
+    keys: ["住宿", "機構補助", "安養", "護理之家"],
+    answer:
+      "住宿式機構補助（2026/9 新制）：CMS 4 級以上，每月 $15,000、全年最高 $180,000，按月認列，一年撥款兩次。",
+  },
+  {
+    keys: ["1966"],
+    answer: "1966 是長照服務專線（市話、手機直撥），可諮詢長照問題、申請長照服務。",
+  },
+  {
+    keys: ["費用", "多少錢", "試算", "自付"],
+    answer: "可以用本站首頁的 3 題快速試算，約 30 秒算出政府每月補助多少、你每月要準備多少。",
+  },
+  {
+    keys: ["亂說", "不對", "錯誤", "胡說", "你錯"],
+    answer: "抱歉，我剛才說錯了。你可以換個問法再問一次，或直接打 1966 問照管中心最準。",
+  },
+];
+
+function findLocalAnswer(msg: string): string | null {
+  for (const entry of LOCAL_KB) {
+    if (entry.keys.some((k) => msg.includes(k))) return entry.answer;
+  }
+  return null;
+}
+
 interface Msg {
   role: "user" | "assistant";
   content: string;
@@ -81,6 +129,12 @@ export default function FloatingAssistant() {
     setMessages(next);
     setInput("");
     setError("");
+    // 先查本站核實知識庫，命中就直接回，不經 AI
+    const local = findLocalAnswer(msg);
+    if (local) {
+      setMessages((prev) => [...prev, { role: "assistant", content: local }]);
+      return;
+    }
     setLoading(true);
     try {
       const history = next.slice(-6).map((m) => ({ role: m.role, content: m.content }));
