@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "./Icon";
 
 const FAQ_ITEMS = [
   {
@@ -43,8 +44,8 @@ export default function FAQ() {
   return (
     <section className="w-full max-w-3xl mx-auto px-4 mb-16">
       <div className="text-center mb-10">
-        <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 tracking-tight mb-3">
-          💬 常見問題
+        <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 tracking-tight mb-3 flex items-center justify-center gap-2.5">
+          <Icon name="chat" size={26} /> 常見問題
         </h3>
         <p className="text-[15px] text-apple-gray-500">
           家屬最常問的長照問題，我們幫你整理好了。

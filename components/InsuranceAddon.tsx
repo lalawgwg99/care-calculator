@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState, useMemo } from "react";
 
 declare global {
@@ -57,7 +58,7 @@ export default function InsuranceAddon({
     <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-5 border-b border-indigo-100/50">
         <div className="flex items-center gap-3">
-          <span className="text-[28px]">🛡️</span>
+          <Icon name="shield" size={28} />
           <div>
             <h2 className="text-[18px] font-bold text-apple-gray-900">保險補充計算</h2>
             <p className="text-[13px] text-blue-800/60 mt-0.5">估算私人保險能填補多少長照缺口</p>

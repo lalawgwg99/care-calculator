@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState } from "react";
 
 interface Template {
@@ -16,7 +17,7 @@ interface Template {
 const TEMPLATES: Template[] = [
   {
     id: "handoff",
-    icon: "📝",
+    icon: "note" as IconName,
     title: "交班訊息",
     subtitle: "照顧班次結束時，傳給接手家人",
     color: "text-blue-700",
@@ -46,7 +47,7 @@ ${v.nextAction || "（請填寫）"}`,
   },
   {
     id: "meeting",
-    icon: "👨‍👩‍👧",
+    icon: "users" as IconName,
     title: "家庭會議議程",
     subtitle: "整合家人共同討論照顧計畫",
     color: "text-green-700",
@@ -81,7 +82,7 @@ ${v.decision || "（請填寫）"}
   },
   {
     id: "emergency",
-    icon: "🚨",
+    icon: "alert" as IconName,
     title: "緊急聯絡通知",
     subtitle: "長輩緊急就醫時，快速通知家人",
     color: "text-rose-700",
@@ -142,7 +143,7 @@ export default function CaregiverComm() {
     <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-5 border-b border-green-100/50">
         <div className="flex items-center gap-3">
-          <span className="text-[28px]">💬</span>
+          <Icon name="chat" size={28} />
           <div>
             <h2 className="text-[18px] font-bold text-apple-gray-900">家庭溝通模板</h2>
             <p className="text-[13px] text-green-800/60 mt-0.5">快速產生照顧溝通訊息，減少溝通摩擦</p>
@@ -161,7 +162,7 @@ export default function CaregiverComm() {
                 selectedTemplate === t.id ? `${t.bgColor} border-current` : "border-apple-gray-200 hover:border-apple-gray-300 bg-apple-gray-50"
               }`}
             >
-              <span className="text-[28px]">{t.icon}</span>
+              <Icon name={t.icon} size={28} />
               <div className={`font-semibold text-[13px] ${selectedTemplate === t.id ? t.color : "text-apple-gray-700"}`}>{t.title}</div>
               <div className="text-[11px] text-apple-gray-400 leading-snug">{t.subtitle}</div>
             </button>
@@ -176,9 +177,10 @@ export default function CaregiverComm() {
               <div className="space-y-3">
                 {template.fields.map((field) => (
                   <div key={field.id}>
-                    <label className="block text-[12px] font-medium text-apple-gray-600 mb-1">{field.label}</label>
+                    <label htmlFor={`cc-${template.id}-${field.id}`} className="block text-[12px] font-medium text-apple-gray-600 mb-1">{field.label}</label>
                     {field.multiline ? (
                       <textarea
+                        id={`cc-${template.id}-${field.id}`}
                         placeholder={field.placeholder}
                         value={currentValues[field.id] ?? ""}
                         onChange={(e) => updateValue(template.id, field.id, e.target.value)}
@@ -187,6 +189,7 @@ export default function CaregiverComm() {
                       />
                     ) : (
                       <input
+                        id={`cc-${template.id}-${field.id}`}
                         type="text"
                         placeholder={field.placeholder}
                         value={currentValues[field.id] ?? ""}
@@ -215,7 +218,7 @@ export default function CaregiverComm() {
                   : "bg-green-500 hover:bg-green-600 text-white shadow-sm"
               }`}
             >
-              {copied === selectedTemplate ? "✓ 已複製到剪貼板" : "複製訊息 📋"}
+              {copied === selectedTemplate ? "✓ 已複製到剪貼板" : <span className="inline-flex items-center gap-1.5"><Icon name="clipboard" size={14} />複製訊息</span>}
             </button>
           </div>
         )}

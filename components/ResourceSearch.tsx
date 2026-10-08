@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState, useMemo } from "react";
 import { RESOURCES, RESOURCE_TYPES, CITIES, type Resource } from "@/constants/resourceData";
 
@@ -40,6 +41,7 @@ export default function ResourceSearch() {
       <div className="bg-white rounded-[24px] shadow-apple border border-apple-gray-200/60 p-4">
         <input
           type="text"
+          aria-label="搜尋長照資源"
           placeholder="搜尋資源名稱、關鍵字（例：喘息、失智、輔具）..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -73,6 +75,7 @@ export default function ResourceSearch() {
 
           {/* City filter */}
           <select
+            aria-label="選擇縣市"
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
             className="px-3 py-1 rounded-full bg-apple-gray-100 text-apple-gray-600 text-[12px] font-medium border-none focus:outline-none focus:ring-1 focus:ring-amber-300"
@@ -93,7 +96,7 @@ export default function ResourceSearch() {
 
       {filtered.length === 0 ? (
         <div className="text-center py-12 text-apple-gray-400">
-          <div className="text-[40px] mb-3">🔍</div>
+          <div className="mb-3 flex justify-center"><Icon name="search" size={40} /></div>
           <p className="text-[15px]">沒有找到符合條件的資源</p>
           <p className="text-[13px] mt-1">試試調整搜尋條件或換個關鍵字</p>
         </div>
@@ -168,7 +171,7 @@ function ResourceCard({ resource, onCall }: { resource: Resource; onCall: (phone
                 onClick={() => onCall(resource.phone!)}
                 className="flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-[13px] font-medium px-3 py-1.5 rounded-full hover:bg-green-100 transition-colors"
               >
-                📞 {resource.phone}
+                <Icon name="phone" size={14} /> {resource.phone}
               </button>
             )}
             {resource.url && (
@@ -178,7 +181,7 @@ function ResourceCard({ resource, onCall }: { resource: Resource; onCall: (phone
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-[13px] font-medium px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors"
               >
-                🔗 官網
+                <Icon name="link" size={14} /> 官網
               </a>
             )}
           </div>

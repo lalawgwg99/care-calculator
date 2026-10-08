@@ -1,3 +1,4 @@
+import Icon, { type IconName } from "@/components/Icon";
 import type { Metadata } from "next";
 import ReablementCards from "@/components/ReablementCards";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
@@ -19,7 +20,7 @@ export default function ReablementPage() {
     <main className="max-w-2xl mx-auto px-4 py-10 space-y-8">
       <div className="text-center">
         <div className="inline-flex items-center gap-2 bg-amber-100 rounded-full px-4 py-2 mb-4">
-          <span className="text-[18px]">🌟</span>
+          <Icon name="star" size={18} />
           <span className="text-[13px] font-semibold text-amber-800">復能活動</span>
         </div>
         <h1 className="text-[28px] font-bold text-apple-gray-900 mb-2">

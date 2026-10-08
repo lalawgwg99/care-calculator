@@ -9,6 +9,7 @@ import HiddenSavingsPanel from "@/components/HiddenSavingsPanel";
 import InsuranceAddon from "@/components/InsuranceAddon";
 import LegalNavigator from "@/components/LegalNavigator";
 import { SITE_URL } from "@/lib/site";
+import Icon from "@/components/Icon";
 import {
   ASSISTIVE_DEVICE_GROUPS,
   FOREIGN_CAREGIVER_2026,
@@ -235,7 +236,7 @@ export default function FinancialReport({
                 className="w-full flex items-center justify-between"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-[18px]">🧾</span>
+                  <span className="text-blue-900"><Icon name="receipt" size={20} /></span>
                   <span className="text-[15px] font-bold text-blue-900">外籍看護　真實月支出明細</span>
                 </div>
                 <span className={`text-blue-500 text-[18px] transition-transform duration-300 ${showForeignBreakdown ? "rotate-45" : ""}`}>+</span>
@@ -269,7 +270,7 @@ export default function FinancialReport({
                   className="w-full flex items-center justify-between"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-[18px]">🏥</span>
+                    <span className="text-violet-900"><Icon name="hospital" size={20} /></span>
                     <span className="text-[15px] font-bold text-violet-900">住宿式機構　每月費用明細</span>
                   </div>
                   <span className={`text-violet-500 text-[18px] transition-transform duration-300 ${showInstitutionBreakdown ? "rotate-45" : ""}`}>+</span>
@@ -301,20 +302,20 @@ export default function FinancialReport({
                 )}
               </div>
 
-              {/* 180 天入住門檻提醒 */}
+              {/* 住宿補助新制提醒（2026/9 起） */}
               <div className="bg-amber-50/80 rounded-[20px] p-5 border border-amber-200/50">
                 <div className="flex items-start gap-3">
-                  <span className="text-[22px] flex-shrink-0">📅</span>
+                  <span className="text-amber-700 flex-shrink-0 mt-0.5"><Icon name="calendar" size={22} /></span>
                   <div>
-                    <h4 className="text-[15px] font-bold text-amber-900 mb-1.5">180 天入住門檻提醒</h4>
+                    <h4 className="text-[15px] font-bold text-amber-900 mb-1.5">住宿補助新制提醒（2026/9 起）</h4>
                     <p className="text-[13px] text-amber-800/80 leading-relaxed mb-2">
-                      住宿式機構補助需<strong>當年度累計入住滿 180 天</strong>才能領取全額 $120,000 年度補助。
-                      未滿 180 天則按月計算（每住滿半個月曆天 = 補助 $10,000）。
+                      住宿式機構補助改為<strong>按月認列：每月 $15,000，全年最高 $180,000</strong>。
+                      當月入住達該月日曆天數一半即認列 1 個月，不再需要全年累計 180 天。
                     </p>
                     <div className="bg-white/60 rounded-[12px] p-3 border border-amber-100/50">
                       <p className="text-[12px] text-amber-700/70">
-                        💡 <strong>建議：</strong>若預計入住，盡量在年初辦理以確保當年度達 180 天門檻。
-                        年中入住者，第一年補助可能較少，但次年起即可領全額。
+                        <strong>撥款時程：</strong>一年撥款兩次——1–8 月份預計 11 月底前核撥，9–12 月份預計隔年 1 月底前核撥。
+                        追溯自 2026/1/1，2026/9/14 起開放申請。
                       </p>
                     </div>
                   </div>
@@ -329,7 +330,7 @@ export default function FinancialReport({
       {selectedConditions.length > 0 && (
         <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-[24px]">🩺</span>
+            <span className="text-apple-gray-700"><Icon name="stethoscope" size={26} /></span>
             <div>
               <h4 className="text-[16px] font-bold text-apple-gray-900">疾病相關額外支出</h4>
               <p className="text-[13px] text-apple-gray-500">
@@ -345,7 +346,7 @@ export default function FinancialReport({
               return (
                 <div key={condId} className="bg-apple-gray-50/80 rounded-[16px] p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[16px]">{profile.icon}</span>
+                    <span className="text-apple-gray-700"><Icon name={profile.icon} size={18} /></span>
                     <span className="text-[14px] font-bold text-apple-gray-800">{profile.name}</span>
                   </div>
                   <div className="space-y-1.5">
@@ -385,7 +386,7 @@ export default function FinancialReport({
       {selectedConditions.length > 0 && (
         <div className="bg-gradient-to-br from-purple-50/50 to-indigo-50/30 rounded-[24px] p-6 border border-purple-100/40">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-[24px]">💬</span>
+            <span className="text-purple-700"><Icon name="chat" size={26} /></span>
             <h4 className="text-[16px] font-bold text-apple-gray-900">跟長輩溝通的小提醒</h4>
           </div>
           <div className="space-y-3">
@@ -395,7 +396,7 @@ export default function FinancialReport({
               return (
                 <div key={condId}>
                   <div className="flex items-center gap-1.5 mb-2">
-                    <span className="text-[14px]">{profile.icon}</span>
+                    <span className="text-purple-800"><Icon name={profile.icon} size={16} /></span>
                     <span className="text-[13px] font-semibold text-purple-800">{profile.name}</span>
                   </div>
                   <div className="space-y-1.5 ml-5">
@@ -425,7 +426,7 @@ export default function FinancialReport({
       {/* ====== ELDERLY ASSETS + FAMILY SPLIT ====== */}
       <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-[28px] p-7 sm:p-8 border border-orange-100/50">
         <div className="flex items-center gap-3 mb-5">
-          <span className="text-[26px]">👨‍👩‍👧‍👦</span>
+          <span className="text-amber-700"><Icon name="users" size={28} /></span>
           <div>
             <h4 className="text-[18px] font-bold text-apple-gray-900">家庭財務規劃</h4>
             <p className="text-[13px] text-amber-800/60">先用長輩的積蓄，不足再由子女平分。</p>
@@ -435,7 +436,7 @@ export default function FinancialReport({
         {/* Elderly assets input */}
         <div className="bg-white/70 rounded-[18px] p-5 border border-orange-100/30 mb-5">
           <label className="block text-[14px] font-semibold text-apple-gray-700 mb-3">
-            💰 長輩可動用的積蓄／退休金／保險
+            <Icon name="coins" size={15} className="inline-block mr-1 align-[-2px]" /> 長輩可動用的積蓄／退休金／保險
           </label>
           <div className="flex items-center gap-3">
             <span className="text-[16px] text-apple-gray-500 whitespace-nowrap">NT$</span>
@@ -451,7 +452,7 @@ export default function FinancialReport({
           </div>
           {elderlyAssets > 0 && (
             <p className="text-[13px] text-amber-700 mt-3">
-              ✅ 長輩的積蓄可支撐 <strong>{monthsFromAssets} 個月</strong>的費用
+              <Icon name="checkCircle" size={14} className="inline-block mr-1 align-[-2px] text-emerald-600" /> 長輩的積蓄可支撐 <strong>{monthsFromAssets} 個月</strong>的費用
               {monthsFromAssets >= 60
                 ? "，5 年內子女無需分攤！"
                 : `，第 ${monthsFromAssets + 1} 個月後才需子女接手。`}
@@ -465,10 +466,10 @@ export default function FinancialReport({
             <span className="text-[14px] font-semibold text-apple-gray-700 whitespace-nowrap">子女分攤人數</span>
             <div className="flex items-center gap-3 bg-white rounded-full px-3 py-1.5 shadow-sm border border-apple-gray-200/60">
               <button onClick={() => setFamilyMembers(Math.max(1, familyMembers - 1))} disabled={familyMembers <= 1}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-[20px] text-apple-orange disabled:text-apple-gray-300">−</button>
+                className="w-11 h-11 rounded-full flex items-center justify-center text-[20px] text-apple-orange disabled:text-apple-gray-300">−</button>
               <div className="w-8 text-center text-[20px] font-bold text-apple-gray-900 font-mono">{familyMembers}</div>
               <button onClick={() => setFamilyMembers(familyMembers + 1)}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-[20px] text-apple-orange">+</button>
+                className="w-11 h-11 rounded-full flex items-center justify-center text-[20px] text-apple-orange">+</button>
             </div>
             <span className="text-[14px] text-apple-gray-500">人</span>
           </div>
@@ -511,7 +512,7 @@ export default function FinancialReport({
           className="w-full flex items-center justify-between p-6"
         >
           <div className="flex items-center gap-3">
-            <span className="text-[24px]">⚠️</span>
+            <span className="text-amber-600"><Icon name="alert" size={26} /></span>
             <div className="text-left">
               <h4 className="text-[16px] font-bold text-apple-gray-900">考慮辭職自己照顧？</h4>
               <p className="text-[13px] text-apple-gray-500">先看看你可能沒算到的隱形代價</p>
@@ -563,7 +564,7 @@ export default function FinancialReport({
 
             <div className="bg-amber-50/60 rounded-[14px] p-4 border border-orange-100/30">
               <p className="text-[13px] text-amber-800/70 leading-relaxed">
-                💡 <strong>另外別忘了：</strong>辭職會中斷勞保年資，影響你未來的老年年金，
+                <Icon name="bulb" size={14} className="inline-block mr-1 align-[-2px]" /> <strong>另外別忘了：</strong>辭職會中斷勞保年資，影響你未來的老年年金，
                 以及不孝的標籤還沒算…善用政府長照資源，才是對全家最好的選擇。
               </p>
             </div>
@@ -573,14 +574,14 @@ export default function FinancialReport({
 
       {/* ====== NEXT STEPS ====== */}
       <div id="next-steps" className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100/60 rounded-[24px] p-6 sm:p-7 mb-4">
-        <h3 className="text-[17px] font-bold text-emerald-800 mb-4">✅ 算完了，接下來怎麼做？</h3>
+        <h3 className="text-[17px] font-bold text-emerald-800 mb-4 flex items-center gap-2"><Icon name="checkCircle" size={20} /> 算完了，接下來怎麼做？</h3>
         <div className="space-y-3">
           {[
             {
               step: "1",
               title: "撥打長照專線",
               desc: "告知長輩狀況，預約照管專員到府評估",
-              cta: "📞 1966（免費）",
+              cta: (<span className="inline-flex items-center gap-1.5"><Icon name="phone" size={14} /> 1966（免費）</span>),
               href: "tel:1966",
             },
             {
@@ -609,7 +610,7 @@ export default function FinancialReport({
               {item.href && item.cta && (
                 <a
                   href={item.href}
-                  className="flex-shrink-0 text-[14px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors px-4 py-1.5 rounded-full"
+                  className="flex-shrink-0 inline-flex items-center text-[14px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors px-4 py-1.5 rounded-full"
                 >
                   {item.cta}
                 </a>
@@ -639,7 +640,7 @@ export default function FinancialReport({
 
         {/* 複製 / 原生分享 */}
         <button
-          className="w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
           onClick={() => {
             const summary = [
               `📋 長照財務試算摘要`,
@@ -675,14 +676,14 @@ export default function FinancialReport({
             }
           }}
         >
-          📤 複製摘要
+          <Icon name="share" size={17} /> 複製摘要
         </button>
 
         <button
-          className="w-full sm:w-auto px-7 py-3.5 bg-apple-gray-50 text-apple-gray-900 text-[16px] font-semibold rounded-full hover:bg-apple-gray-200 transition-colors border border-apple-gray-200/60"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-apple-gray-50 text-apple-gray-900 text-[16px] font-semibold rounded-full hover:bg-apple-gray-200 transition-colors border border-apple-gray-200/60"
           onClick={() => window.location.reload()}
         >
-          🔄 重新評估
+          <Icon name="refresh" size={17} /> 重新評估
         </button>
       </div>
     </div>

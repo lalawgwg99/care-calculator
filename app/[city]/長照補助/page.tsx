@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
+import Icon from '@/components/Icon';
 import { TAIWAN_CITIES, CMS_LEVELS, CMS_LEVEL_INFO, CARE_TYPE_INFO } from '@/constants/pseoData';
 import { absoluteUrl, pageAlternates } from '@/lib/site';
 
@@ -235,7 +236,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
             <span>{cityInfo.name}長照</span>
           </nav>
           <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm mb-6 border border-orange-100 text-[13px] font-semibold text-amber-800">
-            📍 {region}
+            <Icon name="pin" size={15} />{region}
           </div>
           <h1 className="text-[32px] sm:text-[44px] font-bold tracking-tight text-apple-gray-900 mb-4 leading-tight">
             {cityInfo.name}長照補助申請<br />
@@ -283,8 +284,8 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
       <section className="max-w-4xl mx-auto px-4 pt-12">
         <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-orange-100/50">
-            <h2 className="text-[22px] font-bold text-apple-gray-900">
-              📞 {cityInfo.name}照顧管理中心
+            <h2 className="text-[22px] font-bold text-apple-gray-900 flex items-center gap-2">
+              <Icon name="phone" size={22} />{cityInfo.name}照顧管理中心
             </h2>
           </div>
           <div className="p-8">
@@ -317,7 +318,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
         {/* Nationwide Uniform Subsidy Notice */}
         <div className="bg-amber-50 rounded-[24px] p-6 border border-amber-200 mb-8">
           <div className="flex items-start gap-4">
-            <span className="text-[32px]">ℹ️</span>
+            <span className="text-amber-700 shrink-0"><Icon name="info" size={32} /></span>
             <div>
               <h3 className="text-[17px] font-bold text-amber-900 mb-2">
                 全台灣長照補助標準一致
@@ -363,7 +364,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
                 href="/"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-bold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
               >
-                🧮 開始完整試算
+                <Icon name="calculator" size={20} />開始完整試算
               </Link>
             </div>
           </div>
@@ -403,7 +404,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-apple-orange text-[16px] font-bold rounded-full shadow-lg hover:shadow-xl transition-shadow border border-orange-200"
           >
-            🔗 衛福部長照專區
+            <Icon name="link" size={18} />衛福部長照專區
           </a>
         </div>
       </section>

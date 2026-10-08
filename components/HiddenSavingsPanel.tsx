@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState, useMemo } from "react";
 import {
   calculateHiddenSavings,
@@ -75,7 +76,7 @@ export default function HiddenSavingsPanel({
   // ====== 四大類數據 ======
   const categories = [
     {
-      icon: "🏥",
+      icon: "hospital" as IconName,
       title: "健保費減免",
       yearlyAmount: savings.nhiTotalYearly,
       color: "emerald",
@@ -104,7 +105,7 @@ export default function HiddenSavingsPanel({
       ),
     },
     {
-      icon: "💼",
+      icon: "briefcase" as IconName,
       title: "勞保/國保減免",
       yearlyAmount: savings.laborInsuranceTotalYearly,
       color: "blue",
@@ -119,7 +120,7 @@ export default function HiddenSavingsPanel({
           {savings.laborDisabilityBenefitAlert && (
             <div className="bg-red-50 rounded-[12px] p-3 border border-red-200/50">
               <p className="text-[13px] text-red-800 font-medium">
-                ⚠️ 長輩發生失能當下仍在勞保加保期間！請務必評估申請「勞保失能給付」（一次金或年金），
+                <Icon name="alert" size={14} /> 長輩發生失能當下仍在勞保加保期間！請務必評估申請「勞保失能給付」（一次金或年金），
                 這可能是一筆數十萬元的隱藏現金。
               </p>
             </div>
@@ -131,7 +132,7 @@ export default function HiddenSavingsPanel({
       ),
     },
     {
-      icon: "📊",
+      icon: "chart" as IconName,
       title: "報稅扣除額",
       yearlyAmount: savings.taxActualSaving,
       color: "orange",
@@ -184,7 +185,7 @@ export default function HiddenSavingsPanel({
       ),
     },
     {
-      icon: "🚗",
+      icon: "car" as IconName,
       title: "日常生活減免",
       yearlyAmount:
         savings.vehicleTaxSavingsYearly +
@@ -237,7 +238,7 @@ export default function HiddenSavingsPanel({
       {/* ====== HEADER ====== */}
       <div className="p-7 sm:p-9">
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-[28px]">💎</span>
+          <Icon name="sparkles" size={28} />
           <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 tracking-tight">
             隱形省下的錢
           </h3>
@@ -294,7 +295,7 @@ export default function HiddenSavingsPanel({
             className="w-full flex items-center justify-between p-5"
           >
             <div className="flex items-center gap-2">
-              <span className="text-[18px]">⚙️</span>
+              <Icon name="gear" size={18} />
               <span className="text-[15px] font-bold text-apple-gray-900">設定長輩與稅務資料</span>
               <span className="text-[12px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
                 {age}歲 · {city} · 稅率{Math.round(taxBracket * 100)}%
@@ -420,7 +421,7 @@ export default function HiddenSavingsPanel({
                   className="w-full flex items-center justify-between p-4 sm:p-5"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-[22px]">{cat.icon}</span>
+                    <span className="shrink-0"><Icon name={cat.icon} size={22} /></span>
                     <span className="text-[15px] font-bold text-apple-gray-900">{cat.title}</span>
                   </div>
                   <div className="flex items-center gap-3">

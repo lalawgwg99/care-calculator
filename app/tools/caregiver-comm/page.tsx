@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "@/components/Icon";
 import { CARE_PHRASES, PHRASE_CATEGORIES } from "@/constants/bilingualPhrases";
 
 type Language = "indonesian" | "vietnamese";
@@ -10,6 +11,7 @@ export default function CaregiverCommPage() {
   const [selectedPhrases, setSelectedPhrases] = useState<string[]>([]);
   const [customNote, setCustomNote] = useState("");
   const [generated, setGenerated] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const togglePhrase = (id: string) => {
     setSelectedPhrases((prev) =>
@@ -24,13 +26,13 @@ export default function CaregiverCommPage() {
   const generateCard = () => {
     const lines = [
       `━━━ 照顧聯絡簿 ━━━`,
-      `📅 ${new Date().toLocaleDateString("zh-TW")}`,
+      `${new Date().toLocaleDateString("zh-TW")}`,
       ``,
       ...selected.map((p) => {
         const translation = language === "indonesian" ? p.indonesian : p.vietnamese;
         return `☐ ${p.chinese}\n   ${translation}`;
       }),
-      ...(customNote ? [``, `📝 備註 / Catatan / Ghi chú:`, customNote] : []),
+      ...(customNote ? [``, `備註 / Catatan / Ghi chú:`, customNote] : []),
       ``,
       `━━━━━━━━━━━━━━━━━━`,
     ];
@@ -49,7 +51,7 @@ export default function CaregiverCommPage() {
           <div className="bg-white rounded-[24px] shadow-apple-warm border border-apple-gray-200/60 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <span className="text-[24px]">🗣️</span>
+                <span className="text-green-600"><Icon name="chat" size={26} /></span>
                 <h2 className="text-[20px] font-bold text-apple-gray-900">照顧聯絡簿</h2>
               </div>
               <span className="text-[13px] px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium">
@@ -63,7 +65,7 @@ export default function CaregiverCommPage() {
                 return (
                   <div key={phrase.id} className="bg-apple-gray-50 rounded-[14px] p-4">
                     <div className="flex items-start gap-3">
-                      <span className="text-[18px] mt-0.5">☐</span>
+                      <span className="mt-0.5 text-apple-gray-400"><Icon name="square" size={18} /></span>
                       <div>
                         <p className="text-[16px] font-semibold text-apple-gray-900">{phrase.chinese}</p>
                         <p className="text-[15px] text-blue-700 mt-1">{translation}</p>
@@ -76,7 +78,7 @@ export default function CaregiverCommPage() {
 
             {customNote && (
               <div className="mt-4 bg-amber-50/60 rounded-[14px] p-4">
-                <p className="text-[13px] font-semibold text-amber-800 mb-1">📝 備註</p>
+                <p className="text-[13px] font-semibold text-amber-800 mb-1 flex items-center gap-1.5"><Icon name="note" size={15} />備註</p>
                 <p className="text-[14px] text-amber-900">{customNote}</p>
               </div>
             )}
@@ -84,7 +86,7 @@ export default function CaregiverCommPage() {
 
           <div className="bg-amber-50/60 rounded-[16px] p-4 border border-amber-100/50">
             <p className="text-[13px] text-amber-800/80 leading-relaxed">
-              💡 <strong>使用方式：</strong>截圖貼冰箱，或複製傳到 LINE 群組給看護。
+              <Icon name="bulb" size={15} className="inline-block align-[-2px] mr-1" /><strong>使用方式：</strong>截圖貼冰箱，或複製傳到 LINE 群組給看護。
               每天更新要注意的事項。
             </p>
           </div>
@@ -95,18 +97,21 @@ export default function CaregiverCommPage() {
                 if (navigator.share) {
                   navigator.share({ title: "照顧聯絡簿", text: card }).catch(() => {});
                 } else {
-                  navigator.clipboard.writeText(card).then(() => alert("已複製到剪貼簿！"));
+                  navigator.clipboard.writeText(card).then(() => {
+                    setCopied(true);
+                    window.setTimeout(() => setCopied(false), 2000);
+                  });
                 }
               }}
-              className="w-full py-4 bg-gradient-to-r from-green-500 to-teal-500 text-white text-[16px] font-bold rounded-full shadow-lg shadow-green-200/50"
+              className="w-full py-4 bg-gradient-to-r from-green-500 to-teal-500 text-white text-[16px] font-bold rounded-full shadow-lg shadow-green-200/50 flex items-center justify-center gap-2"
             >
-              📤 複製 / 分享給看護
+              <Icon name="share" size={20} />{copied ? "已複製！" : "複製 / 分享給看護"}
             </button>
             <button
               onClick={() => window.print()}
-              className="w-full py-4 bg-white text-apple-gray-700 text-[16px] font-semibold rounded-full border border-apple-gray-200/60 hover:bg-apple-gray-50 transition-colors"
+              className="w-full py-4 bg-white text-apple-gray-700 text-[16px] font-semibold rounded-full border border-apple-gray-200/60 hover:bg-apple-gray-50 transition-colors flex items-center justify-center gap-2"
             >
-              🖨️ 列印貼冰箱
+              <Icon name="printer" size={20} />列印貼冰箱
             </button>
             <button
               onClick={() => setGenerated(false)}
@@ -128,7 +133,7 @@ export default function CaregiverCommPage() {
 
         <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
           <div className="bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 p-8 text-center">
-            <div className="text-[48px] mb-3">🗣️</div>
+            <div className="mb-3 flex justify-center text-green-600"><Icon name="chat" size={52} /></div>
             <h1 className="text-[28px] font-bold text-apple-gray-900 mb-2">看護溝通卡</h1>
             <p className="text-[15px] text-green-800/70">
               勾選今天的照顧重點<br />
@@ -143,23 +148,23 @@ export default function CaregiverCommPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setLanguage("indonesian")}
-              className={`flex-1 py-3 rounded-[12px] text-[15px] font-semibold transition-all ${
+              className={`flex-1 py-3 rounded-[12px] text-[15px] font-semibold transition-all flex items-center justify-center gap-2 ${
                 language === "indonesian"
                   ? "bg-green-500 text-white shadow-sm"
                   : "bg-apple-gray-50 text-apple-gray-600 border border-apple-gray-200/60"
               }`}
             >
-              🇮🇩 印尼文
+              <Icon name="globe" size={18} />印尼文
             </button>
             <button
               onClick={() => setLanguage("vietnamese")}
-              className={`flex-1 py-3 rounded-[12px] text-[15px] font-semibold transition-all ${
+              className={`flex-1 py-3 rounded-[12px] text-[15px] font-semibold transition-all flex items-center justify-center gap-2 ${
                 language === "vietnamese"
                   ? "bg-green-500 text-white shadow-sm"
                   : "bg-apple-gray-50 text-apple-gray-600 border border-apple-gray-200/60"
               }`}
             >
-              🇻🇳 越南文
+              <Icon name="globe" size={18} />越南文
             </button>
           </div>
         </div>
@@ -183,8 +188,8 @@ export default function CaregiverCommPage() {
                           isSelected ? "bg-green-50 border border-green-200/50" : "bg-apple-gray-50/40 hover:bg-apple-gray-50"
                         }`}
                       >
-                        <span className={`text-[16px] mt-0.5 ${isSelected ? "text-apple-green" : "text-apple-gray-300"}`}>
-                          {isSelected ? "✅" : "☐"}
+                        <span className={`mt-0.5 ${isSelected ? "text-apple-green" : "text-apple-gray-300"}`}>
+                          {isSelected ? <Icon name="checkCircle" size={18} /> : <Icon name="square" size={18} />}
                         </span>
                         <div>
                           <p className="text-[14px] font-medium text-apple-gray-900">{phrase.chinese}</p>
@@ -201,8 +206,9 @@ export default function CaregiverCommPage() {
 
         {/* Custom note */}
         <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5 mb-6">
-          <h3 className="text-[15px] font-bold text-apple-gray-900 mb-3">📝 自由備註</h3>
+          <h3 className="text-[15px] font-bold text-apple-gray-900 mb-3 flex items-center gap-2"><Icon name="note" size={18} />自由備註</h3>
           <textarea
+            aria-label="自由備註"
             value={customNote}
             onChange={(e) => setCustomNote(e.target.value)}
             placeholder="其他要跟看護說的事（中文即可）"

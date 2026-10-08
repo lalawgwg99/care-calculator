@@ -20,6 +20,7 @@ declare global {
 }
 
 const STORAGE_KEY = "care-calc-last-v1";
+const WIZARD_KEY = "care-calc-wizard-v1";
 const INCOME_LABELS: Record<IncomeStatus, string> = {
   general: "一般戶",
   "mid-low": "中低收入",
@@ -37,7 +38,7 @@ const ServiceCart = dynamic(() => import("@/components/ServiceCart"), { loading:
 const FinancialReport = dynamic(() => import("@/components/FinancialReport"), { loading: StepLoader });
 const ApplicationGuide = dynamic(() => import("@/components/ApplicationGuide"), { loading: StepLoader });
 import FAQ from "@/components/FAQ";
-import QuickWizard from "@/components/QuickWizard";
+import QuickWizard, { type WizardProgress } from "@/components/QuickWizard";
 import CaregiverTips from "@/components/CaregiverTips";
 import EmergencyAccordion from "@/components/EmergencyAccordion";
 
@@ -58,6 +59,16 @@ export default function Home() {
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
   const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
+  const [wizardProgress] = useState<WizardProgress | null>(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem(WIZARD_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.step === "number" && parsed.step >= 0 && parsed.step <= 2) return parsed as WizardProgress;
+      return null;
+    } catch { return null; }
+  });
   const [estimatorFromWizard, setEstimatorFromWizard] = useState(false);
   const [wizardCmsSignal, setWizardCmsSignal] = useState<CMSLevel | null>(null);
   const [showResumeBanner, setShowResumeBanner] = useState(false);
@@ -132,6 +143,7 @@ export default function Home() {
   };
 
   const handleQuickComplete = (careType: CareType, cms: CMSLevel, income: IncomeStatus) => {
+    try { localStorage.removeItem(WIZARD_KEY); } catch {}
     setSelectedPathway(careType);
     setCmsLevel(cms);
     setIncomeStatus(income);
@@ -142,6 +154,7 @@ export default function Home() {
 
   const handleReset = () => {
     localStorage.removeItem(STORAGE_KEY);
+    try { localStorage.removeItem(WIZARD_KEY); } catch {}
     setCmsLevel(null);
     setIncomeStatus(null);
     setTransportRegion("region1");
@@ -387,6 +400,8 @@ export default function Home() {
               onOpenEstimator={() => { setEstimatorFromWizard(true); setShowEstimatorModal(true); }}
               estimatorResult={wizardCmsSignal}
               onEstimatorConsumed={() => setWizardCmsSignal(null)}
+              initialProgress={wizardProgress}
+              onProgress={(prog) => { try { localStorage.setItem(WIZARD_KEY, JSON.stringify(prog)); } catch {} }}
             />
 
             {/* 進階設定：交通分區、輔具、疾病勾選 */}
@@ -398,7 +413,7 @@ export default function Home() {
               <div className="pt-6">
             <div className="mb-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
-                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">❸ 交通接送分區</span>
+                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">3. 交通接送分區</span>
                 <select
                   value={transportRegion}
                   onChange={(event) => setTransportRegion(event.target.value as TransportRegion)}
@@ -411,7 +426,7 @@ export default function Home() {
                 <span className="block text-[12px] text-apple-gray-500 mt-2">分區以照管中心依居住鄉鎮核定為準。</span>
               </label>
               <label className="block">
-                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">❹ 輔具額度組別</span>
+                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">4. 輔具額度組別</span>
                 <select
                   value={assistiveDeviceGroup}
                   onChange={(event) => setAssistiveDeviceGroup(event.target.value as AssistiveDeviceGroup)}
@@ -428,7 +443,7 @@ export default function Home() {
             {/* Condition Selection (Optional) */}
             <div className="mb-10">
               <label className="block text-[16px] font-semibold text-apple-gray-800 mb-2">
-                ❺ 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
+                5. 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
               </label>
               <p className="text-[13px] text-apple-gray-500 mb-4">
                 選填。選了會給你對應疾病的照顧建議和注意事項。
@@ -455,7 +470,7 @@ export default function Home() {
                       `}
                       style={{ WebkitTapHighlightColor: "transparent" }}
                     >
-                      <div className="text-[20px] mb-1">{condition.icon}</div>
+                      <div className="mb-1 flex justify-center"><Icon name={condition.icon} size={22} /></div>
                       <div className="text-[13px] font-semibold">{condition.name}</div>
                     </button>
                   );
@@ -609,6 +624,7 @@ export default function Home() {
         incomeStatus={incomeStatus!}
         transportRegion={transportRegion}
         assistiveDeviceGroup={assistiveDeviceGroup}
+        initialSelectedPathway={selectedPathway}
         onSelectPathway={(path) => {
           setSelectedPathway(path);
           window.gtag?.('event', 'pathway_selected', { care_type: path });

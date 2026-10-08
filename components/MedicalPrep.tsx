@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState } from "react";
 
 interface VitalRecord {
@@ -72,9 +73,9 @@ export default function MedicalPrep() {
   const handlePrint = () => window.print();
 
   const tabs = [
-    { id: "vitals", label: "生命徵象", icon: "📊" },
-    { id: "meds", label: "藥物清單", icon: "💊" },
-    { id: "checklist", label: "就診清單", icon: "✅" },
+    { id: "vitals", label: "生命徵象", icon: "chart" as IconName },
+    { id: "meds", label: "藥物清單", icon: "pill" as IconName },
+    { id: "checklist", label: "就診清單", icon: "check" as IconName },
   ] as const;
 
   return (
@@ -82,7 +83,7 @@ export default function MedicalPrep() {
       <div className="bg-gradient-to-r from-cyan-50 to-sky-50 px-6 py-5 border-b border-cyan-100/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-[28px]">🏥</span>
+            <Icon name="hospital" size={28} />
             <div>
               <h2 className="text-[18px] font-bold text-apple-gray-900">就診準備清單</h2>
               <p className="text-[13px] text-cyan-800/60 mt-0.5">讓每次就醫更有效率</p>
@@ -92,7 +93,7 @@ export default function MedicalPrep() {
             onClick={handlePrint}
             className="text-[13px] bg-white border border-cyan-200 text-cyan-700 px-3 py-1.5 rounded-full hover:bg-cyan-50 transition-colors font-medium"
           >
-            列印 🖨️
+            <span className="inline-flex items-center gap-1.5"><Icon name="printer" size={14} />列印</span>
           </button>
         </div>
       </div>
@@ -109,7 +110,7 @@ export default function MedicalPrep() {
                 : "text-apple-gray-500 hover:text-apple-gray-700"
             }`}
           >
-            {tab.icon} {tab.label}
+            <Icon name={tab.icon} size={14} /> {tab.label}
           </button>
         ))}
       </div>
@@ -192,7 +193,7 @@ export default function MedicalPrep() {
             </div>
             <div className="bg-cyan-50 border border-cyan-100 rounded-[16px] p-3">
               <p className="text-[12px] text-cyan-800">
-                💡 建議在就診前 1~2 天及當天早上各量測一次，取平均值更準確。
+                <Icon name="bulb" size={14} /> 建議在就診前 1~2 天及當天早上各量測一次，取平均值更準確。
               </p>
             </div>
           </div>
@@ -214,24 +215,28 @@ export default function MedicalPrep() {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <input
+                    aria-label="藥品名稱"
                     placeholder="藥品名稱"
                     value={med.name}
                     onChange={(e) => updateMed(med.id, "name", e.target.value)}
                     className="col-span-2 px-3 py-2 rounded-[10px] border border-apple-gray-200 text-[13px] focus:outline-none focus:border-cyan-300"
                   />
                   <input
+                    aria-label="劑量"
                     placeholder="劑量（例：1顆）"
                     value={med.dosage}
                     onChange={(e) => updateMed(med.id, "dosage", e.target.value)}
                     className="px-3 py-2 rounded-[10px] border border-apple-gray-200 text-[13px] focus:outline-none focus:border-cyan-300"
                   />
                   <input
+                    aria-label="服用頻率"
                     placeholder="頻率（例：一天3次）"
                     value={med.frequency}
                     onChange={(e) => updateMed(med.id, "frequency", e.target.value)}
                     className="px-3 py-2 rounded-[10px] border border-apple-gray-200 text-[13px] focus:outline-none focus:border-cyan-300"
                   />
                   <input
+                    aria-label="藥品用途"
                     placeholder="用途（例：降血壓）"
                     value={med.purpose}
                     onChange={(e) => updateMed(med.id, "purpose", e.target.value)}
@@ -289,6 +294,7 @@ export default function MedicalPrep() {
               <div className="flex gap-2 mt-2">
                 <input
                   type="text"
+                  aria-label="新增想問醫生的問題"
                   placeholder="新增問題..."
                   value={customQuestion}
                   onChange={(e) => setCustomQuestion(e.target.value)}

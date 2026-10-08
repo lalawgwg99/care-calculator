@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState } from "react";
 
 interface Question {
@@ -30,10 +31,10 @@ const SCALE = [
 ];
 
 const SUPPORT_RESOURCES = [
-  { level: "all", icon: "📞", title: "長照喘息服務", desc: "申請短期替代照顧，給自己休息空間", action: "撥打 1966 申請" },
-  { level: "medium", icon: "👥", title: "照顧者支持團體", desc: "與有相同處境的人交流，不再孤單", action: "詢問各縣市長照中心" },
-  { level: "high", icon: "🧘", title: "心理諮商服務", desc: "專業心理師協助處理壓力與情緒", action: "衛福部安心專線 1925" },
-  { level: "high", icon: "🏥", title: "照顧者健康檢查", desc: "關注自身健康，才能長期照顧長輩", action: "預約健康檢查" },
+  { level: "all", icon: "phone" as IconName, title: "長照喘息服務", desc: "申請短期替代照顧，給自己休息空間", action: "撥打 1966 申請" },
+  { level: "medium", icon: "users" as IconName, title: "照顧者支持團體", desc: "與有相同處境的人交流，不再孤單", action: "詢問各縣市長照中心" },
+  { level: "high", icon: "meditation" as IconName, title: "心理諮商服務", desc: "專業心理師協助處理壓力與情緒", action: "衛福部安心專線 1925" },
+  { level: "high", icon: "hospital" as IconName, title: "照顧者健康檢查", desc: "關注自身健康，才能長期照顧長輩", action: "預約健康檢查" },
 ];
 
 export default function BurnoutCheck() {
@@ -52,9 +53,9 @@ export default function BurnoutCheck() {
   };
 
   const burnoutLevel =
-    burnoutRate >= 70 ? { label: "高度倦怠", color: "text-rose-700", bg: "bg-rose-50", emoji: "🆘", advice: "你正面臨嚴重的照顧倦怠，請立即尋求專業支持。照顧好自己，才能照顧長輩。" }
-    : burnoutRate >= 45 ? { label: "中度倦怠", color: "text-amber-700", bg: "bg-amber-50", emoji: "⚠️", advice: "你已有明顯倦怠跡象。請積極利用喘息服務，並與家人分擔照顧責任。" }
-    : { label: "低度風險", color: "text-emerald-700", bg: "bg-emerald-50", emoji: "✅", advice: "目前狀況還好，但請繼續關注自身健康，適時使用支持資源。" };
+    burnoutRate >= 70 ? { label: "高度倦怠", color: "text-rose-700", bg: "bg-rose-50", emoji: "alert" as IconName, advice: "你正面臨嚴重的照顧倦怠，請立即尋求專業支持。照顧好自己，才能照顧長輩。" }
+    : burnoutRate >= 45 ? { label: "中度倦怠", color: "text-amber-700", bg: "bg-amber-50", emoji: "alert" as IconName, advice: "你已有明顯倦怠跡象。請積極利用喘息服務，並與家人分擔照顧責任。" }
+    : { label: "低度風險", color: "text-emerald-700", bg: "bg-emerald-50", emoji: "check" as IconName, advice: "目前狀況還好，但請繼續關注自身健康，適時使用支持資源。" };
 
   const handleAnswer = (questionId: number, value: number) => {
     setScores((prev) => ({ ...prev, [questionId]: value }));
@@ -69,7 +70,7 @@ export default function BurnoutCheck() {
     <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-rose-50 to-pink-50 px-6 py-5 border-b border-rose-100/50">
         <div className="flex items-center gap-3">
-          <span className="text-[28px]">💆</span>
+          <Icon name="meditation" size={28} />
           <div>
             <h2 className="text-[18px] font-bold text-apple-gray-900">照顧者倦怠檢測</h2>
             <p className="text-[13px] text-rose-800/60 mt-0.5">了解自己的身心狀態，適時尋求支持</p>
@@ -81,7 +82,7 @@ export default function BurnoutCheck() {
         {/* Intro */}
         {phase === "intro" && (
           <div className="text-center space-y-4">
-            <div className="text-[48px]">🤗</div>
+            <div className="flex justify-center"><Icon name="heart" size={48} /></div>
             <h3 className="text-[20px] font-bold text-apple-gray-900">你還好嗎？</h3>
             <p className="text-[15px] text-apple-gray-600 max-w-md mx-auto leading-relaxed">
               照顧家人是一份充滿愛的工作，但也可能讓自己身心俱疲。
@@ -157,7 +158,7 @@ export default function BurnoutCheck() {
         {phase === "result" && (
           <div className="space-y-5">
             <div className={`rounded-[20px] p-5 text-center ${burnoutLevel.bg}`}>
-              <div className="text-[40px] mb-2">{burnoutLevel.emoji}</div>
+              <div className="flex justify-center mb-2"><Icon name={burnoutLevel.emoji} size={40} /></div>
               <div className={`text-[28px] font-bold ${burnoutLevel.color}`}>{burnoutRate}%</div>
               <div className={`text-[16px] font-semibold ${burnoutLevel.color} mb-2`}>
                 倦怠指數：{burnoutLevel.label}
@@ -199,7 +200,7 @@ export default function BurnoutCheck() {
                   (r.level === "high" && burnoutRate >= 70)
                 ).map((r) => (
                   <div key={r.title} className="bg-rose-50 border border-rose-100 rounded-[14px] p-3 flex items-start gap-3">
-                    <span className="text-[22px] shrink-0">{r.icon}</span>
+                    <span className="shrink-0"><Icon name={r.icon} size={22} /></span>
                     <div className="flex-1">
                       <div className="text-[13px] font-semibold text-rose-800">{r.title}</div>
                       <div className="text-[12px] text-rose-600">{r.desc}</div>

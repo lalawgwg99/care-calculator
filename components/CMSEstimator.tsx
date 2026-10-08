@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { type CMSLevel } from "@/lib/careLogic";
+import Icon from "./Icon";
 
 interface Question {
   id: string;
@@ -95,8 +96,9 @@ export default function CMSEstimator({ onComplete, onCancel }: CMSEstimatorProps
           <button
             onClick={onCancel}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-apple-gray-50 text-apple-gray-500 hover:bg-apple-gray-100 transition-colors"
+            aria-label="關閉"
           >
-            ✕
+            <Icon name="x" size={16} />
           </button>
         </div>
 

@@ -128,11 +128,11 @@ export const SUBSIDY_RULES: SubsidyRuleData[] = CMS_LEVELS.map(({ level }) => {
 
 // 機構住宿式服務補助方案 (全日型住宿機構)
 // 衛福部自 112 年（2023）起取消排富條款
-// 適用條件：CMS 4 級以上（或中度以上身障），入住滿 180 天
+// 適用條件：CMS 4 級以上（或中度以上身障），按月認列（2026/9 新制）
 // 資料來源：https://1966.gov.tw/LTC/cp-6457-69925-207.html
 export const INSTITUTION_SUBSIDY = {
-  yearlySubsidy: 120000,      // CMS 4+ 每人每年最高 12 萬
-  monthlySubsidy: 10000,      // 月均 1 萬
+  yearlySubsidy: 180000,      // CMS 4+ 每人每年最高 18 萬（2026/9 新制）
+  monthlySubsidy: 15000,      // 每月 1.5 萬，按月認列
   // 既有住民過渡條款（111年底前已入住、CMS 未達 4 級）
   legacyYearlySubsidy: 60000, // 每人每年最高 6 萬
   legacyMonthlySubsidy: 5000, // 月均 5,000

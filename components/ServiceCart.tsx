@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon, { type IconName } from "./Icon";
 
 export interface CareServiceItem {
   id: string;
@@ -11,7 +12,7 @@ export interface CareServiceItem {
 
 interface ServiceCategory {
   label: string;
-  icon: string;
+  icon: IconName;
   items: CareServiceItem[];
 }
 
@@ -28,7 +29,7 @@ interface ServicePreset {
 const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     label: "居家照顧服務",
-    icon: "🏠",
+    icon: "home",
     items: [
       { id: "h1", code: "BA05", name: "基本日常照顧（洗澡、換衣、餵食）", cost: 500 },
       { id: "h2", code: "BA07", name: "陪同外出或就醫", cost: 680 },
@@ -40,7 +41,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
   },
   {
     label: "專業服務",
-    icon: "👩‍⚕️",
+    icon: "stethoscope",
     items: [
       { id: "p1", code: "BD01", name: "護理師到宅評估指導", cost: 1250 },
       { id: "p2", code: "BD04", name: "物理 / 職能治療師到宅復健", cost: 1125 },
@@ -51,7 +52,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
   },
   {
     label: "社區式服務",
-    icon: "🏘️",
+    icon: "building",
     items: [
       { id: "c1", code: "CA01", name: "日間照顧中心（全日）", cost: 1200 },
       { id: "c2", code: "CA02", name: "日間照顧中心（半日）", cost: 700 },
@@ -178,8 +179,8 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
     <div className="bg-white rounded-[24px] shadow-sm p-6 sm:p-8 mt-6 border border-apple-gray-200/60">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div>
-          <h2 className="text-[20px] sm:text-[22px] font-semibold tracking-tight text-apple-gray-900 mb-1">
-            長照服務購物車 🛒
+          <h2 className="text-[20px] sm:text-[22px] font-semibold tracking-tight text-apple-gray-900 mb-1 flex items-center gap-2">
+            <Icon name="cart" size={24} /> 長照服務購物車
           </h2>
           <p className="text-[15px] text-apple-gray-500">
             依照需求調配每月服務次數，即時查看自付額。
@@ -213,7 +214,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
         </div>
         {subsidyUsagePercent > 100 && (
           <p className="text-[12px] text-apple-red mt-1">
-            ⚠ 已超出額度 {formatMoney(exceedingCost)}，超出部分需全額自付
+            <Icon name="alert" size={13} className="inline-block mr-1 align-[-1px]" /> 已超出額度 {formatMoney(exceedingCost)}，超出部分需全額自付
           </p>
         )}
       </div>
@@ -238,6 +239,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
         <div className="flex items-center gap-4 mb-2">
           <input
             type="range"
+            aria-label="每月預算"
             min={8000}
             max={50000}
             step={500}
@@ -302,7 +304,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
                 className="w-full flex items-center justify-between p-4 bg-apple-gray-50/50 hover:bg-apple-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-[18px]">{category.icon}</span>
+                  <span className="text-apple-gray-700"><Icon name={category.icon} size={20} /></span>
                   <span className="text-[15px] font-bold text-apple-gray-900">{category.label}</span>
                   {categoryItemCount > 0 && (
                     <span className="text-[12px] font-bold bg-apple-blue/10 text-apple-blue px-2 py-0.5 rounded-full">
@@ -345,7 +347,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
       {/* ====== Daily Consumables Slider ====== */}
       <div className="bg-amber-50/60 rounded-[20px] p-5 sm:p-6 border border-orange-100/50 mb-8">
         <div className="flex items-center gap-3 mb-1">
-          <span className="text-[22px]">🧴</span>
+          <span className="text-amber-700"><Icon name="bottle" size={24} /></span>
           <h4 className="text-[16px] font-bold text-apple-gray-900">日常耗材估算</h4>
         </div>
         <p className="text-[13px] text-amber-800/60 mb-4">
@@ -354,6 +356,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
         <div className="flex items-center gap-4 mb-3">
           <input
             type="range"
+            aria-label="每月耗材費用"
             min={0}
             max={8000}
             step={500}
@@ -369,7 +372,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
           <span>$0（無需要）</span>
           <span>$8,000（重度需求）</span>
         </div>
-        <p className="text-[12px] text-amber-800/50 mt-3">💡 一般家庭耗材費約 $3,000～$6,000/月</p>
+        <p className="text-[12px] text-amber-800/50 mt-3"><Icon name="bulb" size={13} className="inline-block mr-1 align-[-1px]" /> 一般家庭耗材費約 $3,000～$6,000/月</p>
       </div>
 
       {/* Summary */}

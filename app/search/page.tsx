@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ResourceSearch from "@/components/ResourceSearch";
+import Icon from "@/components/Icon";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function SearchPage() {
       {/* Header */}
       <div className="text-center mb-8">
         <div className="inline-flex items-center gap-2 bg-amber-100 rounded-full px-4 py-2 mb-4">
-          <span className="text-[18px]">🔍</span>
+          <span className="text-amber-700"><Icon name="search" size={18} /></span>
           <span className="text-[13px] font-semibold text-amber-800">資源搜尋</span>
         </div>
         <h1 className="text-[28px] font-bold text-apple-gray-900 mb-2">
@@ -36,7 +37,7 @@ export default function SearchPage() {
       {/* Footer note */}
       <div className="mt-8 bg-amber-50 border border-amber-100 rounded-[20px] p-4 text-center">
         <p className="text-[13px] text-amber-800">
-          📢 資源如有異動，以各單位官網最新公告為準。若需完整服務清單，請撥打 <strong>1966</strong> 長照專線。
+          <Icon name="megaphone" size={15} className="inline-block align-[-2px] mr-1" />資源如有異動，以各單位官網最新公告為準。若需完整服務清單，請撥打 <strong>1966</strong> 長照專線。
         </p>
       </div>
     </main>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon, { type IconName } from "./Icon";
 
 const STEPS = [
   {
@@ -8,35 +9,35 @@ const STEPS = [
     title: "撥打長照專線 1966",
     desc: "市話免付費、手機可撥打。告知家中長輩的基本狀況。",
     tip: "建議先記下長輩的身分證字號和健保卡號。",
-    icon: "📞",
+    icon: "phone" as IconName,
   },
   {
     num: "2",
     title: "照管專員到府評估",
     desc: "專員會在 7～14 天內到家中，用 CMS 量表評估長輩的失能等級。",
     tip: "評估當天建議主要照顧者在場，方便說明日常狀況。",
-    icon: "🏠",
+    icon: "home" as IconName,
   },
   {
     num: "3",
     title: "收到核定結果通知",
     desc: "評估完成後約 5～10 個工作天，會收到核定公文，告知等級與可用額度。",
     tip: "如果對結果有疑義，可以在 30 天內申請重新評估。",
-    icon: "📄",
+    icon: "note" as IconName,
   },
   {
     num: "4",
     title: "與服務單位簽約",
     desc: "照管專員會推薦合適的長照服務單位（居服中心、日照中心等），協助你簽約。",
     tip: "可以先參觀 2～3 間單位，選擇服務態度最好的那間。",
-    icon: "✍️",
+    icon: "pen" as IconName,
   },
   {
     num: "5",
     title: "開始接受服務",
     desc: "簽約後最快 3～5 天就會有照服員到府服務。每月可依需求調整服務項目。",
     tip: "記得保留服務紀錄單，每月核對帳單金額。",
-    icon: "🤝",
+    icon: "hand" as IconName,
   },
 ];
 
@@ -47,35 +48,35 @@ const INSTITUTION_STEPS = [
     title: "確認資格：CMS 4 級以上",
     desc: "先透過 1966 申請 CMS 等級評估。需達第 4 級以上（或中度以上身心障礙證明）。",
     tip: "自 112 年起已取消排富條款，不論家庭收入皆可申請。",
-    icon: "✅",
+    icon: "checkCircle" as IconName,
   },
   {
     num: "2",
     title: "選擇合法立案機構",
     desc: "入住依法設立的住宿式長照機構（護理之家、老人福利機構、身障機構等）。",
     tip: "可上衛福部「長照服務資源地理地圖」查詢合法機構。",
-    icon: "🏥",
+    icon: "hospital" as IconName,
   },
   {
     num: "3",
-    title: "累計入住滿 180 天",
-    desc: "當年度入住天數需累計達 180 天，即可申請全額 $120,000 年度補助。未滿 180 天按月計算。",
-    tip: "建議年初入住以確保達標。年中入住者第一年補助可能較少。",
-    icon: "📅",
+    title: "按月認列，每月 $15,000",
+    desc: "2026/9 新制：當月入住達該月日曆天數一半即認列 1 個月，每月補助 $15,000、全年最高 $180,000。",
+    tip: "一年撥款兩次：1–8 月份 11 月底前、9–12 月份隔年 1 月底前核撥。",
+    icon: "calendar" as IconName,
   },
   {
     num: "4",
     title: "機構協助申請或自行申請",
     desc: "多數機構會代為彙整資料，向縣市政府提出補助申請。也可自行向戶籍所在地的社會局申請。",
     tip: "申請需檢附入住證明、身分證件影本、金融帳戶資料。",
-    icon: "📋",
+    icon: "clipboard" as IconName,
   },
   {
     num: "5",
     title: "審核通過、撥款入帳",
     desc: "審核約需 1～2 個月。通過後補助款直接匯入指定帳戶。",
     tip: "補助為事後申請制，通常在隔年初統一受理上年度申請。",
-    icon: "💰",
+    icon: "coins" as IconName,
   },
 ];
 
@@ -98,8 +99,8 @@ export default function ApplicationGuide() {
   return (
     <section className="w-full max-w-2xl mx-auto px-4 mb-16">
       <div className="text-center mb-10">
-        <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 tracking-tight mb-3">
-          📋 申請長照只要 5 步驟
+        <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 tracking-tight mb-3 flex items-center justify-center gap-2.5">
+          <Icon name="clipboard" size={26} /> 申請長照只要 5 步驟
         </h3>
         <p className="text-[15px] text-apple-gray-500 mb-5">
           從撥打電話到開始服務，通常只需要 2～4 週。
@@ -138,8 +139,8 @@ export default function ApplicationGuide() {
           {currentSteps.map((step, idx) => (
             <div key={`${showInstitutionPath ? 'inst' : 'home'}-${idx}`} className="relative flex gap-5 items-start">
               {/* Circle indicator */}
-              <div className="relative z-10 w-16 h-16 rounded-full bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-orange-200/60 flex items-center justify-center text-[24px] flex-shrink-0 shadow-sm">
-                {step.icon}
+              <div className="relative z-10 w-16 h-16 rounded-full bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-orange-200/60 flex items-center justify-center text-amber-600 flex-shrink-0 shadow-sm">
+                <Icon name={step.icon} size={26} />
               </div>
 
               {/* Content */}
@@ -153,7 +154,7 @@ export default function ApplicationGuide() {
                 <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-3">{step.desc}</p>
                 <div className="bg-amber-50/60 rounded-[12px] px-4 py-3 border border-orange-100/50">
                   <p className="text-[13px] text-amber-800/70 leading-relaxed">
-                    💡 <strong>小提醒：</strong>{step.tip}
+                    <Icon name="bulb" size={14} className="inline-block mr-1 align-[-2px]" /> <strong>小提醒：</strong>{step.tip}
                   </p>
                 </div>
               </div>
@@ -173,7 +174,7 @@ export default function ApplicationGuide() {
             href="tel:1966"
             className="inline-flex items-center gap-2 bg-emerald-600 text-white px-8 py-3.5 rounded-full text-[17px] font-bold shadow-lg shadow-emerald-200/50 hover:bg-emerald-700 transition-colors"
           >
-            📞 撥打 1966（免費）
+            <Icon name="phone" size={19} /> 撥打 1966（免費）
           </a>
           <p className="text-[12px] text-emerald-600/60 mt-3">
             服務時間：週一至週五 08:30～12:00、13:30～17:30
@@ -187,7 +188,7 @@ export default function ApplicationGuide() {
             className="w-full flex items-center justify-between p-5"
           >
             <div className="flex items-center gap-2">
-              <span className="text-[18px]">📍</span>
+              <span className="text-apple-gray-700"><Icon name="pin" size={20} /></span>
               <span className="text-[15px] font-bold text-apple-gray-900">各縣市照管中心聯絡電話</span>
             </div>
             <span className={`text-apple-gray-400 text-[18px] transition-transform duration-300 ${showRegionalContacts ? "rotate-45" : ""}`}>+</span>

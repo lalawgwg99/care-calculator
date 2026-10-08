@@ -1,3 +1,4 @@
+import Icon, { type IconName } from "@/components/Icon";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
@@ -22,13 +23,13 @@ const TOOL_GROUPS = [
     tools: [
       {
         href: "/insurance",
-        icon: "🛡️",
+        icon: "shield" as IconName,
         title: "保險補充計算",
         desc: "計算私人保險能補足多少長照缺口",
       },
       {
         href: "/insurance#legal",
-        icon: "⚖️",
+        icon: "scale" as IconName,
         title: "法律事項引導",
         desc: "監護宣告、安養信託、遺囑規劃逐步引導",
       },
@@ -41,19 +42,19 @@ const TOOL_GROUPS = [
     tools: [
       {
         href: "/tools/conditions",
-        icon: "🫀",
+        icon: "heart" as IconName,
         title: "疾病照顧檔案",
         desc: "失智症、中風、帕金森等常見疾病照顧指引",
       },
       {
         href: "/tools/conditions#timeline",
-        icon: "📅",
+        icon: "calendar" as IconName,
         title: "照顧歷程時間軸",
         desc: "各階段照顧需求與費用預估",
       },
       {
         href: "/tools/conditions#checklist",
-        icon: "📋",
+        icon: "clipboard" as IconName,
         title: "機構評估清單",
         desc: "選擇居家或住宿機構的評估評分表",
       },
@@ -66,13 +67,13 @@ const TOOL_GROUPS = [
     tools: [
       {
         href: "/tools/caregiverhealth",
-        icon: "🧠",
+        icon: "brain" as IconName,
         title: "失智症體驗模擬",
         desc: "體驗失智症長輩的日常挑戰，培養同理心",
       },
       {
         href: "/tools/caregiverhealth#burnout",
-        icon: "💆",
+        icon: "meditation" as IconName,
         title: "照顧者倦怠檢測",
         desc: "10 題評估身心狀態，配對喘息支持資源",
       },
@@ -85,25 +86,25 @@ const TOOL_GROUPS = [
     tools: [
       {
         href: "/tools/daily",
-        icon: "🏥",
+        icon: "hospital" as IconName,
         title: "就診準備清單",
         desc: "生命徵象、用藥清單、問診問題一次備齊",
       },
       {
         href: "/tools/daily#comm",
-        icon: "💬",
+        icon: "chat" as IconName,
         title: "家庭溝通模板",
         desc: "交班訊息、家庭會議議程、緊急通知範本",
       },
       {
         href: "/tools/reablement",
-        icon: "🌟",
+        icon: "star" as IconName,
         title: "微光復能任務卡",
         desc: "每週復能活動卡，身體、認知、社交全方位",
       },
       {
         href: "/diary",
-        icon: "📓",
+        icon: "note" as IconName,
         title: "照顧日記",
         desc: "每天 1 分鐘記錄長輩狀況，AI 每週幫你整理摘要",
       },
@@ -117,7 +118,7 @@ export default function ToolsPage() {
       {/* Header */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 bg-amber-100 rounded-full px-4 py-2 mb-4">
-          <span className="text-[18px]">🛠️</span>
+          <Icon name="wrench" size={18} />
           <span className="text-[13px] font-semibold text-amber-800">實用工具箱</span>
         </div>
         <h1 className="text-[32px] font-bold text-apple-gray-900 mb-3">
@@ -142,8 +143,8 @@ export default function ToolsPage() {
                   href={tool.href}
                   className={`bg-gradient-to-br ${group.color} border border-white/80 rounded-[20px] p-5 flex items-start gap-4 hover:shadow-apple-hover transition-shadow group`}
                 >
-                  <div className={`${group.iconBg} rounded-[14px] w-11 h-11 flex items-center justify-center text-[22px] shrink-0`}>
-                    {tool.icon}
+                  <div className={`${group.iconBg} rounded-[14px] w-11 h-11 flex items-center justify-center shrink-0`}>
+                    <Icon name={tool.icon} size={22} />
                   </div>
                   <div>
                     <div className="font-semibold text-[15px] text-apple-gray-900 group-hover:text-amber-800 transition-colors">

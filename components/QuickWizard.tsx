@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CMSLevel, IncomeStatus, CareType } from "@/lib/careLogic";
 import Icon, { type IconName } from "./Icon";
 
@@ -36,41 +36,70 @@ const INCOME_OPTIONS: Option<IncomeStatus>[] = [
 
 const QUESTIONS = ["長輩現在主要在哪裡接受照顧？", "長輩的生活自理狀況比較像哪一種？", "家裡的收入狀況是？"];
 
+export interface WizardProgress {
+  step: number;
+  careType: CareType | null;
+  cms: CMSLevel | null;
+}
+
 export default function QuickWizard({
   onComplete,
   onOpenEstimator,
   estimatorResult,
   onEstimatorConsumed,
+  onProgress,
+  initialProgress,
 }: {
   onComplete: (careType: CareType, cmsLevel: CMSLevel, incomeStatus: IncomeStatus) => void;
   onOpenEstimator: () => void;
   estimatorResult: CMSLevel | null;
   onEstimatorConsumed: () => void;
+  onProgress: (p: WizardProgress) => void;
+  initialProgress: WizardProgress | null;
 }) {
-  const [step, setStep] = useState(0);
-  const [careType, setCareType] = useState<CareType | null>(null);
-  const [cms, setCms] = useState<CMSLevel | null>(null);
+  const [step, setStep] = useState(initialProgress?.step ?? 0);
+  const [careType, setCareType] = useState<CareType | null>(initialProgress?.careType ?? null);
+  const [cms, setCms] = useState<CMSLevel | null>(initialProgress?.cms ?? null);
   const [flash, setFlash] = useState<string | null>(null);
+  const locked = useRef(false);
+  const timer = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timer.current) window.clearTimeout(timer.current);
+    };
+  }, []);
 
   // 從 30 秒評估回來：直接跳到第 3 題
   useEffect(() => {
     if (estimatorResult && step === 1) {
       setCms(estimatorResult);
+      onProgress({ step: 2, careType, cms: estimatorResult });
       onEstimatorConsumed();
       setStep(2);
     }
-  }, [estimatorResult, step, onEstimatorConsumed]);
+  }, [estimatorResult, step, careType, onEstimatorConsumed, onProgress]);
+
+  const goStep = (next: number, ct: CareType | null, c: CMSLevel | null) => {
+    setStep(next);
+    onProgress({ step: next, careType: ct, cms: c });
+  };
 
   const pick = (value: CareType | CMSLevel | IncomeStatus) => {
+    if (locked.current) return;
+    locked.current = true;
     setFlash(String(value));
-    window.setTimeout(() => {
+    timer.current = window.setTimeout(() => {
       setFlash(null);
+      locked.current = false;
       if (step === 0) {
-        setCareType(value as CareType);
-        setStep(1);
+        const ct = value as CareType;
+        setCareType(ct);
+        goStep(1, ct, cms);
       } else if (step === 1) {
-        setCms(value as CMSLevel);
-        setStep(2);
+        const c = value as CMSLevel;
+        setCms(c);
+        goStep(2, careType, c);
       } else {
         const income = value as IncomeStatus;
         window.gtag?.("event", "quick_wizard_complete", {
@@ -85,24 +114,27 @@ export default function QuickWizard({
 
   const options =
     step === 0 ? CARE_OPTIONS : step === 1 ? CMS_OPTIONS : INCOME_OPTIONS;
+  const selectedValue =
+    step === 0 ? careType : step === 1 ? cms : null;
 
   return (
     <div>
       {/* 進度 */}
       <div className="flex items-center justify-between mb-2">
-        <span className="text-[13px] font-semibold text-apple-gray-500">
+        <span className="text-[13px] font-semibold text-apple-gray-500" aria-live="polite">
           第 {step + 1} / 3 題
         </span>
         {step > 0 && (
           <button
-            onClick={() => setStep(step - 1)}
-            className="text-[13px] font-medium text-apple-gray-500 hover:text-apple-gray-900 transition-colors"
+            onClick={() => goStep(step - 1, careType, cms)}
+            className="inline-flex items-center gap-1 px-4 py-2 rounded-full border border-apple-gray-200 text-[14px] font-medium text-apple-gray-600 hover:text-apple-gray-900 hover:border-apple-gray-300 transition-colors"
+            style={{ WebkitTapHighlightColor: "transparent" }}
           >
             ← 上一題
           </button>
         )}
       </div>
-      <div className="h-1.5 rounded-full bg-apple-gray-100 overflow-hidden mb-6">
+      <div className="h-1.5 rounded-full bg-apple-gray-100 overflow-hidden mb-6" role="progressbar" aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={3}>
         <div
           className="h-full rounded-full bg-gradient-to-r from-apple-orange to-apple-pink transition-all duration-300"
           style={{ width: `${((step + 1) / 3) * 100}%` }}
@@ -113,13 +145,17 @@ export default function QuickWizard({
         {QUESTIONS[step]}
       </h3>
 
-      <div className="space-y-3">
+      <div className="space-y-3" role="group" aria-label={QUESTIONS[step]}>
         {options.map((opt) => {
-          const active = flash === String(opt.value);
+          const isFlash = flash === String(opt.value);
+          const isSelected = selectedValue !== null && String(selectedValue) === String(opt.value);
+          const active = isFlash || isSelected;
           return (
             <button
               key={String(opt.value)}
               onClick={() => pick(opt.value)}
+              aria-pressed={isSelected}
+              disabled={locked.current && !isFlash}
               className={`w-full flex items-center gap-4 p-5 rounded-[18px] text-left border-2 transition-all duration-200 active:scale-[0.99] ${
                 active
                   ? "border-apple-orange bg-apple-orange/10 shadow-md"

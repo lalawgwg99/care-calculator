@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Icon from "@/components/Icon";
 import { BLOG_POSTS } from "@/constants/blogPosts";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
@@ -99,7 +100,7 @@ export default function BlogListPage() {
             href="/"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-bold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
           >
-            🧮 立即免費試算補助金額
+            <Icon name="calculator" size={20} />立即免費試算補助金額
           </Link>
           <p className="text-[12px] text-amber-800/50 mt-3">30 秒完成，不需要註冊</p>
         </div>

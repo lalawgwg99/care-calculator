@@ -1,3 +1,4 @@
+import Icon, { type IconName } from "@/components/Icon";
 import type { Metadata } from "next";
 import Link from 'next/link';
 import { CMS_LEVELS, CMS_LEVELS_STR, CARE_TYPES, CMS_LEVEL_INFO, type CMSLevel } from '@/constants/pseoData';
@@ -78,7 +79,7 @@ export default function CMSLevelPage({ params }: PageProps) {
             <span>CMS 第{level}級</span>
           </nav>
           <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm mb-6 border border-orange-100 text-[13px] font-semibold text-amber-800">
-            📊 長照3.0補助試算
+            <Icon name="chart" size={15} /> 長照3.0補助試算
           </div>
           <h1 className="text-[32px] sm:text-[44px] font-bold tracking-tight text-apple-gray-900 mb-4 leading-tight">
             CMS 第{level}級<br />
@@ -180,7 +181,7 @@ export default function CMSLevelPage({ params }: PageProps) {
             href={`/?cms=${level}`}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-bold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
           >
-            🧮 立即試算
+            <Icon name="calculator" size={18} /> 立即試算
           </Link>
         </div>
       </section>

@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState } from "react";
 import { FACILITY_CHECKLIST } from "@/constants/conditionData";
 import type { ConditionId } from "@/lib/conditionProfiles";
@@ -31,7 +32,7 @@ export default function FacilityChecklist({ selectedConditions: _selectedConditi
       <div className="bg-gradient-to-r from-slate-50 to-blue-50 px-6 py-5 border-b border-slate-100/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-[28px]">📋</span>
+            <Icon name="clipboard" size={28} />
             <div>
               <h2 className="text-[18px] font-bold text-apple-gray-900">機構評估清單</h2>
               <p className="text-[13px] text-slate-600/60 mt-0.5">參觀機構時逐項確認</p>

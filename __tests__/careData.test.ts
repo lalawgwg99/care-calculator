@@ -99,9 +99,9 @@ describe('careData 數據完整性測試', () => {
   });
 
   describe('INSTITUTION_SUBSIDY', () => {
-    test('應有正確的補助金額', () => {
-      expect(INSTITUTION_SUBSIDY.yearlySubsidy).toBe(120000);
-      expect(INSTITUTION_SUBSIDY.monthlySubsidy).toBe(10000);
+    test('應有正確的補助金額（2026/9 新制）', () => {
+      expect(INSTITUTION_SUBSIDY.yearlySubsidy).toBe(180000);
+      expect(INSTITUTION_SUBSIDY.monthlySubsidy).toBe(15000);
     });
 
     test('月度補助應為年度補助的 1/12', () => {

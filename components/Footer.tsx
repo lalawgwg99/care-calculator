@@ -1,3 +1,4 @@
+import Icon, { type IconName } from "@/components/Icon";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -56,7 +57,7 @@ export default function Footer() {
                 href="tel:1966"
                 className="flex items-start gap-3 bg-orange-50 rounded-[14px] px-4 py-3 border border-orange-100/60 hover:bg-orange-100/60 transition-colors group"
               >
-                <span className="text-[20px] mt-0.5">📞</span>
+                <span className="mt-0.5"><Icon name="phone" size={20} /></span>
                 <div>
                   <div className="text-[15px] font-bold text-apple-orange group-hover:underline">
                     長照專線 1966
@@ -70,7 +71,7 @@ export default function Footer() {
                 href="tel:1925"
                 className="flex items-start gap-3 bg-blue-50 rounded-[14px] px-4 py-3 border border-blue-100/60 hover:bg-blue-100/60 transition-colors group"
               >
-                <span className="text-[20px] mt-0.5">💙</span>
+                <span className="mt-0.5"><Icon name="heart" size={20} /></span>
                 <div>
                   <div className="text-[15px] font-bold text-blue-600 group-hover:underline">
                     安心專線 1925

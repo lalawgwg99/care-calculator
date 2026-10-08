@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { calculateCareBudget, type CMSLevel, type IncomeStatus, type CareType } from "@/lib/careLogic";
 import type { AssistiveDeviceGroup, TransportRegion } from "@/lib/policyData";
+import Icon, { type IconName } from "./Icon";
 
 interface PathwayComparisonProps {
   cmsLevel: CMSLevel;
@@ -10,12 +11,13 @@ interface PathwayComparisonProps {
   transportRegion: TransportRegion;
   assistiveDeviceGroup: AssistiveDeviceGroup;
   onSelectPathway: (type: CareType) => void;
+  initialSelectedPathway?: CareType | null;
 }
 
 // 外籍看護真實月支出（含薪資、安定費、健保、加班、仲介）
 const FOREIGN_CAREGIVER_EXTRA = 26896;
 
-export default function PathwayComparison({ cmsLevel, incomeStatus, transportRegion, assistiveDeviceGroup, onSelectPathway }: PathwayComparisonProps) {
+export default function PathwayComparison({ cmsLevel, incomeStatus, transportRegion, assistiveDeviceGroup, onSelectPathway, initialSelectedPathway }: PathwayComparisonProps) {
   const options = { transportRegion, assistiveDeviceGroup };
   const homeCareResult = calculateCareBudget(cmsLevel, incomeStatus, "home-care", options);
   const dayCareResult = calculateCareBudget(cmsLevel, incomeStatus, "day-care", options);
@@ -34,18 +36,18 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
     {
       id: "home-care" as CareType,
       title: "居家照顧",
-      icon: "🏠",
+      icon: "home" as IconName,
       subtitle: "政府資源最大化",
       monthlySubsidy: homeCareResult.totalSubsidyMonthly,
       monthlyOutPocket: homeCareResult.outOfPocketMonthly,
       totalMonthly: homeCareResult.totalSubsidyMonthly + homeCareResult.outOfPocketMonthly,
-      waitTime: "⏱ 約 2-4 週開始服務",
+      waitTime: "約 2-4 週開始服務",
       features: [
         "專員到府提供洗澡、餵食等服務",
         "彈性安排服務時段",
         "家屬需承擔部分夜間照顧",
       ],
-      cons: "需家屬配合夜間照顧",
+      cons: { text: "需家屬配合夜間照顧", warning: false },
       primaryColor: "text-emerald-600",
       borderColor: "border-emerald-200",
       bgGradient: "bg-gradient-to-br from-white to-emerald-50/50",
@@ -54,18 +56,18 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
     {
       id: "day-care" as CareType,
       title: "日間照顧",
-      icon: "🌤️",
+      icon: "sun" as IconName,
       subtitle: "白天托顧、晚上回家",
       monthlySubsidy: dayCareResult.totalSubsidyMonthly,
       monthlyOutPocket: dayCareResult.outOfPocketMonthly,
       totalMonthly: dayCareResult.totalSubsidyMonthly + dayCareResult.outOfPocketMonthly,
-      waitTime: "⏱ 約 2-4 週，視床位而定",
+      waitTime: "約 2-4 週，視床位而定",
       features: [
         "白天到日照中心，享專業團體活動",
         "延緩失能退化效果佳",
         "家屬白天可正常上班",
       ],
-      cons: "需每日接送，晚上仍需照顧",
+      cons: { text: "需每日接送，晚上仍需照顧", warning: false },
       primaryColor: "text-sky-600",
       borderColor: "border-sky-200",
       bgGradient: "bg-gradient-to-br from-white to-sky-50/50",
@@ -74,18 +76,18 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
     {
       id: "institution" as CareType,
       title: "住宿式機構",
-      icon: "🏥",
+      icon: "hospital" as IconName,
       subtitle: "24H 專業全照顧",
       monthlySubsidy: institutionResult.totalSubsidyMonthly,
       monthlyOutPocket: institutionResult.outOfPocketMonthly,
       totalMonthly: institutionResult.outOfPocketMonthly + institutionResult.totalSubsidyMonthly,
-      waitTime: "⏱ 排隊等候，通常需 1-6 個月",
+      waitTime: "排隊等候，通常需 1-6 個月",
       features: [
         "24 小時專業護理團隊",
-        cmsLevel >= 4 ? "每年最高補助 $120,000（已取消排富）" : "CMS 4 級以上才有年度補助",
+        cmsLevel >= 4 ? "每年最高補助 $180,000（2026/9 新制，已取消排富）" : "CMS 4 級以上才有年度補助",
         "適合重度以上失能長輩",
       ],
-      cons: cmsLevel < 4 ? "⚠️ 目前等級未達補助門檻 (需 CMS 4+)" : "月費較高，但家屬零體力負擔",
+      cons: cmsLevel < 4 ? { text: "目前等級未達補助門檻（需 CMS 4+）", warning: true } : { text: "月費較高，但家屬零體力負擔", warning: false },
       primaryColor: "text-violet-600",
       borderColor: "border-violet-200",
       bgGradient: "bg-gradient-to-br from-white to-violet-50/50",
@@ -94,19 +96,19 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
     {
       id: "foreign-caregiver" as CareType,
       title: "外籍看護",
-      icon: "🧑‍🤝‍🧑",
+      icon: "users" as IconName,
       subtitle: "一對一專屬陪伴",
       monthlySubsidy: foreignResult.totalSubsidyMonthly,
       // 真實自付 = 長照自付 + 外看薪資等
       monthlyOutPocket: foreignResult.outOfPocketMonthly + FOREIGN_CAREGIVER_EXTRA,
       totalMonthly: foreignResult.outOfPocketMonthly + FOREIGN_CAREGIVER_EXTRA + foreignResult.totalSubsidyMonthly,
-      waitTime: "⏱ 仲介媒合需 2-4 個月",
+      waitTime: "仲介媒合需 2-4 個月",
       features: [
         "24 小時在家一對一照顧",
         "政府補助僅原本的 30%",
         "需等待 2～4 個月媒合期",
       ],
-      cons: "語言溝通障礙、需自行管理",
+      cons: { text: "語言溝通障礙、需自行管理", warning: false },
       primaryColor: "text-amber-600",
       borderColor: "border-amber-200",
       bgGradient: "bg-gradient-to-br from-white to-amber-50/50",
@@ -182,11 +184,22 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
           推薦方案
         </div>
       )}
+      {!isRecommended && initialSelectedPathway === path.id && (
+        <div className="absolute top-3 right-3 text-[11px] font-bold bg-apple-orange text-white px-2.5 py-1 rounded-full shadow-sm z-10">
+          你目前的狀況
+        </div>
+      )}
+      {isRecommended && initialSelectedPathway === path.id && (
+        <div className="absolute top-3 left-3 text-[11px] font-bold bg-apple-orange/15 text-apple-orange border border-apple-orange/30 px-2.5 py-1 rounded-full z-10">
+          你目前的狀況
+        </div>
+      )}
       <div className="p-5 sm:p-6 flex-1">
-        <div className="text-[28px] mb-2">{path.icon}</div>
+        <div className={`mb-2 ${path.primaryColor}`}><Icon name={path.icon} size={32} /></div>
         <h3 className="text-[18px] font-bold text-apple-gray-900 mb-1">{path.title}</h3>
         <p className={`text-[13px] font-medium mb-2 ${path.primaryColor}`}>{path.subtitle}</p>
-        <span className="inline-block text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-0.5 mb-4">
+        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-0.5 mb-4">
+          <Icon name="clock" size={12} />
           {path.waitTime}
         </span>
         <div className="space-y-3 mb-5">
@@ -215,9 +228,9 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
           </ul>
           {path.cons && (
             <p className={`mt-3 text-[12px] leading-snug ${
-              path.cons.startsWith("⚠️") ? "text-orange-600 font-medium" : "text-apple-gray-400"
+              path.cons.warning ? "text-orange-600 font-medium" : "text-apple-gray-400"
             }`}>
-              {path.cons}
+              {path.cons.warning && "注意： "}{path.cons.text}
             </p>
           )}
         </div>
@@ -233,7 +246,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
     return (
       <div className="w-full animation-fade-in max-w-2xl mx-auto">
         <div className="bg-amber-50 rounded-[28px] p-8 sm:p-10 border border-amber-200/60 text-center">
-          <div className="text-[48px] mb-4">🤗</div>
+          <div className="mb-4 text-amber-500"><Icon name="sparkles" size={48} /></div>
           <h2 className="text-[24px] sm:text-[28px] font-bold text-apple-gray-900 mb-3">
             好消息！長輩目前狀況不錯
           </h2>
@@ -261,7 +274,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
             href="tel:1966"
             className="inline-flex items-center gap-2 bg-amber-600 text-white px-8 py-3.5 rounded-full text-[16px] font-bold shadow-lg hover:bg-amber-700 transition-colors"
           >
-            📞 撥打 1966 諮詢或重新評估
+            <Icon name="phone" size={18} /> 撥打 1966 諮詢或重新評估
           </a>
         </div>
       </div>
@@ -345,7 +358,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
                 onClick={() => onSelectPathway(path.id)}
                 className="rounded-[14px] border border-apple-gray-200 bg-apple-gray-50/70 px-4 py-4 text-left hover:border-apple-blue/40 hover:bg-white transition-colors"
               >
-                <div className="text-[13px] text-apple-gray-500 mb-1">{path.icon} {path.title}</div>
+                <div className="text-[13px] text-apple-gray-500 mb-1 flex items-center gap-1.5"><Icon name={path.icon} size={14} /> {path.title}</div>
                 <div className="text-[18px] font-bold text-apple-gray-900">{formatMoney(path.monthlyOutPocket)}/月</div>
                 <div className={`text-[12px] mt-1 ${monthlyDiff >= 0 ? "text-apple-red" : "text-emerald-700"}`}>
                   {monthlyDiff >= 0 ? `比推薦多 ${formatMoney(Math.abs(monthlyDiff))}/月` : `比推薦少 ${formatMoney(Math.abs(monthlyDiff))}/月`}
@@ -371,7 +384,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
             const isLowestOutPocket = path.id === lowestOutPocketId;
             return (
               <div key={path.id} className={`rounded-[16px] p-4 text-center border ${isRecommended ? "border-emerald-300 bg-emerald-50/50" : "border-apple-gray-100 bg-apple-gray-50/50"}`}>
-                <div className="text-[20px] mb-1">{path.icon}</div>
+                <div className="mb-1 text-apple-gray-500"><Icon name={path.icon} size={22} /></div>
                 <div className="text-[13px] font-medium text-apple-gray-600 mb-1">{path.title}</div>
                 <div className={`text-[18px] sm:text-[20px] font-mono font-bold ${isRecommended ? "text-emerald-700" : "text-apple-gray-900"}`}>
                   {formatMoney(total5Year)}

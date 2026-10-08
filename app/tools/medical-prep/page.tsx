@@ -1,31 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import Icon, { type IconName } from "@/components/Icon";
 
 interface Medication {
   name: string;
   dosage: string;
 }
 
-const SYMPTOM_OPTIONS = [
-  { id: "appetite", label: "食慾下降", icon: "🍽️" },
-  { id: "sleep", label: "睡眠問題", icon: "😴" },
-  { id: "pain", label: "身體疼痛", icon: "😣" },
-  { id: "mood", label: "情緒不穩", icon: "😢" },
-  { id: "bowel", label: "排便異常", icon: "🚽" },
-  { id: "fall", label: "跌倒", icon: "⚠️" },
-  { id: "fever", label: "發燒", icon: "🌡️" },
-  { id: "cough", label: "咳嗽/呼吸", icon: "😮‍💨" },
-  { id: "skin", label: "皮膚問題", icon: "🩹" },
-  { id: "confusion", label: "意識混亂", icon: "😵" },
-  { id: "swallow", label: "吞嚥困難", icon: "💧" },
-  { id: "weight", label: "體重變化", icon: "⚖️" },
+const SYMPTOM_OPTIONS: Array<{ id: string; label: string; icon: IconName }> = [
+  { id: "appetite", label: "食慾下降", icon: "utensils" },
+  { id: "sleep", label: "睡眠問題", icon: "moon" },
+  { id: "pain", label: "身體疼痛", icon: "zap" },
+  { id: "mood", label: "情緒不穩", icon: "heart" },
+  { id: "bowel", label: "排便異常", icon: "toilet" },
+  { id: "fall", label: "跌倒", icon: "alert" },
+  { id: "fever", label: "發燒", icon: "thermometer" },
+  { id: "cough", label: "咳嗽/呼吸", icon: "wind" },
+  { id: "skin", label: "皮膚問題", icon: "bandage" },
+  { id: "confusion", label: "意識混亂", icon: "brain" },
+  { id: "swallow", label: "吞嚥困難", icon: "droplet" },
+  { id: "weight", label: "體重變化", icon: "scale" },
 ];
 
 export default function MedicalPrepPage() {
   const [elderName, setElderName] = useState("");
   const [elderAge, setElderAge] = useState("");
   const [department, setDepartment] = useState("");
+  const [copied, setCopied] = useState(false);
   const [medications, setMedications] = useState<Medication[]>([{ name: "", dosage: "" }]);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [symptomDetails, setSymptomDetails] = useState("");
@@ -57,24 +59,24 @@ export default function MedicalPrepPage() {
     return [
       `━━━ 就醫提問單 ━━━`,
       ``,
-      `👤 ${elderName || "長輩"}（${elderAge ? elderAge + " 歲" : ""}）`,
-      `🏥 看診科別：${department || "未填"}`,
-      `📅 日期：${new Date().toLocaleDateString("zh-TW")}`,
+      `${elderName || "長輩"}（${elderAge ? elderAge + " 歲" : ""}）`,
+      `看診科別：${department || "未填"}`,
+      `日期：${new Date().toLocaleDateString("zh-TW")}`,
       ``,
       ...(validMeds.length > 0 ? [
-        `💊 目前用藥：`,
+        `目前用藥：`,
         ...validMeds.map((m) => `  • ${m.name}${m.dosage ? `（${m.dosage}）` : ""}`),
         ``,
       ] : []),
-      ...(allergies ? [`⚠️ 過敏/特殊提醒：${allergies}`, ``] : []),
+      ...(allergies ? [`過敏/特殊提醒：${allergies}`, ``] : []),
       ...(symptomLabels.length > 0 ? [
-        `📋 最近一週的狀況：`,
+        `最近一週的狀況：`,
         ...symptomLabels.map((s) => `  • ${s}`),
         ...(symptomDetails ? [`  備註：${symptomDetails}`] : []),
         ``,
       ] : []),
       ...(validQuestions.length > 0 ? [
-        `❓ 想問醫生的問題：`,
+        `想問醫生的問題：`,
         ...validQuestions.map((q, i) => `  ${i + 1}. ${q}`),
         ``,
       ] : []),
@@ -95,7 +97,7 @@ export default function MedicalPrepPage() {
           {/* Preview card */}
           <div className="bg-white rounded-[24px] shadow-apple-warm border border-apple-gray-200/60 p-6">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-[24px]">🏥</span>
+              <span className="text-blue-600"><Icon name="hospital" size={26} /></span>
               <h2 className="text-[20px] font-bold text-apple-gray-900">就醫提問單</h2>
             </div>
             <pre className="text-[14px] text-apple-gray-700 whitespace-pre-wrap leading-relaxed font-sans">
@@ -105,8 +107,8 @@ export default function MedicalPrepPage() {
 
           <div className="bg-amber-50/60 rounded-[16px] p-4 border border-amber-100/50">
             <p className="text-[13px] text-amber-800/80 leading-relaxed">
-              💡 <strong>使用方式：</strong>看診時直接打開這個畫面給醫生看，或複製傳到 LINE。
-              醫生看到這張提問單，會覺得你很專業 👍
+              <Icon name="bulb" size={15} className="inline-block align-[-2px] mr-1" /><strong>使用方式：</strong>看診時直接打開這個畫面給醫生看，或複製傳到 LINE。
+              醫生看到這張提問單，會覺得你很專業 <Icon name="thumbsUp" size={15} className="inline-block align-[-2px]" />
             </p>
           </div>
 
@@ -116,18 +118,21 @@ export default function MedicalPrepPage() {
                 if (navigator.share) {
                   navigator.share({ title: "就醫提問單", text: summary }).catch(() => {});
                 } else {
-                  navigator.clipboard.writeText(summary).then(() => alert("已複製到剪貼簿！"));
+                  navigator.clipboard.writeText(summary).then(() => {
+                    setCopied(true);
+                    window.setTimeout(() => setCopied(false), 2000);
+                  });
                 }
               }}
-              className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-[16px] font-bold rounded-full shadow-lg shadow-blue-200/50"
+              className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-[16px] font-bold rounded-full shadow-lg shadow-blue-200/50 flex items-center justify-center gap-2"
             >
-              📤 複製 / 分享提問單
+              <Icon name="share" size={20} />{copied ? "已複製！" : "複製 / 分享提問單"}
             </button>
             <button
               onClick={() => window.print()}
-              className="w-full py-4 bg-white text-apple-gray-700 text-[16px] font-semibold rounded-full border border-apple-gray-200/60 hover:bg-apple-gray-50 transition-colors"
+              className="w-full py-4 bg-white text-apple-gray-700 text-[16px] font-semibold rounded-full border border-apple-gray-200/60 hover:bg-apple-gray-50 transition-colors flex items-center justify-center gap-2"
             >
-              🖨️ 列印
+              <Icon name="printer" size={20} />列印
             </button>
             <button
               onClick={() => setGenerated(false)}
@@ -149,7 +154,7 @@ export default function MedicalPrepPage() {
 
         <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
           <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-sky-50 p-8 text-center">
-            <div className="text-[48px] mb-3">🏥</div>
+            <div className="mb-3 flex justify-center text-blue-600"><Icon name="hospital" size={52} /></div>
             <h1 className="text-[28px] font-bold text-apple-gray-900 mb-2">就醫神隊友</h1>
             <p className="text-[15px] text-blue-800/70">
               看診前填寫，自動生成「就醫提問單」<br />
@@ -161,11 +166,12 @@ export default function MedicalPrepPage() {
         <div className="space-y-6">
           {/* Basic info */}
           <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
-            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4">👤 基本資料</h3>
+            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="user" size={18} />基本資料</h3>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div>
-                <label className="text-[12px] text-apple-gray-500 mb-1 block">長輩姓名</label>
+                <label htmlFor="mp-elder-name" className="text-[12px] text-apple-gray-500 mb-1 block">長輩姓名</label>
                 <input
+                  id="mp-elder-name"
                   type="text"
                   value={elderName}
                   onChange={(e) => setElderName(e.target.value)}
@@ -174,8 +180,9 @@ export default function MedicalPrepPage() {
                 />
               </div>
               <div>
-                <label className="text-[12px] text-apple-gray-500 mb-1 block">年齡</label>
+                <label htmlFor="mp-elder-age" className="text-[12px] text-apple-gray-500 mb-1 block">年齡</label>
                 <input
+                  id="mp-elder-age"
                   type="number"
                   value={elderAge}
                   onChange={(e) => setElderAge(e.target.value)}
@@ -185,8 +192,9 @@ export default function MedicalPrepPage() {
               </div>
             </div>
             <div>
-              <label className="text-[12px] text-apple-gray-500 mb-1 block">看哪一科</label>
+              <label htmlFor="mp-department" className="text-[12px] text-apple-gray-500 mb-1 block">看哪一科</label>
               <input
+                id="mp-department"
                 type="text"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
@@ -198,12 +206,13 @@ export default function MedicalPrepPage() {
 
           {/* Medications */}
           <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
-            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4">💊 目前用藥</h3>
+            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="pill" size={18} />目前用藥</h3>
             <div className="space-y-2">
               {medications.map((med, i) => (
                 <div key={i} className="flex gap-2">
                   <input
                     type="text"
+                    aria-label={`藥名 ${i + 1}`}
                     value={med.name}
                     onChange={(e) => updateMedication(i, "name", e.target.value)}
                     placeholder="藥名"
@@ -211,6 +220,7 @@ export default function MedicalPrepPage() {
                   />
                   <input
                     type="text"
+                    aria-label={`劑量頻率 ${i + 1}`}
                     value={med.dosage}
                     onChange={(e) => updateMedication(i, "dosage", e.target.value)}
                     placeholder="劑量/頻率"
@@ -226,9 +236,10 @@ export default function MedicalPrepPage() {
 
           {/* Allergies */}
           <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
-            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-3">⚠️ 過敏 / 特殊提醒</h3>
+            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-3 flex items-center gap-2 text-amber-800"><Icon name="alert" size={18} />過敏 / 特殊提醒</h3>
             <input
               type="text"
+              aria-label="過敏或特殊提醒"
               value={allergies}
               onChange={(e) => setAllergies(e.target.value)}
               placeholder="例：對盤尼西林過敏、有做過心臟手術"
@@ -238,7 +249,7 @@ export default function MedicalPrepPage() {
 
           {/* Symptoms */}
           <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
-            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4">📋 最近一週的狀況（可複選）</h3>
+            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="clipboard" size={18} />最近一週的狀況（可複選）</h3>
             <div className="grid grid-cols-3 gap-2 mb-3">
               {SYMPTOM_OPTIONS.map((sym) => (
                 <button
@@ -250,12 +261,13 @@ export default function MedicalPrepPage() {
                       : "bg-apple-gray-50 border-apple-gray-200/60 text-apple-gray-600"
                   }`}
                 >
-                  <div className="text-[16px] mb-0.5">{sym.icon}</div>
+                  <div className="mb-1 flex justify-center"><Icon name={sym.icon} size={20} /></div>
                   {sym.label}
                 </button>
               ))}
             </div>
             <textarea
+              aria-label="症狀補充說明"
               value={symptomDetails}
               onChange={(e) => setSymptomDetails(e.target.value)}
               placeholder="補充說明（選填）：例如「痛在右膝蓋，走路時特別痛」"
@@ -266,12 +278,13 @@ export default function MedicalPrepPage() {
 
           {/* Questions for doctor */}
           <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
-            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4">❓ 想問醫生的問題</h3>
+            <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="help" size={18} />想問醫生的問題</h3>
             <div className="space-y-2">
               {questions.map((q, i) => (
                 <input
                   key={i}
                   type="text"
+                  aria-label={`想問醫生的問題 ${i + 1}`}
                   value={q}
                   onChange={(e) => updateQuestion(i, e.target.value)}
                   placeholder={`問題 ${i + 1}：例如「這個藥可以跟血壓藥一起吃嗎？」`}

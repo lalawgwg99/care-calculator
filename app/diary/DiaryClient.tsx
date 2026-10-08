@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
+import Icon from "@/components/Icon";
 
 const STORAGE_KEY = "carepilot-diary-v1";
 const WEEKDAY_NAMES = ["週一", "週二", "週三", "週四", "週五", "週六", "週日"];
@@ -194,7 +195,7 @@ export default function DiaryClient() {
         {/* Header */}
         <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-5">
           <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-8 text-center">
-            <div className="text-[48px] mb-4">📓</div>
+            <div className="mb-4 flex justify-center text-amber-600"><Icon name="note" size={52} /></div>
             <h1 className="text-[28px] font-bold text-apple-gray-900 mb-3">照顧日記</h1>
             <p className="text-[15px] text-apple-gray-600 leading-relaxed">
               每天花 1 分鐘，記下長輩的食慾、精神和狀況。
@@ -206,7 +207,7 @@ export default function DiaryClient() {
 
         {/* Privacy note */}
         <div className="flex items-start gap-2.5 bg-white rounded-[20px] border border-apple-gray-200/60 px-4 py-3.5 mb-5">
-          <span className="text-[18px] shrink-0">🔒</span>
+          <span className="shrink-0 text-apple-gray-500"><Icon name="lock" size={18} /></span>
           <p className="text-[13px] text-apple-gray-500 leading-relaxed">
             這些記錄只存在你的手機或瀏覽器裡，不會上傳到網路。換手機或清掉瀏覽器資料的話，記錄就不會跟著過去。
           </p>
@@ -246,7 +247,7 @@ export default function DiaryClient() {
         ) : isEmptyWeek ? (
           /* Empty state */
           <div className="bg-white rounded-[24px] shadow-apple-warm border border-apple-gray-200/60 p-8 text-center mb-5">
-            <div className="text-[44px] mb-4">🌱</div>
+            <div className="mb-4 flex justify-center text-green-600"><Icon name="sprout" size={48} /></div>
             <h2 className="text-[19px] font-bold text-apple-gray-900 mb-2">還沒開始記錄，沒關係</h2>
             <p className="text-[15px] text-apple-gray-500 leading-relaxed">
               從今天開始就好。每天睡前花 1 分鐘，點一下長輩今天的食慾和精神，
@@ -349,8 +350,11 @@ export default function DiaryClient() {
               disabled={summarizing}
               className="w-full py-4 rounded-[20px] bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[17px] font-bold shadow-md shadow-orange-200/50 hover:shadow-lg transition-shadow disabled:opacity-60 disabled:cursor-wait"
             >
-              {summarizing ? "AI 整理中…" : "✨ AI 本週摘要"}
+              {summarizing ? "AI 整理中…" : "AI 本週摘要"}
             </button>
+            <p className="mt-2 text-center text-[12px] text-apple-gray-400">
+              摘要由外部 AI 服務產生，按下即表示同意將本週日記內容傳送處理。
+            </p>
 
             {sumError && (
               <div className="mt-4 bg-white rounded-[20px] border border-apple-gray-200/60 p-5 text-center">
@@ -368,7 +372,7 @@ export default function DiaryClient() {
             {summary && !summarizing && (
               <div className="mt-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-[24px] border border-orange-200/60 p-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-[20px]">📝</span>
+                  <span className="text-apple-orange"><Icon name="note" size={20} /></span>
                   <h2 className="text-[16px] font-bold text-apple-gray-900">本週摘要</h2>
                 </div>
                 <p className="text-[15px] text-apple-gray-700 leading-relaxed whitespace-pre-wrap">

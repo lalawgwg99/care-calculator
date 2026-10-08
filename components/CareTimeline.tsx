@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { CARE_TIMELINE } from "@/constants/conditionData";
 import type { ConditionId } from "@/lib/conditionProfiles";
 
@@ -17,7 +18,7 @@ export default function CareTimeline({ selectedConditions: _selectedConditions, 
     <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-teal-50 to-emerald-50 px-6 py-5 border-b border-teal-100/50">
         <div className="flex items-center gap-3">
-          <span className="text-[28px]">📅</span>
+          <Icon name="calendar" size={28} />
           <div>
             <h2 className="text-[18px] font-bold text-apple-gray-900">照顧歷程時間軸</h2>
             <p className="text-[13px] text-teal-800/60 mt-0.5">各階段照顧需求與費用預估</p>
@@ -78,7 +79,7 @@ export default function CareTimeline({ selectedConditions: _selectedConditions, 
         {/* Note */}
         <div className="mt-5 bg-amber-50 border border-amber-100 rounded-[16px] p-4">
           <p className="text-[13px] text-amber-800 leading-relaxed">
-            💡 <strong>提醒：</strong>以上費用為估算範圍，實際費用依地區、照顧類型及個人需求而異。政府補助可降低約 30~50% 的自付費用。建議盡早透過首頁試算工具計算實際補助金額。
+            <Icon name="bulb" size={14} /> <strong>提醒：</strong>以上費用為估算範圍，實際費用依地區、照顧類型及個人需求而異。政府補助可降低約 30~50% 的自付費用。建議盡早透過首頁試算工具計算實際補助金額。
           </p>
         </div>
       </div>

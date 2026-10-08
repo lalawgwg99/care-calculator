@@ -1,3 +1,4 @@
+import Icon, { type IconName } from "@/components/Icon";
 import type { Metadata } from "next";
 import Link from 'next/link';
 import { CMS_LEVEL_INFO, CARE_TYPE_INFO, INCOME_TYPE_INFO, CMS_LEVELS_STR, CARE_TYPES, type CareType, type CMSLevel, type IncomeType } from '@/constants/pseoData';
@@ -112,7 +113,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
             <span>{careInfo.name}</span>
           </nav>
           <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm mb-6 border border-orange-100 text-[13px] font-semibold text-amber-800">
-            📊 長照3.0補助試算
+            <Icon name="chart" size={15} /> 長照3.0補助試算
           </div>
           <h1 className="text-[28px] sm:text-[36px] font-bold tracking-tight text-apple-gray-900 mb-4 leading-tight">
             CMS 第{level}級<br />
@@ -169,7 +170,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                 {careType === 'foreign-caregiver' && (
                   <div className="bg-amber-50 rounded-[20px] p-5 border border-amber-200 mb-6">
                     <div className="flex items-start gap-3">
-                      <span className="text-[24px]">⚠️</span>
+                      <Icon name="alert" size={24} />
                       <div>
                         <h4 className="text-[15px] font-bold text-amber-900 mb-1">外籍看護補助說明</h4>
                         <p className="text-[13px] text-amber-800 leading-relaxed">
@@ -265,7 +266,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
             href={`/?cms=${level}&income=${careType === 'foreign-caregiver' ? 'general' : 'general'}`}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-bold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
           >
-            🧮 立即試算長照補助
+            <Icon name="calculator" size={18} /> 立即試算長照補助
           </Link>
         </div>
 

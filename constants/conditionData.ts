@@ -1,6 +1,7 @@
+import Icon, { type IconName } from "@/components/Icon";
 export interface ConditionProfile {
   id: string;
-  icon: string;
+  icon: IconName;
   name: string;
   englishName: string;
   color: string;
@@ -21,7 +22,7 @@ export interface ConditionProfile {
 export const CONDITION_PROFILES: ConditionProfile[] = [
   {
     id: "dementia",
-    icon: "🧠",
+    icon: "brain",
     name: "失智症",
     englishName: "Dementia",
     color: "text-purple-700",
@@ -49,7 +50,7 @@ export const CONDITION_PROFILES: ConditionProfile[] = [
   },
   {
     id: "stroke",
-    icon: "💉",
+    icon: "syringe",
     name: "中風",
     englishName: "Stroke",
     color: "text-red-700",
@@ -77,7 +78,7 @@ export const CONDITION_PROFILES: ConditionProfile[] = [
   },
   {
     id: "parkinsons",
-    icon: "🤝",
+    icon: "hand",
     name: "帕金森氏症",
     englishName: "Parkinson's Disease",
     color: "text-orange-700",
@@ -105,7 +106,7 @@ export const CONDITION_PROFILES: ConditionProfile[] = [
   },
   {
     id: "fracture",
-    icon: "🦴",
+    icon: "bone",
     name: "骨折 / 跌倒後遺症",
     englishName: "Fracture / Fall Injury",
     color: "text-teal-700",
@@ -178,7 +179,7 @@ export interface ChecklistCategory {
 export const FACILITY_CHECKLIST: ChecklistCategory[] = [
   {
     category: "安全環境",
-    icon: "🔒",
+    icon: "lock",
     items: [
       "走廊與浴室設有防滑地板與扶手",
       "有緊急呼叫系統",
@@ -189,7 +190,7 @@ export const FACILITY_CHECKLIST: ChecklistCategory[] = [
   },
   {
     category: "醫療照護",
-    icon: "🏥",
+    icon: "hospital",
     items: [
       "有護理師 24 小時駐場",
       "定期有醫師巡診（頻率）",
@@ -200,7 +201,7 @@ export const FACILITY_CHECKLIST: ChecklistCategory[] = [
   },
   {
     category: "生活品質",
-    icon: "🌿",
+    icon: "sprout",
     items: [
       "房間整潔、通風、採光良好",
       "有多元活動（音樂、手工藝、體能）",
@@ -211,7 +212,7 @@ export const FACILITY_CHECKLIST: ChecklistCategory[] = [
   },
   {
     category: "費用透明",
-    icon: "💰",
+    icon: "coins",
     items: [
       "月費項目明確列示（含額外費用）",
       "有書面合約，退費條款清楚",
@@ -222,7 +223,7 @@ export const FACILITY_CHECKLIST: ChecklistCategory[] = [
   },
   {
     category: "家屬溝通",
-    icon: "👨‍👩‍👧",
+    icon: "users",
     items: [
       "定期提供長輩健康狀況報告",
       "家屬可自由探訪（了解限制條件）",

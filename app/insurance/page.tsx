@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import InsuranceAddon from "@/components/InsuranceAddon";
+import Icon from "@/components/Icon";
 import LegalNavigator from "@/components/LegalNavigator";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 
@@ -21,7 +22,7 @@ export default function InsurancePage() {
       {/* Header */}
       <div className="text-center">
         <div className="inline-flex items-center gap-2 bg-blue-100 rounded-full px-4 py-2 mb-4">
-          <span className="text-[18px]">🛡️</span>
+          <span className="text-blue-700"><Icon name="shield" size={18} /></span>
           <span className="text-[13px] font-semibold text-blue-800">財務 & 法律規劃</span>
         </div>
         <h1 className="text-[28px] font-bold text-apple-gray-900 mb-2">

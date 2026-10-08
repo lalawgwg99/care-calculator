@@ -1,3 +1,5 @@
+import type { IconName } from "@/components/Icon";
+
 /**
  * 疾病資料模組 — 根據長輩的健康狀況，影響整個平台的建議
  *
@@ -37,7 +39,7 @@ export interface TimelinePhase {
 export interface ConditionProfile {
   id: ConditionId;
   name: string;
-  icon: string;
+  icon: IconName;
   trajectory: Trajectory;
   avgDurationYears: [number, number];
   description: string;
@@ -55,7 +57,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   dementia: {
     id: "dementia",
     name: "失智症",
-    icon: "🧠",
+    icon: "brain",
     trajectory: "slow-decline",
     avgDurationYears: [5, 12],
     description: "認知功能逐漸退化，從健忘到無法自理，病程通常緩慢但不可逆。",
@@ -123,7 +125,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   stroke: {
     id: "stroke",
     name: "中風",
-    icon: "🫀",
+    icon: "heart",
     trajectory: "sudden",
     avgDurationYears: [3, 10],
     description: "突發性腦部血管病變，造成肢體癱瘓或語言障礙，前 6 個月是復健黃金期。",
@@ -191,7 +193,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   cancer: {
     id: "cancer",
     name: "癌症",
-    icon: "🎗️",
+    icon: "ribbon",
     trajectory: "episodic",
     avgDurationYears: [1, 5],
     description: "病程起伏大，治療期→穩定期→可能復發。照顧負擔隨治療階段波動。",
@@ -259,7 +261,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   diabetes: {
     id: "diabetes",
     name: "糖尿病",
-    icon: "💉",
+    icon: "syringe",
     trajectory: "slow-decline",
     avgDurationYears: [5, 20],
     description: "慢性代謝疾病，控制不佳會導致腎病變、視網膜病變、截肢等嚴重併發症。",
@@ -314,7 +316,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   parkinson: {
     id: "parkinson",
     name: "帕金森氏症",
-    icon: "🤲",
+    icon: "hand",
     trajectory: "slow-decline",
     avgDurationYears: [5, 15],
     description: "神經退化疾病，從手抖、動作遲緩開始，逐漸影響行走和日常自理。",
@@ -369,7 +371,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   kidney: {
     id: "kidney",
     name: "腎臟病/洗腎",
-    icon: "🫘",
+    icon: "kidney",
     trajectory: "slow-decline",
     avgDurationYears: [5, 15],
     description: "慢性腎病變導致需要定期洗腎（血液透析或腹膜透析），每週 3 次往返醫院。",
@@ -424,7 +426,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   fracture: {
     id: "fracture",
     name: "骨折/關節退化",
-    icon: "🦴",
+    icon: "bone",
     trajectory: "sudden",
     avgDurationYears: [1, 5],
     description: "跌倒導致髖關節骨折，或嚴重膝關節退化需置換手術，術後復健決定恢復品質。",
@@ -479,7 +481,7 @@ export const CONDITION_PROFILES: Record<ConditionId, ConditionProfile> = {
   other: {
     id: "other",
     name: "其他/一般失能",
-    icon: "🏥",
+    icon: "hospital",
     trajectory: "slow-decline",
     avgDurationYears: [3, 10],
     description: "因老化或其他原因導致的功能退化，需要不同程度的日常生活協助。",

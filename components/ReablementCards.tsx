@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState, useEffect } from "react";
 
 interface Task {
@@ -9,13 +10,13 @@ interface Task {
   duration: string;
   steps: string[];
   benefit: string;
-  emoji: string;
+  emoji: IconName;
 }
 
 interface Category {
   id: string;
   name: string;
-  icon: string;
+  icon: IconName;
   color: string;
   bgColor: string;
   tasks: Task[];
@@ -25,7 +26,7 @@ const CATEGORIES: Category[] = [
   {
     id: "physical",
     name: "身體活動",
-    icon: "🏃",
+    icon: "run",
     color: "text-emerald-700",
     bgColor: "bg-emerald-50 border-emerald-100",
     tasks: [
@@ -36,7 +37,7 @@ const CATEGORIES: Category[] = [
         duration: "10 分鐘",
         steps: ["坐在穩固的椅子上", "雙手扶椅背或扶手", "慢慢站起來，數到 3", "停頓 2 秒，再慢慢坐下", "重複 5~10 次"],
         benefit: "增強大腿肌力，改善平衡感，降低跌倒風險",
-        emoji: "🪑",
+        emoji: "chair",
       },
       {
         id: "walk-indoor",
@@ -45,7 +46,7 @@ const CATEGORIES: Category[] = [
         duration: "15 分鐘",
         steps: ["在家中走廊或客廳來回行走", "保持抬頭挺胸", "如需要可使用助行器", "每天早晚各走一次"],
         benefit: "維持步行能力，促進血液循環，提振精神",
-        emoji: "👣",
+        emoji: "footprints",
       },
       {
         id: "shoulder-rotation",
@@ -54,7 +55,7 @@ const CATEGORIES: Category[] = [
         duration: "10 分鐘",
         steps: ["坐正，雙腳平放地面", "緩慢地將頭向左轉，停留 5 秒", "再向右轉，停留 5 秒", "聳肩再放鬆，重複 5 次", "手臂向前伸展，交替進行"],
         benefit: "緩解頸部緊繃，改善上肢循環，減少肌肉僵硬",
-        emoji: "🔄",
+        emoji: "refresh",
       },
       {
         id: "balance-single",
@@ -63,7 +64,7 @@ const CATEGORIES: Category[] = [
         duration: "5 分鐘",
         steps: ["站在穩固家具旁（如流理台、牆壁）", "單手輕扶支撐物", "慢慢抬起一腳，離地約 5 公分", "維持 10~30 秒，再換腳", "若感覺不穩立刻放腳"],
         benefit: "顯著改善平衡能力，是預防跌倒最有效的訓練之一",
-        emoji: "🦩",
+        emoji: "balance",
       },
       {
         id: "stair-step",
@@ -72,7 +73,7 @@ const CATEGORIES: Category[] = [
         duration: "10 分鐘",
         steps: ["站在穩固的椅子旁", "緩慢地抬起左膝（膝蓋約至腰高）", "放下，再抬起右膝", "保持節奏，做 20~30 步", "配合呼吸，不要憋氣"],
         benefit: "鍛鍊腿部肌力與協調，改善心肺功能",
-        emoji: "🥾",
+        emoji: "footprints",
       },
       {
         id: "stretch-full",
@@ -81,14 +82,14 @@ const CATEGORIES: Category[] = [
         duration: "15 分鐘",
         steps: ["坐在椅子上，深呼吸 3 次", "雙手高舉過頭，伸展 10 秒", "前彎嘗試碰膝蓋，保持 10 秒", "雙腳踝畫圓轉動各 10 次", "最後深呼吸放鬆"],
         benefit: "提升關節活動度，緩解整體肌肉緊繃",
-        emoji: "🧘",
+        emoji: "meditation",
       },
     ],
   },
   {
     id: "cognitive",
     name: "認知訓練",
-    icon: "🧠",
+    icon: "brain",
     color: "text-purple-700",
     bgColor: "bg-purple-50 border-purple-100",
     tasks: [
@@ -99,7 +100,7 @@ const CATEGORIES: Category[] = [
         duration: "10 分鐘",
         steps: ["準備 5~10 張物品圖卡（或用手機圖片）", "讓長輩看牌 30 秒後翻面", "請他說出記得的圖片", "逐漸增加圖片數量"],
         benefit: "訓練短期記憶力，也是失智症早期評估的好方法",
-        emoji: "🃏",
+        emoji: "square",
       },
       {
         id: "sudoku-simple",
@@ -108,7 +109,7 @@ const CATEGORIES: Category[] = [
         duration: "15 分鐘",
         steps: ["準備簡單的 4×4 數字填格或找字遊戲", "鼓勵長輩獨自完成", "若卡住給予提示，不急著給答案", "完成後給予稱讚"],
         benefit: "鍛鍊邏輯思維與注意力，保持大腦活躍",
-        emoji: "🔢",
+        emoji: "calculator",
       },
       {
         id: "story-recall",
@@ -117,7 +118,7 @@ const CATEGORIES: Category[] = [
         duration: "20 分鐘",
         steps: ["請長輩描述一件過去的美好回憶", "家人可以提問引導細節", "例如：「那時候吃了什麼？」", "可以拿出老照片輔助"],
         benefit: "刺激長期記憶，增強語言表達，強化家庭連結",
-        emoji: "📖",
+        emoji: "book",
       },
       {
         id: "pattern-copy",
@@ -126,7 +127,7 @@ const CATEGORIES: Category[] = [
         duration: "15 分鐘",
         steps: ["準備一張簡單圖案（如房子、花朵）", "請長輩照著描繪或畫出來", "不要批評，鼓勵過程", "完成後可以用色鉛筆上色"],
         benefit: "訓練手眼協調與空間認知，預防認知退化",
-        emoji: "✏️",
+        emoji: "pen",
       },
       {
         id: "cooking-simple",
@@ -135,7 +136,7 @@ const CATEGORIES: Category[] = [
         duration: "20 分鐘",
         steps: ["請長輩協助洗菜、剝蒜或折青菜", "說明每個步驟，一起完成", "讓長輩在能力範圍內主導", "用餐時提到「這是你幫忙做的」"],
         benefit: "維持日常生活技能，增加成就感，刺激多種感官",
-        emoji: "🥬",
+        emoji: "utensils",
       },
       {
         id: "music-recall",
@@ -144,14 +145,14 @@ const CATEGORIES: Category[] = [
         duration: "20 分鐘",
         steps: ["播放長輩年輕時喜愛的歌曲", "鼓勵他跟著哼唱", "問問歌曲背後的記憶與故事", "可以一起輕輕打拍子"],
         benefit: "音樂能觸發深層記憶，改善情緒，減少焦慮",
-        emoji: "🎵",
+        emoji: "music",
       },
     ],
   },
   {
     id: "social",
     name: "社交互動",
-    icon: "👥",
+    icon: "users",
     color: "text-blue-700",
     bgColor: "bg-blue-50 border-blue-100",
     tasks: [
@@ -162,7 +163,7 @@ const CATEGORIES: Category[] = [
         duration: "20 分鐘",
         steps: ["幫助長輩使用平板或手機視訊", "事先聯絡對方安排好時間", "陪在旁邊協助操作", "聊聊近況、看看孫子們"],
         benefit: "維持社交連結，減少孤獨感，是心理健康的重要支柱",
-        emoji: "📹",
+        emoji: "video",
       },
       {
         id: "board-game",
@@ -171,7 +172,7 @@ const CATEGORIES: Category[] = [
         duration: "30 分鐘",
         steps: ["與家人或照顧者一起玩簡單桌遊", "選擇長輩熟悉的遊戲（如麻將、撲克牌）", "降低規則難度，重在參與", "保持輕鬆愉快的氣氛"],
         benefit: "刺激認知功能，帶來樂趣，增進家人互動",
-        emoji: "🎲",
+        emoji: "dice",
       },
       {
         id: "community-activity",
@@ -180,7 +181,7 @@ const CATEGORIES: Category[] = [
         duration: "2 小時",
         steps: ["查詢附近長照中心、社區關懷站活動", "陪同長輩前往", "鼓勵與其他長輩互動", "活動結束後聊聊感受"],
         benefit: "擴大社交圈，建立支持網絡，增加生活樂趣",
-        emoji: "🌿",
+        emoji: "users",
       },
       {
         id: "letter-writing",
@@ -189,14 +190,14 @@ const CATEGORIES: Category[] = [
         duration: "20 分鐘",
         steps: ["準備信紙、信封和筆", "請長輩寫信給遠方家人或老朋友", "若書寫困難，可口述由家人代寫", "一起準備寄出"],
         benefit: "表達情感，維持與親友的聯繫，提升自我價值感",
-        emoji: "✉️",
+        emoji: "mail",
       },
     ],
   },
   {
     id: "daily",
     name: "日常生活",
-    icon: "🌅",
+    icon: "sun",
     color: "text-amber-700",
     bgColor: "bg-amber-50 border-amber-100",
     tasks: [
@@ -207,7 +208,7 @@ const CATEGORIES: Category[] = [
         duration: "15 分鐘",
         steps: ["準備好所有用品放在伸手可及處", "讓長輩自己完成力所能及的部分", "只在需要時給予協助", "稱讚每一個完成的步驟"],
         benefit: "維持自主能力，建立自我尊嚴，延緩依賴",
-        emoji: "🪥",
+        emoji: "droplet",
       },
       {
         id: "simple-cooking",
@@ -216,7 +217,7 @@ const CATEGORIES: Category[] = [
         duration: "20 分鐘",
         steps: ["選擇安全簡單的食物（如沙拉、泡茶）", "讓長輩主導，家人在旁守護", "使用防燙、防滑的輔具", "一起享用成果"],
         benefit: "維持生活技能，產生成就感，刺激感官",
-        emoji: "☕",
+        emoji: "flame",
       },
       {
         id: "plant-care",
@@ -225,7 +226,7 @@ const CATEGORIES: Category[] = [
         duration: "10 分鐘",
         steps: ["準備一盆容易照顧的植物（如多肉植物）", "讓長輩負責澆水、施肥", "一起觀察植物生長變化", "幫植物命名，建立情感連結"],
         benefit: "培養責任感，接觸自然有療癒效果，維持規律作息",
-        emoji: "🌱",
+        emoji: "sprout",
       },
       {
         id: "journaling",
@@ -234,7 +235,7 @@ const CATEGORIES: Category[] = [
         duration: "10 分鐘",
         steps: ["準備簡單的筆記本", "每天記錄一件今日發生的事", "也可以畫圖代替文字", "定期回頭翻閱，回味美好時光"],
         benefit: "整理思緒，記錄美好片刻，有助認知功能與情緒健康",
-        emoji: "📒",
+        emoji: "note",
       },
       {
         id: "room-organization",
@@ -243,7 +244,7 @@ const CATEGORIES: Category[] = [
         duration: "20 分鐘",
         steps: ["讓長輩整理自己的抽屜或書架", "不要替他做決定，讓他選擇", "可以趁機聊聊物品背後的故事", "讚美整齊的成果"],
         benefit: "增加自主感，刺激認知，讓長輩覺得仍有掌控能力",
-        emoji: "🗂️",
+        emoji: "doc",
       },
     ],
   },
@@ -282,7 +283,7 @@ export default function ReablementCards() {
       <div className="bg-gradient-to-r from-amber-50 to-yellow-50 px-6 py-5 border-b border-amber-100/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-[28px]">🌟</span>
+            <Icon name="star" size={28} />
             <div>
               <h2 className="text-[18px] font-bold text-apple-gray-900">微光復能任務卡</h2>
               <p className="text-[13px] text-amber-800/60 mt-0.5">每週復能活動，點亮生活光芒</p>
@@ -318,7 +319,7 @@ export default function ReablementCards() {
                   : "text-apple-gray-500 hover:text-apple-gray-700"
               }`}
             >
-              <div className="text-[18px]">{cat.icon}</div>
+              <div className="flex justify-center"><Icon name={cat.icon} size={18} /></div>
               <div className="text-[11px] font-medium mt-0.5">{cat.name}</div>
               {catCompleted > 0 && (
                 <div className="text-[10px] opacity-60">{catCompleted}/{cat.tasks.length}</div>
@@ -341,15 +342,15 @@ export default function ReablementCards() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 flex-1">
-                  <span className="text-[24px] shrink-0">{task.emoji}</span>
+                  <span className="shrink-0"><Icon name={task.emoji} size={24} /></span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className={`font-bold text-[15px] ${isDone ? "text-emerald-700 line-through" : category.color}`}>
                         {task.name}
                       </span>
-                      <span className="text-[12px]">{"⭐".repeat(task.difficulty)}</span>
+                      <span className="inline-flex gap-0.5">{Array.from({ length: task.difficulty }).map((_, i) => <Icon key={i} name="star" size={12} />)}</span>
                     </div>
-                    <div className="text-[12px] text-apple-gray-500 mb-2">⏱ {task.duration}</div>
+                    <div className="text-[12px] text-apple-gray-500 mb-2 flex items-center gap-1"><Icon name="clock" size={12} />{task.duration}</div>
 
                     {!isDone && (
                       <>
@@ -363,7 +364,7 @@ export default function ReablementCards() {
                           ))}
                         </ol>
                         <div className="text-[12px] bg-white/60 rounded-[10px] px-2.5 py-1.5 text-apple-gray-600">
-                          💪 <strong>好處：</strong>{task.benefit}
+                          <Icon name="zap" size={14} /> <strong>好處：</strong>{task.benefit}
                         </div>
                       </>
                     )}

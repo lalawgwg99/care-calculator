@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon, { type IconName } from "@/components/Icon";
 
 interface Question {
   text: string;
@@ -33,7 +34,7 @@ const RESULT_LEVELS = [
     max: 10,
     level: "low" as const,
     title: "目前狀況良好",
-    emoji: "💚",
+    icon: "heart" as IconName,
     color: "text-apple-green",
     bg: "bg-green-50",
     message: "你目前的壓力在可控範圍內。繼續保持，也別忘了定期給自己充電。",
@@ -43,7 +44,7 @@ const RESULT_LEVELS = [
     max: 18,
     level: "medium" as const,
     title: "中度負荷，需要注意",
-    emoji: "💛",
+    icon: "heart" as IconName,
     color: "text-amber-600",
     bg: "bg-amber-50",
     message: "你已經承受了不少壓力。建議開始使用喘息服務，讓自己有固定的休息時間。照顧者也需要被照顧。",
@@ -53,7 +54,7 @@ const RESULT_LEVELS = [
     max: 24,
     level: "high" as const,
     title: "高度負荷，請尋求支援",
-    emoji: "🧡",
+    icon: "heart" as IconName,
     color: "text-apple-orange",
     bg: "bg-orange-50",
     message: "你的壓力指數偏高。這不是你不夠堅強，而是照顧的負擔本來就不該一個人扛。請務必善用喘息服務、聯繫家屬支持團體。",
@@ -63,24 +64,25 @@ const RESULT_LEVELS = [
     max: 30,
     level: "critical" as const,
     title: "燃盡警報，請立即求助",
-    emoji: "❤️",
+    icon: "heart" as IconName,
     color: "text-apple-red",
     bg: "bg-red-50",
     message: "你的身心已經處於高度透支狀態。這不是你的錯。請立刻撥打照顧者專線 0800-507-272，或聯繫鄰近的家庭照顧者支持中心。你值得被幫助。",
   },
 ];
 
-const CATEGORY_LABELS = {
-  physical: { label: "身體健康", icon: "🏥" },
-  emotional: { label: "情緒狀態", icon: "💭" },
-  social: { label: "社交生活", icon: "👥" },
-  financial: { label: "經濟壓力", icon: "💰" },
+const CATEGORY_LABELS: Record<string, { label: string; icon: IconName }> = {
+  physical: { label: "身體健康", icon: "hospital" },
+  emotional: { label: "情緒狀態", icon: "chat" },
+  social: { label: "社交生活", icon: "users" },
+  financial: { label: "經濟壓力", icon: "coins" },
 };
 
 export default function BurnoutCheckPage() {
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [completed, setCompleted] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const totalScore = answers.reduce((s, v) => s + v, 0);
   const resultLevel = RESULT_LEVELS.find((r) => totalScore >= r.min && totalScore <= r.max) || RESULT_LEVELS[0];
@@ -118,7 +120,7 @@ export default function BurnoutCheckPage() {
           {currentQ === 0 && (
             <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
               <div className="bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50 p-8 text-center">
-                <div className="text-[48px] mb-4">💛</div>
+                <div className="mb-4 flex justify-center text-rose-400"><Icon name="heart" size={52} /></div>
                 <h1 className="text-[28px] font-bold text-apple-gray-900 mb-3">照顧者壓力自我檢測</h1>
                 <p className="text-[15px] text-rose-800/70 leading-relaxed">
                   10 個問題，1 分鐘完成。<br />
@@ -147,7 +149,7 @@ export default function BurnoutCheckPage() {
           {/* Question Card */}
           <div className="bg-white rounded-[24px] shadow-sm border border-apple-gray-200/60 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[14px]">{CATEGORY_LABELS[QUESTIONS[currentQ].category].icon}</span>
+              <span className="text-rose-500"><Icon name={CATEGORY_LABELS[QUESTIONS[currentQ].category].icon} size={16} /></span>
               <span className="text-[12px] text-apple-gray-500 font-medium">
                 {CATEGORY_LABELS[QUESTIONS[currentQ].category].label}
               </span>
@@ -181,7 +183,7 @@ export default function BurnoutCheckPage() {
         {/* Score card */}
         <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
           <div className={`${resultLevel.bg} p-8 text-center`}>
-            <div className="text-[56px] mb-2">{resultLevel.emoji}</div>
+            <div className={`mb-2 flex justify-center ${resultLevel.color}`}><Icon name={resultLevel.icon} size={56} /></div>
             <h2 className={`text-[24px] font-bold ${resultLevel.color} mb-1`}>{resultLevel.title}</h2>
             <p className="text-[36px] font-mono font-bold text-apple-gray-900">
               {totalScore} <span className="text-[16px] text-apple-gray-500">/ 30</span>
@@ -195,7 +197,7 @@ export default function BurnoutCheckPage() {
             <div className="space-y-3">
               {categoryScores.map((cat) => (
                 <div key={cat.category} className="flex items-center gap-3">
-                  <span className="text-[16px] w-6">{cat.icon}</span>
+                  <span className="w-6 flex justify-center text-apple-gray-500"><Icon name={cat.icon} size={18} /></span>
                   <span className="text-[13px] text-apple-gray-700 w-16">{cat.label}</span>
                   <div className="flex-1 h-2.5 bg-apple-gray-100 rounded-full overflow-hidden">
                     <div
@@ -217,21 +219,21 @@ export default function BurnoutCheckPage() {
           <h4 className="text-[15px] font-bold text-apple-gray-900 mb-4">照顧者支援資源</h4>
           <div className="space-y-3">
             <a href="tel:0800507272" className="flex items-center gap-3 p-4 rounded-[14px] bg-rose-50/60 border border-rose-100/50 hover:bg-rose-50 transition-colors">
-              <span className="text-[22px]">📞</span>
+              <span className="text-rose-600"><Icon name="phone" size={24} /></span>
               <div>
                 <p className="text-[14px] font-semibold text-rose-900">家庭照顧者關懷專線</p>
                 <p className="text-[13px] text-rose-700/70">0800-507-272（免費）</p>
               </div>
             </a>
             <a href="tel:1966" className="flex items-center gap-3 p-4 rounded-[14px] bg-green-50/60 border border-green-100/50 hover:bg-green-50 transition-colors">
-              <span className="text-[22px]">🏥</span>
+              <span className="text-green-700"><Icon name="hospital" size={24} /></span>
               <div>
                 <p className="text-[14px] font-semibold text-green-900">申請喘息服務</p>
                 <p className="text-[13px] text-green-700/70">撥打 1966 長照專線</p>
               </div>
             </a>
             <div className="flex items-center gap-3 p-4 rounded-[14px] bg-blue-50/60 border border-blue-100/50">
-              <span className="text-[22px]">👥</span>
+              <span className="text-blue-700"><Icon name="users" size={24} /></span>
               <div>
                 <p className="text-[14px] font-semibold text-blue-900">家屬支持團體</p>
                 <p className="text-[13px] text-blue-700/70">各縣市家庭照顧者支持中心，定期舉辦紓壓活動</p>
@@ -245,31 +247,34 @@ export default function BurnoutCheckPage() {
           <button
             onClick={() => {
               const summary = [
-                `💛 照顧者壓力自我檢測結果`,
+                `照顧者壓力自我檢測結果`,
                 ``,
-                `${resultLevel.emoji} ${resultLevel.title}`,
+                `${resultLevel.title}`,
                 `壓力指數：${totalScore}/30`,
                 ``,
-                `📞 照顧者專線 0800-507-272`,
-                `📞 長照專線 1966`,
+                `照顧者專線 0800-507-272`,
+                `長照專線 1966`,
                 ``,
-                `你也來測測看 👉 CarePilot 長照領航員`,
+                `你也來測測看：CarePilot 長照領航員`,
               ].join("\n");
               if (navigator.share) {
                 navigator.share({ title: "照顧者壓力檢測", text: summary }).catch(() => {});
               } else {
-                navigator.clipboard.writeText(summary).then(() => alert("已複製到剪貼簿！"));
+                navigator.clipboard.writeText(summary).then(() => {
+                  setCopied(true);
+                  window.setTimeout(() => setCopied(false), 2000);
+                });
               }
             }}
-            className="w-full py-4 bg-gradient-to-r from-rose-500 to-orange-500 text-white text-[16px] font-bold rounded-full shadow-lg shadow-rose-200/50"
+            className="w-full py-4 bg-gradient-to-r from-rose-500 to-orange-500 text-white text-[16px] font-bold rounded-full shadow-lg shadow-rose-200/50 flex items-center justify-center gap-2"
           >
-            📤 分享結果
+            <Icon name="share" size={20} />{copied ? "已複製！" : "分享結果"}
           </button>
           <button
             onClick={() => { setCompleted(false); setCurrentQ(0); setAnswers([]); }}
-            className="w-full py-4 bg-white text-rose-700 text-[16px] font-bold rounded-full border-2 border-rose-200 hover:bg-rose-50 transition-colors"
+            className="w-full py-4 bg-white text-rose-700 text-[16px] font-bold rounded-full border-2 border-rose-200 hover:bg-rose-50 transition-colors flex items-center justify-center gap-2"
           >
-            🔄 重新測試
+            <Icon name="refresh" size={20} />重新測試
           </button>
           <a
             href="/"

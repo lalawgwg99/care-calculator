@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState } from "react";
 
 interface Scenario {
@@ -63,10 +64,10 @@ const SCENARIOS: Scenario[] = [
 ];
 
 const RESOURCES = [
-  { icon: "📞", name: "長照專線 1966", desc: "免費諮詢長照服務" },
-  { icon: "🏥", name: "失智症照顧資源中心", desc: "各縣市均有設置" },
-  { icon: "👥", name: "家屬支持團體", desc: "與其他照顧者交流分享" },
-  { icon: "📚", name: "台灣失智症協會", desc: "dementia.org.tw" },
+  { icon: "phone" as IconName, name: "長照專線 1966", desc: "免費諮詢長照服務" },
+  { icon: "hospital" as IconName, name: "失智症照顧資源中心", desc: "各縣市均有設置" },
+  { icon: "users" as IconName, name: "家屬支持團體", desc: "與其他照顧者交流分享" },
+  { icon: "book" as IconName, name: "台灣失智症協會", desc: "dementia.org.tw" },
 ];
 
 export default function DementiaSimulator() {
@@ -114,7 +115,7 @@ export default function DementiaSimulator() {
     <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-purple-50 to-indigo-50 px-6 py-5 border-b border-purple-100/50">
         <div className="flex items-center gap-3">
-          <span className="text-[28px]">🧠</span>
+          <Icon name="brain" size={28} />
           <div>
             <h2 className="text-[18px] font-bold text-apple-gray-900">失智症體驗模擬</h2>
             <p className="text-[13px] text-purple-800/60 mt-0.5">體驗失智症長輩的日常挑戰，培養同理心</p>
@@ -126,7 +127,7 @@ export default function DementiaSimulator() {
         {/* Intro */}
         {phase === "intro" && (
           <div className="text-center space-y-5">
-            <div className="text-[48px]">🌟</div>
+            <div className="flex justify-center"><Icon name="star" size={48} /></div>
             <h3 className="text-[20px] font-bold text-apple-gray-900">想像你是失智症患者</h3>
             <p className="text-[15px] text-apple-gray-600 max-w-md mx-auto leading-relaxed">
               接下來的 5 個情境，請試著以失智症患者的角度思考和感受。
@@ -134,7 +135,7 @@ export default function DementiaSimulator() {
             </p>
             <div className="bg-amber-50 border border-amber-100 rounded-[16px] p-4 text-left">
               <p className="text-[13px] text-amber-800">
-                ⚠️ 此工具僅為教育目的，幫助照顧者培養同理心，<strong>無法作為醫療診斷依據</strong>。
+                <Icon name="alert" size={14} /> 此工具僅為教育目的，幫助照顧者培養同理心，<strong>無法作為醫療診斷依據</strong>。
                 若擔心家人認知狀況，請諮詢醫師。
               </p>
             </div>
@@ -195,7 +196,7 @@ export default function DementiaSimulator() {
             {selected !== null && (
               <div className="mt-4 bg-indigo-50 border border-indigo-100 rounded-[16px] p-4">
                 <p className="text-[13px] text-indigo-800 leading-relaxed">
-                  💡 <strong>洞察：</strong>{SCENARIOS[current].options[selected].insight}
+                  <Icon name="bulb" size={14} /> <strong>洞察：</strong>{SCENARIOS[current].options[selected].insight}
                 </p>
               </div>
             )}
@@ -219,7 +220,7 @@ export default function DementiaSimulator() {
           <div className="space-y-5">
             <div className={`rounded-[20px] p-5 text-center ${empathyLevel.bg}`}>
               <div className="text-[48px] mb-2">
-                {empathyRate >= 80 ? "💜" : empathyRate >= 60 ? "💙" : empathyRate >= 40 ? "💛" : "🧡"}
+                <Icon name="heart" size={48} />
               </div>
               <div className={`text-[28px] font-bold ${empathyLevel.color}`}>{empathyRate}%</div>
               <div className={`text-[16px] font-semibold ${empathyLevel.color} mb-2`}>
@@ -253,7 +254,7 @@ export default function DementiaSimulator() {
               <div className="grid grid-cols-2 gap-2">
                 {RESOURCES.map((r) => (
                   <div key={r.name} className="bg-purple-50 border border-purple-100 rounded-[14px] p-3">
-                    <span className="text-[20px]">{r.icon}</span>
+                    <span className="shrink-0"><Icon name={r.icon} size={20} /></span>
                     <div className="text-[13px] font-semibold text-purple-800 mt-1">{r.name}</div>
                     <div className="text-[12px] text-purple-600">{r.desc}</div>
                   </div>

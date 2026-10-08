@@ -1,5 +1,6 @@
 "use client";
 
+import Icon, { type IconName } from "@/components/Icon";
 import { useState } from "react";
 
 export default function EmergencyAccordion() {
@@ -13,7 +14,7 @@ export default function EmergencyAccordion() {
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
         <span className="flex items-center gap-3">
-          <span className="text-[22px]">🚨</span>
+          <Icon name="alert" size={22} />
           <span className="text-[16px] font-semibold text-red-800">
             剛發生緊急狀況？不知道先做什麼？
           </span>
@@ -40,7 +41,7 @@ export default function EmergencyAccordion() {
                 num: "1",
                 title: "立刻撥打長照專線",
                 desc: "告知「需要緊急評估」，將優先安排到府，勿等一般預約。",
-                cta: "📞 撥打 1966（免費）",
+                cta: "撥打 1966（免費）", ctaIcon: "phone" as IconName,
                 href: "tel:1966",
                 color: "bg-red-600",
               },
@@ -49,6 +50,7 @@ export default function EmergencyAccordion() {
                 title: "請醫院社工協助出院銜接",
                 desc: "住院中可直接請護理站協助聯繫醫務社工師，要求「出院準備銜接長照服務」。",
                 cta: null,
+                ctaIcon: null,
                 href: null,
                 color: "bg-red-500",
               },
@@ -57,6 +59,7 @@ export default function EmergencyAccordion() {
                 title: "申請緊急喘息服務",
                 desc: "若家中長輩已有長照資格，撥 1966 申請「緊急喘息」，最快 24 小時內可安排臨時替代照顧。",
                 cta: null,
+                ctaIcon: null,
                 href: null,
                 color: "bg-red-500",
               },
@@ -64,7 +67,7 @@ export default function EmergencyAccordion() {
                 num: "4",
                 title: "你也需要支持",
                 desc: "照顧者的情緒同樣重要。任何時間都可撥打安心專線，24 小時免費心理陪伴。",
-                cta: "💙 撥打 1925",
+                cta: "撥打 1925", ctaIcon: "heart" as IconName,
                 href: "tel:1925",
                 color: "bg-blue-600",
               },
@@ -82,8 +85,9 @@ export default function EmergencyAccordion() {
                 {item.href && item.cta && (
                   <a
                     href={item.href}
-                    className={`flex-shrink-0 text-[13px] font-bold text-white ${item.color} hover:opacity-90 transition-opacity px-3 py-1.5 rounded-full`}
+                    className={`flex-shrink-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-white ${item.color} hover:opacity-90 transition-opacity px-3 py-1.5 rounded-full`}
                   >
+                    {item.ctaIcon && <Icon name={item.ctaIcon} size={14} />}
                     {item.cta}
                   </a>
                 )}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Icon from "@/components/Icon";
 import { BLOG_POSTS, getBlogPost, type ContentBlock } from "@/constants/blogPosts";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 import { POLICY_SOURCES, POLICY_VERSION } from "@/lib/policyData";
@@ -114,7 +115,7 @@ function renderBlock(block: ContentBlock, i: number) {
       return (
         <div key={i} className="my-5 bg-green-50 border-l-4 border-apple-green rounded-r-[16px] p-5">
           <p className="text-[14px] text-green-800 leading-relaxed">
-            <span className="font-bold">💡 小技巧：</span>{block.text}
+            <span className="font-bold inline-flex items-center gap-1.5"><Icon name="bulb" size={16} />小技巧：</span>{block.text}
           </p>
         </div>
       );
@@ -122,7 +123,7 @@ function renderBlock(block: ContentBlock, i: number) {
       return (
         <div key={i} className="my-5 bg-amber-50 border-l-4 border-apple-orange rounded-r-[16px] p-5">
           <p className="text-[14px] text-amber-800 leading-relaxed">
-            <span className="font-bold">⚠️ 注意：</span>{block.text}
+            <span className="font-bold inline-flex items-center gap-1.5"><Icon name="alert" size={16} />注意：</span>{block.text}
           </p>
         </div>
       );
@@ -130,7 +131,7 @@ function renderBlock(block: ContentBlock, i: number) {
       return (
         <div key={i} className="my-5 bg-blue-50 border-l-4 border-apple-blue rounded-r-[16px] p-5">
           <p className="text-[14px] text-blue-800 leading-relaxed">
-            <span className="font-bold">📌 補充：</span>{block.text}
+            <span className="font-bold inline-flex items-center gap-1.5"><Icon name="pin" size={16} />補充：</span>{block.text}
           </p>
         </div>
       );
@@ -254,7 +255,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         {/* Tool CTA */}
         <section className="max-w-3xl mx-auto px-4">
           <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
-            <div className="text-[28px] mb-3">🧡</div>
+            <div className="mb-3 flex justify-center text-apple-orange"><Icon name="heart" size={30} /></div>
             <h2 className="text-[20px] font-bold text-apple-gray-900 mb-2">
               了解概念之後，算出你的確切數字
             </h2>
@@ -265,7 +266,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               href={post.relatedToolHref}
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-bold rounded-full shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
             >
-              🧮 {post.relatedToolLabel}
+              <Icon name="calculator" size={20} />{post.relatedToolLabel}
             </Link>
             <p className="text-[12px] text-amber-800/40 mt-3">免費使用，不需要註冊</p>
           </div>
