@@ -271,7 +271,7 @@ export default function RootLayout({
 
         {/* Favicon and app icons */}
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/icon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         {/* Primary structured data */}
         <script
