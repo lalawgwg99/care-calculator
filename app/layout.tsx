@@ -4,6 +4,7 @@ import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import FloatingAssistant from "@/components/FloatingAssistant";
 import { SITE_URL, pageAlternates } from "@/lib/site";
 
 const BASE_URL = SITE_URL;
@@ -308,6 +309,7 @@ export default function RootLayout({
           </main>
         </ErrorBoundary>
         <Footer />
+        <FloatingAssistant />
       </body>
     </html>
   );
