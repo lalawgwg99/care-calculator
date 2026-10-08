@@ -312,12 +312,6 @@ export default function Home() {
               先看看有哪些工具
             </Link>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
-            <span className="px-3 py-1 rounded-full glass-chip text-[12px] text-amber-800">不需註冊</span>
-            <span className="px-3 py-1 rounded-full glass-chip text-[12px] text-amber-800">30 秒完成第一輪比較</span>
-            <span className="px-3 py-1 rounded-full glass-chip text-[12px] text-amber-800">依 2026 長照規範設計</span>
-          </div>
-
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
             <div className="glass-chip rounded-[20px] p-4">
