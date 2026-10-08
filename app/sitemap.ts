@@ -156,6 +156,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    {
+      url: `${BASE_URL}/diary`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
     // CMS等级专项页面
     ...CMS_LEVELS.map((level) => ({
       url: `${BASE_URL}/cms${level}`,

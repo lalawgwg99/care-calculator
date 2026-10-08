@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/", label: "首頁試算" },
   { href: "/blog", label: "知識庫" },
   { href: "/tools", label: "實用工具" },
+  { href: "/diary", label: "照顧日記" },
   { href: "/search", label: "資源搜尋" },
 ];
 
