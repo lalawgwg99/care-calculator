@@ -549,6 +549,24 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ====== 照顧日記 AI 亮點 ====== */}
+      <section className="max-w-4xl mx-auto px-4 mb-12">
+        <Link href="/diary" className="block rounded-[28px] overflow-hidden group">
+          <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-8 sm:p-10 text-center border border-orange-200/60">
+            <p className="text-[11px] font-bold uppercase tracking-[.2em] text-amber-600 mb-2">別家沒有的</p>
+            <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 mb-3">
+              不只試算，還陪你每天記錄
+            </h3>
+            <p className="text-[15px] text-apple-gray-600 leading-relaxed max-w-lg mx-auto mb-6">
+              照顧是每天的事。每天花 1 分鐘記下長輩的食慾、精神和狀況，週末 AI 幫你整理成摘要，變化不對勁會提醒你回診時跟醫生提。
+            </p>
+            <span className="inline-flex items-center justify-center rounded-full bg-apple-orange px-6 py-3 text-[15px] font-bold text-white shadow-md group-hover:shadow-lg transition-shadow">
+              開始寫照顧日記 →
+            </span>
+          </div>
+        </Link>
+      </section>
+
       {/* ====== TRUST / FOOTER ====== */}
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
         <div className="section-surface rounded-[20px] p-6">
