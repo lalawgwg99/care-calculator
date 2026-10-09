@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Icon from "@/components/Icon";
-import { BLOG_POSTS, getBlogPost, type ContentBlock } from "@/constants/blogPosts";
+import { BLOG_POSTS, getBlogPost, type BlogPost, type ContentBlock } from "@/constants/blogPosts";
 import { absoluteUrl, pageAlternates } from "@/lib/site";
 import { POLICY_SOURCES, POLICY_VERSION } from "@/lib/policyData";
 
@@ -140,6 +140,22 @@ function renderBlock(block: ContentBlock, i: number) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
+// ─── Relevance-scored related articles ──────────────────────────────────────
+// Same category +3, each shared tag +2; ties broken by most recently updated.
+function getRelatedPosts(current: BlogPost, count = 3): BlogPost[] {
+  return BLOG_POSTS.filter((p) => p.slug !== current.slug)
+    .map((p) => {
+      let score = 0;
+      if (p.category === current.category) score += 3;
+      const sharedTags = p.tags.filter((t) => current.tags.includes(t)).length;
+      score += sharedTags * 2;
+      return { post: p, score };
+    })
+    .sort((a, b) => b.score - a.score || b.post.updatedAt.localeCompare(a.post.updatedAt))
+    .slice(0, count)
+    .map(({ post }) => post);
+}
+
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getBlogPost(params.slug);
   if (!post) notFound();
@@ -276,7 +292,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         <section className="max-w-3xl mx-auto px-4 mt-12">
           <h2 className="text-[17px] font-bold text-apple-gray-900 mb-4">相關文章</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {BLOG_POSTS.filter((p) => p.slug !== post.slug).slice(0, 2).map((related) => (
+            {getRelatedPosts(post).map((related) => (
               <Link
                 key={related.slug}
                 href={`/blog/${related.slug}`}
