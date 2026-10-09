@@ -76,7 +76,7 @@ export default function AboutPage() {
         </ul>
       </section>
 
-      <section className="mb-10 rounded-[18px] border border-amber-200 bg-amber-50/70 p-5">
+      <section className="mb-10 rounded-[14px] border border-amber-200 bg-amber-50/70 p-5">
         <h2 className="text-[16px] font-bold text-apple-gray-900 mb-2">免責聲明</h2>
         <ul className="text-[14px] text-apple-gray-600 leading-relaxed space-y-2 list-disc pl-5">
           <li>本站試算結果僅供參考，不是醫療建議，也不是政府核定金額。</li>

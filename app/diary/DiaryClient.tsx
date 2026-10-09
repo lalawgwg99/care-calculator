@@ -193,7 +193,7 @@ export default function DiaryClient() {
         </a>
 
         {/* Header */}
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-5">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-5">
           <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-8 text-center">
             <div className="mb-4 flex justify-center text-amber-600"><Icon name="note" size={52} /></div>
             <h1 className="text-[28px] font-bold text-apple-gray-900 mb-3">照顧日記</h1>
@@ -206,7 +206,7 @@ export default function DiaryClient() {
         </div>
 
         {/* Privacy note */}
-        <div className="flex items-start gap-2.5 bg-white rounded-[20px] border border-apple-gray-200/60 px-4 py-3.5 mb-5">
+        <div className="flex items-start gap-2.5 bg-white rounded-[14px] border border-apple-gray-200/60 px-4 py-3.5 mb-5">
           <span className="shrink-0 text-apple-gray-500"><Icon name="lock" size={18} /></span>
           <p className="text-[13px] text-apple-gray-500 leading-relaxed">
             這些記錄只存在你的手機或瀏覽器裡，不會上傳到網路。換手機或清掉瀏覽器資料的話，記錄就不會跟著過去。
@@ -241,12 +241,12 @@ export default function DiaryClient() {
         </div>
 
         {!ready ? (
-          <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-8 text-center">
+          <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-8 text-center">
             <p className="text-[15px] text-apple-gray-500">載入中…</p>
           </div>
         ) : isEmptyWeek ? (
           /* Empty state */
-          <div className="bg-white rounded-[24px] shadow-apple-warm border border-apple-gray-200/60 p-8 text-center mb-5">
+          <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 p-8 text-center mb-5">
             <div className="mb-4 flex justify-center text-green-600"><Icon name="sprout" size={48} /></div>
             <h2 className="text-[19px] font-bold text-apple-gray-900 mb-2">還沒開始記錄，沒關係</h2>
             <p className="text-[15px] text-apple-gray-500 leading-relaxed">
@@ -264,7 +264,7 @@ export default function DiaryClient() {
             return (
               <section
                 key={dateKey(date)}
-                className="bg-white rounded-[24px] shadow-apple border border-apple-gray-200/60 p-5 mb-4"
+                className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 p-5 mb-4"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-[18px] font-bold text-apple-gray-900">
@@ -348,7 +348,7 @@ export default function DiaryClient() {
               type="button"
               onClick={handleSummary}
               disabled={summarizing}
-              className="w-full py-4 rounded-[20px] bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[17px] font-bold shadow-md shadow-orange-200/50 hover:shadow-lg transition-shadow disabled:opacity-60 disabled:cursor-wait"
+              className="w-full py-4 rounded-[14px] bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[17px] font-bold shadow-md shadow-orange-200/50 hover:shadow-lg transition-shadow disabled:opacity-60 disabled:cursor-wait"
             >
               {summarizing ? "AI 整理中…" : "AI 本週摘要"}
             </button>
@@ -357,7 +357,7 @@ export default function DiaryClient() {
             </p>
 
             {sumError && (
-              <div className="mt-4 bg-white rounded-[20px] border border-apple-gray-200/60 p-5 text-center">
+              <div className="mt-4 bg-white rounded-[14px] border border-apple-gray-200/60 p-5 text-center">
                 <p className="text-[15px] text-apple-gray-600 mb-3">{sumError}</p>
                 <button
                   type="button"
@@ -370,7 +370,7 @@ export default function DiaryClient() {
             )}
 
             {summary && !summarizing && (
-              <div className="mt-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-[24px] border border-orange-200/60 p-6">
+              <div className="mt-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-[14px] border border-orange-200/60 p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-apple-orange"><Icon name="note" size={20} /></span>
                   <h2 className="text-[16px] font-bold text-apple-gray-900">本週摘要</h2>

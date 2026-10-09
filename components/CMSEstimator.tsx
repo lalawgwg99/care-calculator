@@ -87,7 +87,7 @@ export default function CMSEstimator({ onComplete, onCancel }: CMSEstimatorProps
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-apple-gray-900/40 backdrop-blur-sm">
-      <div className="w-full max-w-[500px] bg-white rounded-[24px] shadow-apple overflow-hidden pb-6">
+      <div className="w-full max-w-[500px] bg-white rounded-[14px] shadow-apple overflow-hidden pb-6">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-apple-gray-50">
           <div className="text-[15px] font-semibold text-apple-gray-400">

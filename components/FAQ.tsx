@@ -56,7 +56,7 @@ export default function FAQ() {
         {FAQ_ITEMS.map((item, idx) => (
           <div
             key={idx}
-            className="bg-white rounded-[20px] border border-apple-gray-200/50 overflow-hidden shadow-sm transition-shadow hover:shadow-apple-warm"
+            className="bg-white rounded-[14px] border border-apple-gray-200/50 overflow-hidden shadow-sm transition-shadow hover:shadow-apple-warm"
           >
             <button
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}

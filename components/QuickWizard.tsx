@@ -156,7 +156,7 @@ export default function QuickWizard({
               onClick={() => pick(opt.value)}
               aria-pressed={isSelected}
               disabled={locked.current && !isFlash}
-              className={`w-full flex items-center gap-4 p-5 rounded-[18px] text-left border-2 transition-all duration-200 active:scale-[0.99] ${
+              className={`w-full flex items-center gap-4 p-5 rounded-[14px] text-left border-2 transition-all duration-200 active:scale-[0.99] ${
                 active
                   ? "border-apple-orange bg-apple-orange/10 shadow-md"
                   : "border-apple-gray-200 bg-white hover:border-orange-300 hover:bg-orange-50/50"

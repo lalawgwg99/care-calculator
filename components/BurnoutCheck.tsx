@@ -67,7 +67,7 @@ export default function BurnoutCheck() {
   const categoryMax = { emotional: 20, physical: 15, social: 15 };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-rose-50 to-pink-50 px-6 py-5 border-b border-rose-100/50">
         <div className="flex items-center gap-3">
           <Icon name="meditation" size={28} />
@@ -115,7 +115,7 @@ export default function BurnoutCheck() {
 
             <div className="space-y-5">
               {QUESTIONS.map((q) => (
-                <div key={q.id} className="bg-apple-gray-50 rounded-[18px] p-4">
+                <div key={q.id} className="bg-apple-gray-50 rounded-[14px] p-4">
                   <p className="text-[14px] text-apple-gray-800 font-medium mb-3 leading-relaxed">
                     <span className="text-rose-400 font-bold mr-2">Q{q.id}.</span>
                     {q.text}
@@ -157,7 +157,7 @@ export default function BurnoutCheck() {
         {/* Result */}
         {phase === "result" && (
           <div className="space-y-5">
-            <div className={`rounded-[20px] p-5 text-center ${burnoutLevel.bg}`}>
+            <div className={`rounded-[14px] p-5 text-center ${burnoutLevel.bg}`}>
               <div className="flex justify-center mb-2"><Icon name={burnoutLevel.emoji} size={40} /></div>
               <div className={`text-[28px] font-bold ${burnoutLevel.color}`}>{burnoutRate}%</div>
               <div className={`text-[16px] font-semibold ${burnoutLevel.color} mb-2`}>
@@ -169,7 +169,7 @@ export default function BurnoutCheck() {
             </div>
 
             {/* Category breakdown */}
-            <div className="bg-apple-gray-50 rounded-[20px] p-4">
+            <div className="bg-apple-gray-50 rounded-[14px] p-4">
               <div className="text-[13px] font-semibold text-apple-gray-600 mb-3">各面向分析</div>
               {(["emotional", "physical", "social"] as const).map((cat) => {
                 const score = categoryScores[cat];

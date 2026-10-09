@@ -79,7 +79,7 @@ export default function MedicalPrep() {
   ] as const;
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-cyan-50 to-sky-50 px-6 py-5 border-b border-cyan-100/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -91,7 +91,7 @@ export default function MedicalPrep() {
           </div>
           <button
             onClick={handlePrint}
-            className="text-[13px] bg-white border border-cyan-200 text-cyan-700 px-3 py-1.5 rounded-full hover:bg-cyan-50 transition-colors font-medium"
+            className="text-[13px] bg-white border border-cyan-200 text-cyan-700 px-3 py-1.5 rounded-md hover:bg-cyan-50 transition-colors font-medium"
           >
             <span className="inline-flex items-center gap-1.5"><Icon name="printer" size={14} />列印</span>
           </button>

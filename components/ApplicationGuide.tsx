@@ -144,7 +144,7 @@ export default function ApplicationGuide() {
               </div>
 
               {/* Content */}
-              <div className="flex-1 bg-white rounded-[20px] border border-apple-gray-200/50 p-5 sm:p-6 shadow-sm">
+              <div className="flex-1 bg-white rounded-[14px] border border-apple-gray-200/50 p-5 sm:p-6 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-[13px] font-bold text-apple-orange bg-apple-orange/10 rounded-full px-2.5 py-0.5">
                     步驟 {step.num}
@@ -166,7 +166,7 @@ export default function ApplicationGuide() {
       {/* 1966 快速撥打 + 地區聯絡 */}
       <div className="mt-10 space-y-4">
         {/* 1966 CTA */}
-        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-[24px] p-6 border border-emerald-200/50 text-center">
+        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-[14px] p-6 border border-emerald-200/50 text-center">
           <p className="text-[15px] text-emerald-800 font-medium mb-3">
             不知道從何開始？撥打長照專線，專人引導你
           </p>
@@ -182,7 +182,7 @@ export default function ApplicationGuide() {
         </div>
 
         {/* 地區照管中心 */}
-        <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-[14px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
           <button
             onClick={() => setShowRegionalContacts(!showRegionalContacts)}
             className="w-full flex items-center justify-between p-5"

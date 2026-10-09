@@ -27,7 +27,7 @@ const TIPS = [
 export default function CaregiverTips() {
   return (
     <section className="w-full max-w-3xl mx-auto px-4 mb-16">
-      <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-[32px] p-8 sm:p-10 border border-orange-100/50">
+      <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-[14px] p-8 sm:p-10 border border-orange-100/50">
         <div className="text-center mb-8">
           <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 tracking-tight mb-2">
             <Icon name="heart" size={16} /> 給照顧者的溫柔提醒
@@ -40,7 +40,7 @@ export default function CaregiverTips() {
         {/* 1925 安心專線 */}
         <a
           href="tel:1925"
-          className="flex items-center gap-4 bg-blue-50/80 rounded-[20px] p-5 border border-blue-100/60 mb-4 hover:bg-blue-100/60 transition-colors group"
+          className="flex items-center gap-4 bg-blue-50/80 rounded-[14px] p-5 border border-blue-100/60 mb-4 hover:bg-blue-100/60 transition-colors group"
         >
           <div className="flex-shrink-0"><Icon name="heart" size={32} /></div>
           <div className="flex-1 min-w-0">
@@ -59,7 +59,7 @@ export default function CaregiverTips() {
           {TIPS.map((tip, idx) => (
             <div
               key={idx}
-              className="bg-white/80 backdrop-blur-sm rounded-[20px] p-5 border border-white/50 shadow-sm"
+              className="bg-white/80 backdrop-blur-sm rounded-[14px] p-5 border border-white/50 shadow-sm"
             >
               <div className="mb-3"><Icon name={tip.icon} size={28} /></div>
               <h4 className="text-[16px] font-bold text-apple-gray-900 mb-2">{tip.title}</h4>

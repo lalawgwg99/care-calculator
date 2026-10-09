@@ -118,7 +118,7 @@ export default function BurnoutCheckPage() {
           <a href="/" className="inline-flex items-center gap-2 text-[14px] text-apple-gray-500 hover:text-apple-gray-900 mb-6">← 回到試算引擎</a>
 
           {currentQ === 0 && (
-            <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
+            <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
               <div className="bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50 p-8 text-center">
                 <div className="mb-4 flex justify-center text-rose-400"><Icon name="heart" size={52} /></div>
                 <h1 className="text-[28px] font-bold text-apple-gray-900 mb-3">照顧者壓力自我檢測</h1>
@@ -147,7 +147,7 @@ export default function BurnoutCheckPage() {
           </div>
 
           {/* Question Card */}
-          <div className="bg-white rounded-[24px] shadow-sm border border-apple-gray-200/60 p-6">
+          <div className="bg-white rounded-[14px] shadow-sm border border-apple-gray-200/60 p-6">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-rose-500"><Icon name={CATEGORY_LABELS[QUESTIONS[currentQ].category].icon} size={16} /></span>
               <span className="text-[12px] text-apple-gray-500 font-medium">
@@ -181,7 +181,7 @@ export default function BurnoutCheckPage() {
     <main className="min-h-screen bg-apple-gray-50 pt-6 sm:pt-12 pb-24 px-4">
       <div className="max-w-lg mx-auto space-y-6">
         {/* Score card */}
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
           <div className={`${resultLevel.bg} p-8 text-center`}>
             <div className={`mb-2 flex justify-center ${resultLevel.color}`}><Icon name={resultLevel.icon} size={56} /></div>
             <h2 className={`text-[24px] font-bold ${resultLevel.color} mb-1`}>{resultLevel.title}</h2>
@@ -215,7 +215,7 @@ export default function BurnoutCheckPage() {
         </div>
 
         {/* Resources */}
-        <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
+        <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-6 shadow-sm">
           <h4 className="text-[15px] font-bold text-apple-gray-900 mb-4">照顧者支援資源</h4>
           <div className="space-y-3">
             <a href="tel:0800507272" className="flex items-center gap-3 p-4 rounded-[14px] bg-rose-50/60 border border-rose-100/50 hover:bg-rose-50 transition-colors">

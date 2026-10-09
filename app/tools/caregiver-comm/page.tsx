@@ -48,13 +48,13 @@ export default function CaregiverCommPage() {
         <div className="max-w-lg mx-auto space-y-6">
           <a href="/tools" className="inline-flex items-center gap-2 text-[14px] text-apple-gray-500 hover:text-apple-gray-900">← 回到工具箱</a>
 
-          <div className="bg-white rounded-[24px] shadow-apple-warm border border-apple-gray-200/60 p-6">
+          <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <span className="text-green-600"><Icon name="chat" size={26} /></span>
                 <h2 className="text-[20px] font-bold text-apple-gray-900">照顧聯絡簿</h2>
               </div>
-              <span className="text-[13px] px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium">
+              <span className="text-[13px] px-3 py-1 rounded-lg bg-green-100 text-green-700 font-medium">
                 中文 + {langLabel}
               </span>
             </div>
@@ -131,7 +131,7 @@ export default function CaregiverCommPage() {
       <div className="max-w-lg mx-auto">
         <a href="/tools" className="inline-flex items-center gap-2 text-[14px] text-apple-gray-500 hover:text-apple-gray-900 mb-6">← 回到工具箱</a>
 
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
           <div className="bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 p-8 text-center">
             <div className="mb-3 flex justify-center text-green-600"><Icon name="chat" size={52} /></div>
             <h1 className="text-[28px] font-bold text-apple-gray-900 mb-2">看護溝通卡</h1>
@@ -174,7 +174,7 @@ export default function CaregiverCommPage() {
           {PHRASE_CATEGORIES.map((cat) => {
             const phrases = CARE_PHRASES.filter((p) => p.category === cat);
             return (
-              <div key={cat} className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
+              <div key={cat} className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5">
                 <h3 className="text-[15px] font-bold text-apple-gray-900 mb-3">{cat}</h3>
                 <div className="space-y-1.5">
                   {phrases.map((phrase) => {
@@ -205,7 +205,7 @@ export default function CaregiverCommPage() {
         </div>
 
         {/* Custom note */}
-        <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5 mb-6">
+        <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5 mb-6">
           <h3 className="text-[15px] font-bold text-apple-gray-900 mb-3 flex items-center gap-2"><Icon name="note" size={18} />自由備註</h3>
           <textarea
             aria-label="自由備註"

@@ -50,7 +50,7 @@ export default function BlogListPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group bg-white rounded-[24px] shadow-sm hover:shadow-apple-warm border border-apple-gray-200/50 hover:border-orange-200/60 transition-all overflow-hidden"
+              className="group bg-white rounded-[14px] shadow-sm hover:shadow-apple-warm border border-apple-gray-200/50 hover:border-orange-200/60 transition-all overflow-hidden"
             >
               {/* Category accent bar */}
               <div className={`h-1.5 w-full ${
@@ -94,7 +94,7 @@ export default function BlogListPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-14 bg-gradient-to-r from-amber-50 to-orange-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
+        <div className="mt-14 bg-gradient-to-r from-amber-50 to-orange-50 rounded-[14px] p-8 border border-orange-100/60 text-center">
           <p className="text-[15px] text-amber-900/70 mb-4">看完文章，直接試算你的情況</p>
           <Link
             href="/"

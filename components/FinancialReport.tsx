@@ -136,7 +136,7 @@ export default function FinancialReport({
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
-      <div className="rounded-[18px] border border-emerald-200 bg-emerald-50/70 px-5 py-4 text-[13px] text-emerald-900">
+      <div className="rounded-[14px] border border-emerald-200 bg-emerald-50/70 px-5 py-4 text-[13px] text-emerald-900">
         <div className="font-bold mb-1">資料版本 {POLICY_VERSION}・可追溯官方來源</div>
         <p className="leading-relaxed">
           交通採 {TRANSPORT_REGIONS[transportRegion].label}（每月 {TRANSPORT_REGIONS[transportRegion].monthlyQuota.toLocaleString()} 元）；
@@ -144,7 +144,7 @@ export default function FinancialReport({
           <a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="ml-1 font-semibold underline underline-offset-2">官方額度表</a>
         </p>
       </div>
-      <div className="bg-gradient-to-br from-apple-gray-900 to-apple-gray-700 rounded-[26px] p-6 sm:p-7 text-white border border-apple-gray-600/40">
+      <div className="bg-gradient-to-br from-apple-gray-900 to-apple-gray-700 rounded-[14px] p-6 sm:p-7 text-white border border-apple-gray-600/40">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
           <div>
             <div className="text-[12px] tracking-wider uppercase text-white/70">結論先看</div>
@@ -152,7 +152,7 @@ export default function FinancialReport({
               {getCareTypeName(careType)} 財務決策摘要
             </h2>
           </div>
-          <div className={`px-3 py-1.5 rounded-full text-[12px] font-bold ${burdenLevel.style}`}>
+          <div className={`px-3 py-1.5 rounded-md text-[12px] font-bold ${burdenLevel.style}`}>
             {burdenLevel.label}
           </div>
         </div>
@@ -190,7 +190,7 @@ export default function FinancialReport({
       </div>
 
       {/* ====== MAIN REPORT CARD ====== */}
-      <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
+      <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
         <div className="h-2 bg-gradient-to-r from-apple-orange via-apple-pink to-apple-purple w-full" />
         <div className="p-7 sm:p-9">
           <div className="flex items-center justify-between mb-7 pb-7 border-b border-apple-gray-200/60">
@@ -205,7 +205,7 @@ export default function FinancialReport({
           </div>
 
           <div className="space-y-4 mb-7">
-            <div className="flex items-center justify-between p-5 rounded-[20px] bg-apple-green/5 border border-apple-green/10">
+            <div className="flex items-center justify-between p-5 rounded-[14px] bg-apple-green/5 border border-apple-green/10">
               <div>
                 <div className="text-[16px] font-semibold text-apple-green mb-1">政府 5 年總補助</div>
                 <div className="text-[13px] text-apple-gray-500">包含照顧、接送、喘息額度</div>
@@ -214,7 +214,7 @@ export default function FinancialReport({
                 {formatMoney(total5YearGov)}
               </div>
             </div>
-            <div className="flex items-center justify-between p-5 rounded-[20px] bg-apple-red/5 border border-apple-red/10">
+            <div className="flex items-center justify-between p-5 rounded-[14px] bg-apple-red/5 border border-apple-red/10">
               <div>
                 <div className="text-[16px] font-semibold text-apple-red mb-1">家庭 5 年總支出</div>
                 <div className="text-[13px] text-apple-gray-500">
@@ -230,7 +230,7 @@ export default function FinancialReport({
 
           {/* Foreign caregiver real cost breakdown */}
           {isForeignCaregiver && (
-            <div className="bg-blue-50/60 rounded-[20px] p-5 border border-blue-100/50 mb-7">
+            <div className="bg-blue-50/60 rounded-[14px] p-5 border border-blue-100/50 mb-7">
               <button
                 onClick={() => setShowForeignBreakdown(!showForeignBreakdown)}
                 className="w-full flex items-center justify-between"
@@ -264,7 +264,7 @@ export default function FinancialReport({
           {/* Institution real cost breakdown */}
           {isInstitution && (
             <div className="space-y-4 mb-7">
-              <div className="bg-violet-50/60 rounded-[20px] p-5 border border-violet-100/50">
+              <div className="bg-violet-50/60 rounded-[14px] p-5 border border-violet-100/50">
                 <button
                   onClick={() => setShowInstitutionBreakdown(!showInstitutionBreakdown)}
                   className="w-full flex items-center justify-between"
@@ -303,7 +303,7 @@ export default function FinancialReport({
               </div>
 
               {/* 住宿補助新制提醒（2026/9 起） */}
-              <div className="bg-amber-50/80 rounded-[20px] p-5 border border-amber-200/50">
+              <div className="bg-amber-50/80 rounded-[14px] p-5 border border-amber-200/50">
                 <div className="flex items-start gap-3">
                   <span className="text-amber-700 flex-shrink-0 mt-0.5"><Icon name="calendar" size={22} /></span>
                   <div>
@@ -328,7 +328,7 @@ export default function FinancialReport({
 
       {/* ====== DISEASE-SPECIFIC COSTS ====== */}
       {selectedConditions.length > 0 && (
-        <div className="bg-white rounded-[24px] border border-apple-gray-200/60 p-6 shadow-sm">
+        <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-apple-gray-700"><Icon name="stethoscope" size={26} /></span>
             <div>
@@ -384,7 +384,7 @@ export default function FinancialReport({
 
       {/* ====== DISEASE COMMUNICATION TIPS ====== */}
       {selectedConditions.length > 0 && (
-        <div className="bg-gradient-to-br from-purple-50/50 to-indigo-50/30 rounded-[24px] p-6 border border-purple-100/40">
+        <div className="bg-gradient-to-br from-purple-50/50 to-indigo-50/30 rounded-[14px] p-6 border border-purple-100/40">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-purple-700"><Icon name="chat" size={26} /></span>
             <h4 className="text-[16px] font-bold text-apple-gray-900">跟長輩溝通的小提醒</h4>
@@ -424,7 +424,7 @@ export default function FinancialReport({
       )}
 
       {/* ====== ELDERLY ASSETS + FAMILY SPLIT ====== */}
-      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-[28px] p-7 sm:p-8 border border-orange-100/50">
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-[14px] p-7 sm:p-8 border border-orange-100/50">
         <div className="flex items-center gap-3 mb-5">
           <span className="text-amber-700"><Icon name="users" size={28} /></span>
           <div>
@@ -434,7 +434,7 @@ export default function FinancialReport({
         </div>
 
         {/* Elderly assets input */}
-        <div className="bg-white/70 rounded-[18px] p-5 border border-orange-100/30 mb-5">
+        <div className="bg-white/70 rounded-[14px] p-5 border border-orange-100/30 mb-5">
           <label className="block text-[14px] font-semibold text-apple-gray-700 mb-3">
             <Icon name="coins" size={15} className="inline-block mr-1 align-[-2px]" /> 長輩可動用的積蓄／退休金／保險
           </label>
@@ -461,7 +461,7 @@ export default function FinancialReport({
         </div>
 
         {/* Siblings split */}
-        <div className="bg-white/70 rounded-[18px] p-5 border border-orange-100/30">
+        <div className="bg-white/70 rounded-[14px] p-5 border border-orange-100/30">
           <div className="flex items-center gap-4 mb-4">
             <span className="text-[14px] font-semibold text-apple-gray-700 whitespace-nowrap">子女分攤人數</span>
             <div className="flex items-center gap-3 bg-white rounded-full px-3 py-1.5 shadow-sm border border-apple-gray-200/60">
@@ -506,7 +506,7 @@ export default function FinancialReport({
       <LegalNavigator elderlyAssets={elderlyAssets} />
 
       {/* ====== OPPORTUNITY COST WARNING ====== */}
-      <div className="bg-white rounded-[24px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
+      <div className="bg-white rounded-[14px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
         <button
           onClick={() => setShowOpportunityCost(!showOpportunityCost)}
           className="w-full flex items-center justify-between p-6"
@@ -573,7 +573,7 @@ export default function FinancialReport({
       </div>
 
       {/* ====== NEXT STEPS ====== */}
-      <div id="next-steps" className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100/60 rounded-[24px] p-6 sm:p-7 mb-4">
+      <div id="next-steps" className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100/60 rounded-[14px] p-6 sm:p-7 mb-4">
         <h3 className="text-[17px] font-bold text-emerald-800 mb-4 flex items-center gap-2"><Icon name="checkCircle" size={20} /> 算完了，接下來怎麼做？</h3>
         <div className="space-y-3">
           {[
@@ -610,7 +610,7 @@ export default function FinancialReport({
               {item.href && item.cta && (
                 <a
                   href={item.href}
-                  className="flex-shrink-0 inline-flex items-center text-[14px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors px-4 py-1.5 rounded-full"
+                  className="flex-shrink-0 inline-flex items-center text-[14px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors px-4 py-1.5 rounded-md"
                 >
                   {item.cta}
                 </a>

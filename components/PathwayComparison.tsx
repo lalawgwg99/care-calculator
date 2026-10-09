@@ -172,7 +172,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
       onClick={() => onSelectPathway(path.id)}
       aria-label={`選擇 ${path.title} 方案`}
       className={`
-        relative flex flex-col text-left rounded-[24px] shadow-sm border overflow-hidden
+        relative flex flex-col text-left rounded-[14px] shadow-sm border overflow-hidden
         transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg
         ${isRecommended ? `${path.borderColor} ring-2 ring-emerald-200 soft-glow` : `border-apple-gray-100`}
         ${path.bgGradient}
@@ -245,7 +245,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
   if (cmsLevel === 1) {
     return (
       <div className="w-full animation-fade-in max-w-2xl mx-auto">
-        <div className="bg-amber-50 rounded-[28px] p-8 sm:p-10 border border-amber-200/60 text-center">
+        <div className="bg-amber-50 rounded-[14px] p-8 sm:p-10 border border-amber-200/60 text-center">
           <div className="mb-4 text-amber-500"><Icon name="sparkles" size={48} /></div>
           <h2 className="text-[24px] sm:text-[28px] font-bold text-apple-gray-900 mb-3">
             還不需要用到長照補助
@@ -253,7 +253,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
           <p className="text-[16px] text-amber-800/70 leading-relaxed mb-6 max-w-lg mx-auto">
             CMS 第 1 級屬於「輕度失能」，目前<strong>尚未達到長照補助的門檻</strong>（需 CMS 2 級以上）。現在是延緩退化的好時機。
           </p>
-          <div className="bg-white/80 rounded-[20px] p-6 border border-amber-100/50 text-left mb-6">
+          <div className="bg-white/80 rounded-[14px] p-6 border border-amber-100/50 text-left mb-6">
             <h4 className="text-[16px] font-bold text-apple-gray-900 mb-3">建議你現在可以做的事：</h4>
             <ul className="space-y-2.5">
               {[
@@ -292,7 +292,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
       </div>
 
       {/* 決策推薦提示 */}
-      <div className="bg-emerald-50 border border-emerald-200/70 rounded-[20px] p-5 sm:p-6 mb-8 shadow-sm">
+      <div className="bg-emerald-50 border border-emerald-200/70 rounded-[14px] p-5 sm:p-6 mb-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="text-[13px] text-emerald-700 font-semibold mb-1">決策推薦提示</div>
@@ -338,7 +338,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
         </div>
       </section>
 
-      <section className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5 sm:p-6 mb-8 shadow-sm">
+      <section className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5 sm:p-6 mb-8 shadow-sm">
         <div className="flex items-center justify-between gap-3 mb-4">
           <h3 className="text-[16px] font-bold text-apple-gray-900">其他方案快速比較</h3>
           <button
@@ -374,7 +374,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
       </section>
 
       {/* 5 年總費用速覽 */}
-      <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5 sm:p-6 mb-8 shadow-sm">
+      <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5 sm:p-6 mb-8 shadow-sm">
         <h3 className="text-[15px] font-bold text-apple-gray-700 mb-4">5 年（60 個月）自付總費用速覽</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {pathways.map((path) => {
@@ -390,12 +390,12 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
                 </div>
                 <div className="mt-2 flex items-center justify-center gap-1">
                   {isRecommended && (
-                    <span className="text-[11px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-md">
                       推薦
                     </span>
                   )}
                   {isLowestOutPocket && (
-                    <span className="text-[11px] font-bold bg-amber-600 text-white px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold bg-amber-600 text-white px-2 py-0.5 rounded-md">
                       最省
                     </span>
                   )}

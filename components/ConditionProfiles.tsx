@@ -10,7 +10,7 @@ export default function ConditionProfiles() {
   const profile = CONDITION_PROFILES.find((c) => c.id === selected);
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-5 border-b border-purple-100/50">
         <div className="flex items-center gap-3">
           <Icon name="heart" size={28} />
@@ -44,7 +44,7 @@ export default function ConditionProfiles() {
 
         {/* Profile Detail */}
         {profile && (
-          <div className={`rounded-[20px] border p-5 space-y-5 ${profile.bgColor}`}>
+          <div className={`rounded-[14px] border p-5 space-y-5 ${profile.bgColor}`}>
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Icon name={profile.icon} size={22} />
@@ -110,7 +110,7 @@ export default function ConditionProfiles() {
               <div className="text-[13px] font-semibold text-red-700 mb-2 flex items-center gap-1.5"><Icon name="alert" size={14} />需立即就醫的警示症狀</div>
               <div className="flex flex-wrap gap-2">
                 {profile.redFlags.map((f, i) => (
-                  <span key={i} className="text-[12px] bg-red-100 text-red-700 px-2 py-1 rounded-full">{f}</span>
+                  <span key={i} className="text-[12px] bg-red-100 text-red-700 px-2 py-1 rounded-md">{f}</span>
                 ))}
               </div>
             </div>

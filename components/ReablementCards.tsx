@@ -279,7 +279,7 @@ export default function ReablementCards() {
   const category = CATEGORIES.find((c) => c.id === activeCategory)!;
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-amber-50 to-yellow-50 px-6 py-5 border-b border-amber-100/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -336,7 +336,7 @@ export default function ReablementCards() {
           return (
             <div
               key={task.id}
-              className={`rounded-[20px] border-2 p-4 transition-all ${
+              className={`rounded-[14px] border-2 p-4 transition-all ${
                 isDone ? "border-emerald-200 bg-emerald-50" : `${category.bgColor}`
               }`}
             >

@@ -38,7 +38,7 @@ export default function ResourceSearch() {
   return (
     <div className="space-y-4">
       {/* Search Box */}
-      <div className="bg-white rounded-[24px] shadow-apple border border-apple-gray-200/60 p-4">
+      <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 p-4">
         <input
           type="text"
           aria-label="搜尋長照資源"
@@ -54,7 +54,7 @@ export default function ResourceSearch() {
           <div className="flex gap-1.5 flex-wrap">
             <button
               onClick={() => setSelectedType("全部")}
-              className={`px-3 py-1 rounded-full text-[12px] font-medium transition-colors ${
+              className={`px-3 py-1 rounded-lg text-[12px] font-medium transition-colors ${
                 selectedType === "全部" ? "bg-amber-500 text-white" : "bg-apple-gray-100 text-apple-gray-600 hover:bg-apple-gray-200"
               }`}
             >
@@ -64,7 +64,7 @@ export default function ResourceSearch() {
               <button
                 key={type}
                 onClick={() => setSelectedType(selectedType === type ? "全部" : type)}
-                className={`px-3 py-1 rounded-full text-[12px] font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-[12px] font-medium transition-colors ${
                   selectedType === type ? TYPE_COLORS[type] + " ring-1 ring-current" : "bg-apple-gray-100 text-apple-gray-600 hover:bg-apple-gray-200"
                 }`}
               >
@@ -78,7 +78,7 @@ export default function ResourceSearch() {
             aria-label="選擇縣市"
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
-            className="px-3 py-1 rounded-full bg-apple-gray-100 text-apple-gray-600 text-[12px] font-medium border-none focus:outline-none focus:ring-1 focus:ring-amber-300"
+            className="px-3 py-1 rounded-lg bg-apple-gray-100 text-apple-gray-600 text-[12px] font-medium border-none focus:outline-none focus:ring-1 focus:ring-amber-300"
           >
             <option value="全部">全部縣市</option>
             {CITIES.map((c) => (
@@ -115,13 +115,13 @@ function ResourceCard({ resource, onCall }: { resource: Resource; onCall: (phone
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-white rounded-[20px] shadow-apple border border-apple-gray-200/40 overflow-hidden hover:shadow-apple-hover transition-shadow">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/40 overflow-hidden hover:shadow-apple-hover transition-shadow">
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap mb-1">
               <h3 className="font-bold text-[15px] text-apple-gray-900">{resource.name}</h3>
-              <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[resource.type]}`}>
+              <span className={`text-[11px] px-2 py-0.5 rounded-md font-medium ${TYPE_COLORS[resource.type]}`}>
                 {resource.type}
               </span>
             </div>
@@ -129,12 +129,12 @@ function ResourceCard({ resource, onCall }: { resource: Resource; onCall: (phone
             {/* City tags */}
             <div className="flex gap-1 flex-wrap mb-2">
               {resource.cities.map((city) => (
-                <span key={city} className="text-[11px] bg-apple-gray-100 text-apple-gray-500 px-2 py-0.5 rounded-full">
+                <span key={city} className="text-[11px] bg-apple-gray-100 text-apple-gray-500 px-2 py-0.5 rounded-md">
                   {city}
                 </span>
               ))}
               {resource.cmsEligibility.length > 0 && (
-                <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">
                   CMS {resource.cmsEligibility[0]}~{resource.cmsEligibility[resource.cmsEligibility.length - 1]}
                 </span>
               )}
@@ -157,7 +157,7 @@ function ResourceCard({ resource, onCall }: { resource: Resource; onCall: (phone
         {/* Tags */}
         <div className="flex flex-wrap gap-1.5 mt-3">
           {resource.tags.map((tag) => (
-            <span key={tag} className="text-[11px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full">
+            <span key={tag} className="text-[11px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-md">
               #{tag}
             </span>
           ))}
@@ -169,7 +169,7 @@ function ResourceCard({ resource, onCall }: { resource: Resource; onCall: (phone
             {resource.phone && (
               <button
                 onClick={() => onCall(resource.phone!)}
-                className="flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-[13px] font-medium px-3 py-1.5 rounded-full hover:bg-green-100 transition-colors"
+                className="flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-[13px] font-medium px-3 py-1.5 rounded-md hover:bg-green-100 transition-colors"
               >
                 <Icon name="phone" size={14} /> {resource.phone}
               </button>
@@ -179,7 +179,7 @@ function ResourceCard({ resource, onCall }: { resource: Resource; onCall: (phone
                 href={resource.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-[13px] font-medium px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors"
+                className="flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-[13px] font-medium px-3 py-1.5 rounded-md hover:bg-blue-100 transition-colors"
               >
                 <Icon name="link" size={14} /> 官網
               </a>

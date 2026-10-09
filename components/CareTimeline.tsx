@@ -15,7 +15,7 @@ interface CareTimelineProps {
 
 export default function CareTimeline({ selectedConditions: _selectedConditions, currentCmsLevel: _currentCmsLevel }: CareTimelineProps) {
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-teal-50 to-emerald-50 px-6 py-5 border-b border-teal-100/50">
         <div className="flex items-center gap-3">
           <Icon name="calendar" size={28} />
@@ -45,7 +45,7 @@ export default function CareTimeline({ selectedConditions: _selectedConditions, 
                 </div>
 
                 {/* Card */}
-                <div className={`flex-1 rounded-[20px] border-2 p-4 ${stage.color}`}>
+                <div className={`flex-1 rounded-[14px] border-2 p-4 ${stage.color}`}>
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div>
                       <div className="font-bold text-[16px]">{stage.stage}</div>

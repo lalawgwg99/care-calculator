@@ -140,7 +140,7 @@ export default function CaregiverComm() {
   };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-5 border-b border-green-100/50">
         <div className="flex items-center gap-3">
           <Icon name="chat" size={28} />
@@ -158,7 +158,7 @@ export default function CaregiverComm() {
             <button
               key={t.id}
               onClick={() => setSelectedTemplate(selectedTemplate === t.id ? null : t.id)}
-              className={`flex flex-col items-center gap-2 p-4 rounded-[18px] border-2 transition-all text-center ${
+              className={`flex flex-col items-center gap-2 p-4 rounded-[14px] border-2 transition-all text-center ${
                 selectedTemplate === t.id ? `${t.bgColor} border-current` : "border-apple-gray-200 hover:border-apple-gray-300 bg-apple-gray-50"
               }`}
             >
@@ -172,7 +172,7 @@ export default function CaregiverComm() {
         {/* Template Editor */}
         {template && (
           <div>
-            <div className={`rounded-[20px] border p-4 mb-4 ${template.bgColor}`}>
+            <div className={`rounded-[14px] border p-4 mb-4 ${template.bgColor}`}>
               <div className="text-[13px] font-semibold text-apple-gray-600 mb-3">填入資訊</div>
               <div className="space-y-3">
                 {template.fields.map((field) => (

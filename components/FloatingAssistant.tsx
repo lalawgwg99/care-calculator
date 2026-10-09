@@ -162,7 +162,7 @@ export default function FloatingAssistant() {
         <div
           role="dialog"
           aria-label="小伴 AI 助手"
-          className="w-[min(380px,calc(100vw-32px))] h-[min(560px,72dvh)] bg-white border border-orange-200/70 rounded-[20px] shadow-[0_20px_50px_rgba(217,119,34,0.22)] flex flex-col overflow-hidden"
+          className="w-[min(380px,calc(100vw-32px))] h-[min(560px,72dvh)] bg-white border border-orange-200/70 rounded-[14px] shadow-[0_20px_50px_rgba(217,119,34,0.22)] flex flex-col overflow-hidden"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-apple-orange to-apple-pink text-white shrink-0">
@@ -226,7 +226,7 @@ export default function FloatingAssistant() {
                 <button
                   key={q}
                   onClick={() => send(q)}
-                  className="shrink-0 text-[12px] px-3 py-1.5 rounded-full border border-orange-300 text-apple-orange bg-white hover:bg-orange-50 transition-colors"
+                  className="shrink-0 text-[12px] px-3 py-1.5 rounded-md border border-orange-300 text-apple-orange bg-white hover:bg-orange-50 transition-colors"
                 >
                   {q}
                 </button>

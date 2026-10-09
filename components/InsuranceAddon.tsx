@@ -56,7 +56,7 @@ export default function InsuranceAddon({
   const maxBar = Math.max(...bars.map((b) => b.value), 1);
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-5 border-b border-indigo-100/50">
         <div className="flex items-center gap-3">
           <Icon name="shield" size={28} />
@@ -127,7 +127,7 @@ export default function InsuranceAddon({
         </div>
 
         {/* Chart */}
-        <div className="bg-apple-gray-50 rounded-[20px] p-4 space-y-3">
+        <div className="bg-apple-gray-50 rounded-[14px] p-4 space-y-3">
           <div className="text-[13px] font-semibold text-apple-gray-600 mb-3">每月費用結構（CMS {cmsLevel}）</div>
           {bars.map((bar) => (
             <div key={bar.label}>
@@ -160,7 +160,7 @@ export default function InsuranceAddon({
 
         {/* ====== 保險缺口指引（中立資訊：本站目前沒有保險合作方案） ====== */}
         {gap > 0 && (
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[20px] border border-blue-100/60 p-5">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[14px] border border-blue-100/60 p-5">
             <p className="text-[15px] font-bold text-apple-gray-900 mb-1">
               填補缺口：你還差 <span className="text-blue-600">{fmt(gap)} / 月</span>
             </p>

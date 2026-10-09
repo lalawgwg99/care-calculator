@@ -234,7 +234,7 @@ export default function HiddenSavingsPanel({
   };
 
   return (
-    <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-[32px] border border-emerald-200/50 overflow-hidden shadow-sm">
+    <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-[14px] border border-emerald-200/50 overflow-hidden shadow-sm">
       {/* ====== HEADER ====== */}
       <div className="p-7 sm:p-9">
         <div className="flex items-center gap-3 mb-2">
@@ -248,7 +248,7 @@ export default function HiddenSavingsPanel({
         </p>
 
         {/* ====== 總金額預覽 ====== */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-[24px] p-6 border border-emerald-100/50 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-[14px] p-6 border border-emerald-100/50 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="text-[13px] text-apple-gray-500 mb-1">每年可省下</div>
@@ -289,7 +289,7 @@ export default function HiddenSavingsPanel({
         </div>
 
         {/* ====== 快速設定表單 ====== */}
-        <div className="bg-white/70 rounded-[20px] border border-emerald-100/50 overflow-hidden mb-6">
+        <div className="bg-white/70 rounded-[14px] border border-emerald-100/50 overflow-hidden mb-6">
           <button
             onClick={() => setIsFormExpanded(!isFormExpanded)}
             className="w-full flex items-center justify-between p-5"
@@ -297,7 +297,7 @@ export default function HiddenSavingsPanel({
             <div className="flex items-center gap-2">
               <Icon name="gear" size={18} />
               <span className="text-[15px] font-bold text-apple-gray-900">設定長輩與稅務資料</span>
-              <span className="text-[12px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+              <span className="text-[12px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md font-medium">
                 {age}歲 · {city} · 稅率{Math.round(taxBracket * 100)}%
               </span>
             </div>
@@ -415,7 +415,7 @@ export default function HiddenSavingsPanel({
             const colors = colorMap[cat.color];
             const isOpen = expandedSection === idx;
             return (
-              <div key={idx} className={`rounded-[20px] ${colors.bg} border ${colors.border} overflow-hidden`}>
+              <div key={idx} className={`rounded-[14px] ${colors.bg} border ${colors.border} overflow-hidden`}>
                 <button
                   onClick={() => setExpandedSection(isOpen ? null : idx)}
                   className="w-full flex items-center justify-between p-4 sm:p-5"

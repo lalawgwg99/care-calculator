@@ -35,7 +35,7 @@ export default function SearchPage() {
       <ResourceSearch />
 
       {/* Footer note */}
-      <div className="mt-8 bg-amber-50 border border-amber-100 rounded-[20px] p-4 text-center">
+      <div className="mt-8 bg-amber-50 border border-amber-100 rounded-[14px] p-4 text-center">
         <p className="text-[13px] text-amber-800">
           <Icon name="megaphone" size={15} className="inline-block align-[-2px] mr-1" />資源如有異動，以各單位官網最新公告為準。若需完整服務清單，請撥打 <strong>1966</strong> 長照專線。
         </p>

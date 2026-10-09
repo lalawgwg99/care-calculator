@@ -10,7 +10,7 @@ export default function EmergencyAccordion() {
     <div className="w-full max-w-3xl mx-auto px-4 mb-8">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between bg-red-50 border border-red-200/60 rounded-[20px] px-5 py-4 text-left hover:bg-red-100/60 transition-colors"
+        className="w-full flex items-center justify-between bg-red-50 border border-red-200/60 rounded-[14px] px-5 py-4 text-left hover:bg-red-100/60 transition-colors"
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
         <span className="flex items-center gap-3">
@@ -85,7 +85,7 @@ export default function EmergencyAccordion() {
                 {item.href && item.cta && (
                   <a
                     href={item.href}
-                    className={`flex-shrink-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-white ${item.color} hover:opacity-90 transition-opacity px-3 py-1.5 rounded-full`}
+                    className={`flex-shrink-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-white ${item.color} hover:opacity-90 transition-opacity px-3 py-1.5 rounded-md`}
                   >
                     {item.ctaIcon && <Icon name={item.ctaIcon} size={14} />}
                     {item.cta}

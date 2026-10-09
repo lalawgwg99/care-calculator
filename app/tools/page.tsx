@@ -141,7 +141,7 @@ export default function ToolsPage() {
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className={`bg-gradient-to-br ${group.color} border border-white/80 rounded-[20px] p-5 flex items-start gap-4 hover:shadow-apple-hover transition-shadow group`}
+                  className={`bg-gradient-to-br ${group.color} border border-white/80 rounded-[14px] p-5 flex items-start gap-4 hover:shadow-apple-hover transition-shadow group`}
                 >
                   <div className={`${group.iconBg} rounded-[14px] w-11 h-11 flex items-center justify-center shrink-0`}>
                     <Icon name={tool.icon} size={22} />
@@ -162,7 +162,7 @@ export default function ToolsPage() {
       </div>
 
       {/* Resource Search CTA */}
-      <div className="mt-10 bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-100 rounded-[24px] p-6 flex items-center justify-between gap-4">
+      <div className="mt-10 bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-100 rounded-[14px] p-6 flex items-center justify-between gap-4">
         <div>
           <div className="font-bold text-[17px] text-apple-gray-900 mb-1">找不到合適的資源？</div>
           <div className="text-[14px] text-apple-gray-500">搜尋台灣各縣市照顧機構、政府服務與支持團體</div>

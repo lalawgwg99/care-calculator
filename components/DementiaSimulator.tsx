@@ -112,7 +112,7 @@ export default function DementiaSimulator() {
     : { label: "建議深入了解", color: "text-rose-700", bg: "bg-rose-50" };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-purple-50 to-indigo-50 px-6 py-5 border-b border-purple-100/50">
         <div className="flex items-center gap-3">
           <Icon name="brain" size={28} />
@@ -165,7 +165,7 @@ export default function DementiaSimulator() {
             </div>
 
             {/* Scenario */}
-            <div className="bg-purple-50 border border-purple-100 rounded-[20px] p-5 mb-5">
+            <div className="bg-purple-50 border border-purple-100 rounded-[14px] p-5 mb-5">
               <p className="text-[15px] text-purple-900 leading-relaxed italic">
                 「{SCENARIOS[current].situation}」
               </p>
@@ -218,7 +218,7 @@ export default function DementiaSimulator() {
         {/* Result */}
         {phase === "result" && (
           <div className="space-y-5">
-            <div className={`rounded-[20px] p-5 text-center ${empathyLevel.bg}`}>
+            <div className={`rounded-[14px] p-5 text-center ${empathyLevel.bg}`}>
               <div className="text-[48px] mb-2">
                 <Icon name="heart" size={48} />
               </div>

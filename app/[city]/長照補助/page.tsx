@@ -282,7 +282,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
 
       {/* Contact Info */}
       <section className="max-w-4xl mx-auto px-4 pt-12">
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-orange-100/50">
             <h2 className="text-[22px] font-bold text-apple-gray-900 flex items-center gap-2">
               <Icon name="phone" size={22} />{cityInfo.name}照顧管理中心
@@ -290,14 +290,14 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
           </div>
           <div className="p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-blue-50 rounded-[20px] p-6 border border-blue-200">
+              <div className="bg-blue-50 rounded-[14px] p-6 border border-blue-200">
                 <div className="text-[14px] text-blue-700 font-medium mb-2">長照專線（24小時）</div>
                 <a href={`tel:${cityInfo.ltcHotline.replace(/-/g, '')}`} className="text-[28px] font-bold text-blue-900 hover:underline">
                   {cityInfo.ltcHotline}
                 </a>
                 <p className="text-[12px] text-blue-600 mt-2">或撥打1966（手機）</p>
               </div>
-              <div className="bg-green-50 rounded-[20px] p-6 border border-green-200">
+              <div className="bg-green-50 rounded-[14px] p-6 border border-green-200">
                 <div className="text-[14px] text-green-700 font-medium mb-2">服務地址</div>
                 <p className="text-[18px] font-bold text-green-900">
                   {cityInfo.address}
@@ -316,7 +316,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
         </div>
 
         {/* Nationwide Uniform Subsidy Notice */}
-        <div className="bg-amber-50 rounded-[24px] p-6 border border-amber-200 mb-8">
+        <div className="bg-amber-50 rounded-[14px] p-6 border border-amber-200 mb-8">
           <div className="flex items-start gap-4">
             <span className="text-amber-700 shrink-0"><Icon name="info" size={32} /></span>
             <div>
@@ -334,7 +334,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
         <h3 className="text-[22px] font-bold text-apple-gray-900 mb-6 text-center">
           快速試算{cityInfo.name}補助金額
         </h3>
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-orange-100/50">
             <h4 className="text-[18px] font-bold text-apple-gray-900">
               選擇失能等級開始試算
@@ -389,7 +389,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
         )}
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[14px] p-8 border border-orange-100/60 text-center">
           <h3 className="text-[20px] font-bold text-apple-gray-900 mb-3">
             了解{cityInfo.name}長照服務資源
           </h3>

@@ -94,7 +94,7 @@ export default function DementiaSimPage() {
         <div className="max-w-lg mx-auto">
           <a href="/" className="inline-flex items-center gap-2 text-[14px] text-apple-gray-500 hover:text-apple-gray-900 mb-6">← 回到試算引擎</a>
 
-          <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
+          <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
             <div className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-8 text-center">
               <div className="mb-4 flex justify-center text-purple-600"><Icon name="brain" size={52} /></div>
               <h1 className="text-[28px] font-bold text-apple-gray-900 mb-3">失智溝通模擬器</h1>
@@ -156,11 +156,11 @@ export default function DementiaSimPage() {
           </div>
 
           {/* Scenario Card */}
-          <div className="bg-white rounded-[28px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
+          <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
             {/* Context */}
             <div className="bg-gradient-to-r from-purple-50 to-indigo-50 px-6 py-4 border-b border-purple-100/50">
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[12px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium">
+                <span className="text-[12px] px-2 py-0.5 rounded-md bg-purple-100 text-purple-700 font-medium">
                   {currentScenario.category}
                 </span>
                 <span className="text-purple-400">
@@ -217,7 +217,7 @@ export default function DementiaSimPage() {
       <main className="min-h-screen bg-apple-gray-50 pt-6 sm:pt-12 pb-24 px-4">
         <div className="max-w-lg mx-auto space-y-4">
           {/* Elder reaction */}
-          <div className="bg-white rounded-[24px] shadow-sm border border-apple-gray-200/60 p-6">
+          <div className="bg-white rounded-[14px] shadow-sm border border-apple-gray-200/60 p-6">
             <div className="flex items-start gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 flex-shrink-0">
                 <Icon name="user" size={20} />
@@ -239,7 +239,7 @@ export default function DementiaSimPage() {
           </div>
 
           {/* Expert analysis */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50/30 rounded-[24px] p-6 border border-blue-100/50">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50/30 rounded-[14px] p-6 border border-blue-100/50">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-blue-700"><Icon name="bulb" size={20} /></span>
               <span className="text-[15px] font-bold text-blue-900">專家解析</span>
@@ -248,7 +248,7 @@ export default function DementiaSimPage() {
           </div>
 
           {/* All options comparison */}
-          <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
+          <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5">
             <p className="text-[13px] font-semibold text-apple-gray-700 mb-3">三個選項的比較：</p>
             <div className="space-y-2">
               {currentScenario.options.map((opt, i) => {
@@ -303,7 +303,7 @@ export default function DementiaSimPage() {
       <main className="min-h-screen bg-apple-gray-50 pt-6 sm:pt-12 pb-24 px-4">
         <div className="max-w-lg mx-auto space-y-6">
           {/* Score card */}
-          <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
+          <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
             <div className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-8 text-center">
               <div className="mb-2 flex justify-center text-purple-600"><Icon name={scoreTitle.icon} size={56} /></div>
               <h2 className="text-[28px] font-bold text-apple-gray-900 mb-1">{scoreTitle.title}</h2>
@@ -346,7 +346,7 @@ export default function DementiaSimPage() {
           </div>
 
           {/* Key takeaway */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[24px] p-6 border border-orange-100/50">
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[14px] p-6 border border-orange-100/50">
             <h4 className="text-[15px] font-bold text-amber-900 mb-2 flex items-center gap-2"><Icon name="bulb" size={18} />最重要的一件事</h4>
             <p className="text-[14px] text-amber-800/80 leading-relaxed">
               失智症照顧的核心技巧就是三個字：<strong className="text-apple-orange">不爭辯</strong>。

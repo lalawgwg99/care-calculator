@@ -95,7 +95,7 @@ export default function MedicalPrepPage() {
           <a href="/tools" className="inline-flex items-center gap-2 text-[14px] text-apple-gray-500 hover:text-apple-gray-900">← 回到工具箱</a>
 
           {/* Preview card */}
-          <div className="bg-white rounded-[24px] shadow-apple-warm border border-apple-gray-200/60 p-6">
+          <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 p-6">
             <div className="flex items-center gap-3 mb-4">
               <span className="text-blue-600"><Icon name="hospital" size={26} /></span>
               <h2 className="text-[20px] font-bold text-apple-gray-900">就醫提問單</h2>
@@ -151,7 +151,7 @@ export default function MedicalPrepPage() {
       <div className="max-w-lg mx-auto">
         <a href="/tools" className="inline-flex items-center gap-2 text-[14px] text-apple-gray-500 hover:text-apple-gray-900 mb-6">← 回到工具箱</a>
 
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-6">
           <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-sky-50 p-8 text-center">
             <div className="mb-3 flex justify-center text-blue-600"><Icon name="hospital" size={52} /></div>
             <h1 className="text-[28px] font-bold text-apple-gray-900 mb-2">就醫神隊友</h1>
@@ -164,7 +164,7 @@ export default function MedicalPrepPage() {
 
         <div className="space-y-6">
           {/* Basic info */}
-          <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
+          <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5">
             <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="user" size={18} />基本資料</h3>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div>
@@ -204,7 +204,7 @@ export default function MedicalPrepPage() {
           </div>
 
           {/* Medications */}
-          <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
+          <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5">
             <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="pill" size={18} />目前用藥</h3>
             <div className="space-y-2">
               {medications.map((med, i) => (
@@ -234,7 +234,7 @@ export default function MedicalPrepPage() {
           </div>
 
           {/* Allergies */}
-          <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
+          <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5">
             <h3 className="text-[15px] font-bold text-apple-gray-900 mb-3 flex items-center gap-2 text-amber-800"><Icon name="alert" size={18} />過敏 / 特殊提醒</h3>
             <input
               type="text"
@@ -247,7 +247,7 @@ export default function MedicalPrepPage() {
           </div>
 
           {/* Symptoms */}
-          <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
+          <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5">
             <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="clipboard" size={18} />最近一週的狀況（可複選）</h3>
             <div className="grid grid-cols-3 gap-2 mb-3">
               {SYMPTOM_OPTIONS.map((sym) => (
@@ -276,7 +276,7 @@ export default function MedicalPrepPage() {
           </div>
 
           {/* Questions for doctor */}
-          <div className="bg-white rounded-[20px] border border-apple-gray-200/60 p-5">
+          <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-5">
             <h3 className="text-[15px] font-bold text-apple-gray-900 mb-4 flex items-center gap-2"><Icon name="help" size={18} />想問醫生的問題</h3>
             <div className="space-y-2">
               {questions.map((q, i) => (

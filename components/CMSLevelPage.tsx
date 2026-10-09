@@ -93,7 +93,7 @@ export default function CMSLevelPage({ params }: PageProps) {
 
       {/* Subsidy Overview */}
       <section className="max-w-4xl mx-auto px-4 pt-12">
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-orange-100/50">
             <h2 className="text-[22px] font-bold text-apple-gray-900">
               第{level}級補助總覽
@@ -104,28 +104,28 @@ export default function CMSLevelPage({ params }: PageProps) {
           </div>
           <div className="p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-green-50 rounded-[20px] p-5 border border-green-200 text-center">
+              <div className="bg-green-50 rounded-[14px] p-5 border border-green-200 text-center">
                 <div className="text-[13px] text-green-700 font-medium mb-2">照顧服務</div>
                 <div className="text-[24px] font-bold text-green-900">
                   {info.monthly > 0 ? `$${info.monthly.toLocaleString()}` : '$0'}
                 </div>
                 <div className="text-[11px] text-green-600 mt-1">/月</div>
               </div>
-              <div className={`${info.transport ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'} rounded-[20px] p-5 border text-center`}>
+              <div className={`${info.transport ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'} rounded-[14px] p-5 border text-center`}>
                 <div className={`text-[13px] ${info.transport ? 'text-blue-700' : 'text-gray-500'} font-medium mb-2`}>交通接送</div>
                 <div className={`text-[24px] font-bold ${info.transport ? 'text-blue-900' : 'text-gray-400'}`}>
                   {info.transport ? '$1,680～2,400' : '無'}
                 </div>
                 <div className={`text-[11px] ${info.transport ? 'text-blue-600' : 'text-gray-400'} mt-1`}>{info.transport ? '/月' : '需4級以上'}</div>
               </div>
-              <div className="bg-purple-50 rounded-[20px] p-5 border border-purple-200 text-center">
+              <div className="bg-purple-50 rounded-[14px] p-5 border border-purple-200 text-center">
                 <div className="text-[13px] text-purple-700 font-medium mb-2">輔具額度</div>
                 <div className="text-[24px] font-bold text-purple-900">
                   {level >= 2 ? '$40,000～60,000' : '$0'}
                 </div>
                 <div className="text-[11px] text-purple-600 mt-1">每3年</div>
               </div>
-              <div className="bg-amber-50 rounded-[20px] p-5 border border-amber-200 text-center">
+              <div className="bg-amber-50 rounded-[14px] p-5 border border-amber-200 text-center">
                 <div className="text-[13px] text-amber-700 font-medium mb-2">喘息服務</div>
                 <div className="text-[24px] font-bold text-amber-900">
                   {info.respite}
@@ -145,7 +145,7 @@ export default function CMSLevelPage({ params }: PageProps) {
             <Link
               key={type}
               href={`/cms${level}/${type}`}
-              className="bg-white rounded-[24px] p-6 border border-apple-gray-200/50 hover:shadow-apple-warm hover:border-orange-200/60 transition-all group"
+              className="bg-white rounded-[14px] p-6 border border-apple-gray-200/50 hover:shadow-apple-warm hover:border-orange-200/60 transition-all group"
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
@@ -170,7 +170,7 @@ export default function CMSLevelPage({ params }: PageProps) {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[14px] p-8 border border-orange-100/60 text-center">
           <h3 className="text-[20px] font-bold text-apple-gray-900 mb-3">
             開始試算你的實際補助
           </h3>

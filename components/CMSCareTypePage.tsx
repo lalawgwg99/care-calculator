@@ -127,7 +127,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
 
       {/* Subsidy Calculation */}
       <section className="max-w-4xl mx-auto px-4 pt-12">
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-orange-100/50">
             <h2 className="text-[22px] font-bold text-apple-gray-900">
               {careInfo.name}補助計算（一般戶）
@@ -151,14 +151,14 @@ export default function CMSCareTypePage({ params }: PageProps) {
             ) : (
               <>
                 <div className="grid grid-cols-2 gap-4 mb-8">
-                  <div className="bg-green-50 rounded-[20px] p-5 border border-green-200 text-center">
+                  <div className="bg-green-50 rounded-[14px] p-5 border border-green-200 text-center">
                     <div className="text-[13px] text-green-700 font-medium mb-2">政府每月補助</div>
                     <div className="text-[32px] font-bold text-green-900">
                       ${calculateSubsidy(level, careType, 'general')?.actualSubsidy.toLocaleString() || '0'}
                     </div>
                     <div className="text-[12px] text-green-600 mt-1">照顧服務</div>
                   </div>
-                  <div className="bg-red-50 rounded-[20px] p-5 border border-red-200 text-center">
+                  <div className="bg-red-50 rounded-[14px] p-5 border border-red-200 text-center">
                     <div className="text-[13px] text-red-700 font-medium mb-2">你每月自付</div>
                     <div className="text-[32px] font-bold text-red-900">
                       ${calculateSubsidy(level, careType, 'general')?.copay.toLocaleString() || '0'}
@@ -168,7 +168,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                 </div>
 
                 {careType === 'foreign-caregiver' && (
-                  <div className="bg-amber-50 rounded-[20px] p-5 border border-amber-200 mb-6">
+                  <div className="bg-amber-50 rounded-[14px] p-5 border border-amber-200 mb-6">
                     <div className="flex items-start gap-3">
                       <Icon name="alert" size={24} />
                       <div>
@@ -228,7 +228,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
           {(['general', 'mid-low', 'low'] as const).map((income) => {
             const calc = calculateSubsidy(level, careType, income);
             return (
-              <div key={income} className="bg-white rounded-[24px] p-6 border border-apple-gray-200/50">
+              <div key={income} className="bg-white rounded-[14px] p-6 border border-apple-gray-200/50">
                 <h4 className="text-[16px] font-bold text-apple-gray-900 mb-2">
                   {INCOME_TYPE_INFO[income].name}
                 </h4>
@@ -255,7 +255,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[14px] p-8 border border-orange-100/60 text-center">
           <h3 className="text-[20px] font-bold text-apple-gray-900 mb-3">
             開始完整試算
           </h3>

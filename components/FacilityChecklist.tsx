@@ -28,7 +28,7 @@ export default function FacilityChecklist({ selectedConditions: _selectedConditi
       : { label: "建議謹慎", color: "text-rose-600", bg: "bg-rose-50 border-rose-100" };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-slate-50 to-blue-50 px-6 py-5 border-b border-slate-100/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -66,7 +66,7 @@ export default function FacilityChecklist({ selectedConditions: _selectedConditi
         {FACILITY_CHECKLIST.map((cat) => {
           const catChecked = cat.items.filter((_, i) => checked[`${cat.category}-${i}`]).length;
           return (
-            <div key={cat.category} className="bg-apple-gray-50 rounded-[20px] p-4">
+            <div key={cat.category} className="bg-apple-gray-50 rounded-[14px] p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-[20px]">{cat.icon}</span>

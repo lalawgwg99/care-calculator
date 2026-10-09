@@ -72,7 +72,6 @@ export default function Home() {
   const [estimatorFromWizard, setEstimatorFromWizard] = useState(false);
   const [wizardCmsSignal, setWizardCmsSignal] = useState<CMSLevel | null>(null);
   const [showResumeBanner, setShowResumeBanner] = useState(false);
-  const [activeGuide, setActiveGuide] = useState(0);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [isCalculatorInView, setIsCalculatorInView] = useState(false);
 
@@ -193,32 +192,9 @@ export default function Home() {
     "foreign-caregiver": "外籍看護",
   };
 
-  const guideItems = [
-    {
-      title: "四條路，一次比",
-      desc: "居家照顧、日間照顧、住宿機構、外籍看護 — 不用各別查資料，系統同時幫你算好四種方案的費用差異。",
-      result: "30 秒產出四條路徑的月支出比較",
-    },
-    {
-      title: "服務購物車",
-      desc: "算出補助金額後，直接挑選實際的長照服務項目（洗澡、就醫陪同等），計算真正要花多少錢。",
-      result: "把補助變成可執行的照顧清單",
-    },
-    {
-      title: "5 年財務預測",
-      desc: "長照不是一個月的事。系統會幫你推算未來 5 年的總支出，方便跟家人討論分攤。",
-      result: "一次看懂未來 5 年總支出",
-    },
-    {
-      title: "不懂等級？幫你評估",
-      desc: "透過 4 個簡單的日常生活問題（吃飯、走路、洗澡、認知），自動算出最可能的失能等級。",
-      result: "不用懂規則也能快速得到級數",
-    },
-  ];
-
   const renderFlowFrame = (isLanding: boolean) => (
     <section className={`${isLanding ? "max-w-5xl mx-auto px-4 mb-10" : "pt-8 sm:pt-10 px-4"}`}>
-      <div className="max-w-5xl mx-auto section-surface rounded-[22px] p-5 sm:p-6">
+      <div className="max-w-5xl mx-auto section-surface rounded-[14px] p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
           <div>
             <div className="text-[12px] text-amber-700 font-semibold tracking-wide">決策流程</div>
@@ -261,16 +237,16 @@ export default function Home() {
         </div>
         {!isLanding && (
           <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-apple-gray-600">
-            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+            <span className="px-3 py-1 rounded-lg bg-apple-gray-50 border border-apple-gray-200">
               CMS {cmsLevel ?? "-"} 級
             </span>
-            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+            <span className="px-3 py-1 rounded-lg bg-apple-gray-50 border border-apple-gray-200">
               {incomeStatus ? INCOME_LABELS[incomeStatus] : "未選擇收入"}
             </span>
-            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+            <span className="px-3 py-1 rounded-lg bg-apple-gray-50 border border-apple-gray-200">
               {selectedPathway ? pathwayLabel[selectedPathway] : "尚未選擇路徑"}
             </span>
-            <span className="px-3 py-1 rounded-full bg-apple-gray-50 border border-apple-gray-200">
+            <span className="px-3 py-1 rounded-lg bg-apple-gray-50 border border-apple-gray-200">
               健康狀況已選 {selectedConditions.length} 項
             </span>
           </div>
@@ -298,34 +274,21 @@ export default function Home() {
             輸入失能等級和收入狀況，30 秒算出政府補助多少、自己要貼多少。<br className="hidden sm:block" />
             居家、日照、機構、外看，四種方式一次比給你看。
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
             <button
               onClick={scrollToCalculator}
               className="px-8 py-3 rounded-full bg-gradient-to-r from-apple-orange to-apple-pink text-white text-[16px] font-semibold shadow-lg shadow-orange-200/50 hover:shadow-xl transition-shadow"
             >
               30 秒開始試算 →
             </button>
+          </div>
+          <div className="mb-12">
             <Link
               href="/tools"
-              className="px-6 py-3 rounded-full border border-orange-200 text-[15px] font-semibold text-amber-800 hover:bg-orange-50 transition-colors"
+              className="text-[14px] font-medium text-amber-700 hover:text-amber-800 underline underline-offset-4 decoration-amber-300"
             >
               先看看有哪些工具
             </Link>
-          </div>
-          {/* Quick Stats */}
-          <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-            <div className="glass-chip rounded-[20px] p-4">
-              <div className="text-[28px] font-bold text-apple-orange">4 種</div>
-              <div className="text-[13px] text-amber-800/60 mt-1">照顧路徑比較</div>
-            </div>
-            <div className="glass-chip rounded-[20px] p-4">
-              <div className="text-[28px] font-bold text-apple-green">4 包</div>
-              <div className="text-[13px] text-amber-800/60 mt-1">長照補助試算</div>
-            </div>
-            <div className="glass-chip rounded-[20px] p-4">
-              <div className="text-[28px] font-bold text-apple-pink">5 年</div>
-              <div className="text-[13px] text-amber-800/60 mt-1">財務預測報表</div>
-            </div>
           </div>
         </div>
 
@@ -338,7 +301,7 @@ export default function Home() {
       {/* ====== RESUME BANNER ====== */}
       {showResumeBanner && cmsLevel && incomeStatus && (
         <div className="max-w-2xl mx-auto px-4 mb-4 mt-[-20px]">
-          <div className="bg-amber-50 border border-orange-200/70 rounded-[18px] px-5 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between shadow-sm gap-3">
+          <div className="bg-amber-50 border border-orange-200/70 rounded-[14px] px-5 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between shadow-sm gap-3">
             <div className="flex items-center gap-3">
               <Icon name="hand" size={20} className="text-amber-700 shrink-0" />
               <div>
@@ -372,7 +335,7 @@ export default function Home() {
 
       {/* ====== ASSESSMENT FORM ====== */}
       <section className="max-w-2xl mx-auto px-4 mb-16" id="calculator">
-        <div className="bg-white rounded-[32px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
+        <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
           {/* Form Header */}
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 sm:px-10 py-6 border-b border-orange-100/50">
             <h2 className="text-[22px] font-bold tracking-tight text-apple-gray-900 flex items-center gap-2">
@@ -381,10 +344,10 @@ export default function Home() {
             </h2>
             <p className="text-[15px] text-amber-800/60 mt-1">3 個問題，約 30 秒完成</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-amber-800/70">
-              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 1：選擇等級</span>
-              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 2：選擇收入身份</span>
-              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">步驟 3：交通與輔具組別</span>
-              <span className="px-3 py-1 rounded-full bg-white/80 border border-orange-100">完成後：比較四種照顧路徑</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 1：選擇等級</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 2：選擇收入身份</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 3：交通與輔具組別</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">完成後：比較四種照顧路徑</span>
             </div>
           </div>
 
@@ -399,7 +362,7 @@ export default function Home() {
             />
 
             {/* 進階設定：交通分區、輔具、疾病勾選 */}
-            <details className="mt-8 rounded-[18px] border border-apple-gray-200 bg-apple-gray-50/60 px-5 py-4 group">
+            <details className="mt-8 rounded-[14px] border border-apple-gray-200 bg-apple-gray-50/60 px-5 py-4 group">
               <summary className="cursor-pointer list-none flex items-center justify-between text-[14px] font-semibold text-apple-gray-600 hover:text-apple-gray-900">
                 <span>進階設定：交通分區、輔具額度、疾病勾選（可不填）</span>
                 <span className="text-apple-gray-400 group-open:rotate-180 transition-transform">▾</span>
@@ -477,44 +440,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ====== FEATURE HIGHLIGHTS ====== */}
-      <section className="max-w-4xl mx-auto px-4 mb-16">
-        <h3 className="text-[22px] sm:text-[26px] font-bold text-center text-apple-gray-900 tracking-tight mb-8">
-          你會先得到什麼，再做什麼？
-        </h3>
-        <div className="section-surface rounded-[28px] p-5 sm:p-7">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            {guideItems.map((item, idx) => (
-              <button
-                key={item.title}
-                onClick={() => setActiveGuide(idx)}
-                aria-pressed={activeGuide === idx}
-                className={`
-                  rounded-[16px] p-4 text-left border transition-all
-                  ${activeGuide === idx
-                    ? "bg-apple-orange/10 border-apple-orange text-apple-orange shadow-sm"
-                    : "bg-apple-gray-50 border-apple-gray-200 text-apple-gray-700 hover:bg-orange-50 hover:border-orange-200"}
-                `}
-              >
-                <div className="text-[14px] font-semibold">{item.title}</div>
-                <div className={`text-[12px] mt-1 ${activeGuide === idx ? "text-apple-orange/80" : "text-apple-gray-500"}`}>
-                  查看輸出成果
-                </div>
-              </button>
-            ))}
-          </div>
-          <div className="rounded-[20px] border border-orange-100 bg-white/80 p-5 sm:p-6">
-            <div className="text-[18px] font-bold text-apple-gray-900 mb-2">{guideItems[activeGuide].title}</div>
-            <p className="text-[14px] text-apple-gray-600 leading-relaxed mb-4">
-              {guideItems[activeGuide].desc}
-            </p>
-            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white border border-orange-100 text-[13px] text-amber-800">
-              <Icon name="checkCircle" size={16} className="text-emerald-600 shrink-0" /> {guideItems[activeGuide].result}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ====== APPLICATION GUIDE ====== */}
       <ApplicationGuide />
 
@@ -542,7 +467,7 @@ export default function Home() {
             <Link
               key={tool.href}
               href={tool.href}
-              className="section-surface rounded-[18px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
+              className="section-surface rounded-[14px] p-4 text-center hover:shadow-apple-warm hover:border-orange-100 transition-all group"
             >
               <div className="mb-2 flex justify-center text-amber-600"><Icon name={tool.icon} size={30} /></div>
               <div className="text-[13px] font-semibold text-apple-gray-700 group-hover:text-amber-700 transition-colors">
@@ -560,7 +485,7 @@ export default function Home() {
 
       {/* ====== 照顧日記 AI 亮點 ====== */}
       <section className="max-w-4xl mx-auto px-4 mb-12">
-        <Link href="/diary" className="block rounded-[28px] overflow-hidden group">
+        <Link href="/diary" className="block rounded-[14px] overflow-hidden group">
           <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-8 sm:p-10 text-center border border-orange-200/60">
             <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 mb-3">
               不只試算，還陪你每天記錄
@@ -577,9 +502,9 @@ export default function Home() {
 
       {/* ====== TRUST / FOOTER ====== */}
       <section className="max-w-2xl mx-auto px-4 text-center pb-12">
-        <div className="section-surface rounded-[20px] p-6">
-          <p className="text-[14px] text-amber-800/60 leading-relaxed">
-            政策資料最後核對：<strong>{POLICY_VERSION}</strong>。依據衛福部公開資料，實際補助仍以照管中心核定為準。<a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="font-semibold text-apple-orange hover:underline underline-offset-2">查看官方額度表</a>，或撥打 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
+        <div className="border-t border-apple-gray-200 pt-6">
+          <p className="text-[13px] text-apple-gray-500 leading-relaxed">
+            政策資料最後核對：<strong className="text-apple-gray-700">{POLICY_VERSION}</strong>。依據衛福部公開資料，實際補助仍以照管中心核定為準。<a href={POLICY_SOURCES.longTermCare} target="_blank" rel="noopener noreferrer" className="font-semibold text-apple-orange hover:underline underline-offset-2">查看官方額度表</a>，或撥打 <a href="tel:1966" className="font-bold text-apple-orange hover:underline underline-offset-2">1966</a>。
           </p>
         </div>
       </section>

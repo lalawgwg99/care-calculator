@@ -176,7 +176,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
   };
 
   return (
-    <div className="bg-white rounded-[24px] shadow-sm p-6 sm:p-8 mt-6 border border-apple-gray-200/60">
+    <div className="bg-white rounded-[14px] shadow-sm p-6 sm:p-8 mt-6 border border-apple-gray-200/60">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div>
           <h2 className="text-[20px] sm:text-[22px] font-semibold tracking-tight text-apple-gray-900 mb-1 flex items-center gap-2">
@@ -220,13 +220,13 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
       </div>
 
       {/* Budget Console */}
-      <div className="mb-6 bg-apple-gray-50/70 border border-apple-gray-200/70 rounded-[18px] p-4 sm:p-5">
+      <div className="mb-6 bg-apple-gray-50/70 border border-apple-gray-200/70 rounded-[14px] p-4 sm:p-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
           <div>
             <h3 className="text-[15px] font-bold text-apple-gray-900">預算控制台</h3>
             <p className="text-[12px] text-apple-gray-500">先設定家庭可接受月支出，系統會即時提醒是否超標。</p>
           </div>
-          <div className={`text-[13px] font-semibold px-3 py-1 rounded-full ${
+          <div className={`text-[13px] font-semibold px-3 py-1 rounded-lg ${
             overBudgetAmount > 0
               ? "bg-red-100 text-apple-red"
               : "bg-emerald-100 text-emerald-700"
@@ -298,7 +298,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
             0
           );
           return (
-            <div key={catIdx} className="rounded-[18px] border border-apple-gray-200/60 overflow-hidden">
+            <div key={catIdx} className="rounded-[14px] border border-apple-gray-200/60 overflow-hidden">
               <button
                 onClick={() => setExpandedCategory(isExpanded ? -1 : catIdx)}
                 className="w-full flex items-center justify-between p-4 bg-apple-gray-50/50 hover:bg-apple-gray-50 transition-colors"
@@ -307,7 +307,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
                   <span className="text-apple-gray-700"><Icon name={category.icon} size={20} /></span>
                   <span className="text-[15px] font-bold text-apple-gray-900">{category.label}</span>
                   {categoryItemCount > 0 && (
-                    <span className="text-[12px] font-bold bg-apple-blue/10 text-apple-blue px-2 py-0.5 rounded-full">
+                    <span className="text-[12px] font-bold bg-apple-blue/10 text-apple-blue px-2 py-0.5 rounded-md">
                       {categoryItemCount} 次
                     </span>
                   )}
@@ -345,7 +345,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
       </div>
 
       {/* ====== Daily Consumables Slider ====== */}
-      <div className="bg-amber-50/60 rounded-[20px] p-5 sm:p-6 border border-orange-100/50 mb-8">
+      <div className="bg-amber-50/60 rounded-[14px] p-5 sm:p-6 border border-orange-100/50 mb-8">
         <div className="flex items-center gap-3 mb-1">
           <span className="text-amber-700"><Icon name="bottle" size={24} /></span>
           <h4 className="text-[16px] font-bold text-apple-gray-900">日常耗材估算</h4>
@@ -391,7 +391,7 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
                   </div>
                   <button
                     onClick={() => updateQuantity(item.id, -1)}
-                    className="px-3 py-1.5 rounded-full text-[12px] font-semibold text-white bg-apple-red hover:opacity-90 transition-opacity"
+                    className="px-3 py-1.5 rounded-md text-[12px] font-semibold text-white bg-apple-red hover:opacity-90 transition-opacity"
                   >
                     減 1 次
                   </button>

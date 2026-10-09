@@ -200,7 +200,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         {/* Article Header */}
         <header className="max-w-3xl mx-auto px-4 pt-4 pb-8 border-b border-apple-gray-200/60">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-[12px] font-semibold bg-orange-100 text-orange-700 px-3 py-1 rounded-full">
+            <span className="text-[12px] font-semibold bg-orange-100 text-orange-700 px-3 py-1 rounded-lg">
               {post.category}
             </span>
             <span className="text-[12px] text-apple-gray-400">約 {post.readingMinutes} 分鐘</span>
@@ -220,7 +220,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         {/* Article Body */}
         <article className="max-w-3xl mx-auto px-4 py-8">
           {post.content.map((block, i) => renderBlock(block, i))}
-          <aside className="mt-10 rounded-[18px] border border-emerald-200 bg-emerald-50/70 p-5 text-[13px] text-emerald-900">
+          <aside className="mt-10 rounded-[14px] border border-emerald-200 bg-emerald-50/70 p-5 text-[13px] text-emerald-900">
             <div className="font-bold mb-2">資料核對與官方來源</div>
             <p className="leading-relaxed mb-2">全站中央政策資料最後核對日：{POLICY_VERSION}。文章情境用於解釋，實際資格與金額以主管機關核定為準。</p>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
@@ -239,7 +239,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </h2>
             <div className="space-y-4">
               {post.faq.map((item, i) => (
-                <div key={i} className="bg-white rounded-[20px] border border-apple-gray-200/60 p-6 shadow-sm">
+                <div key={i} className="bg-white rounded-[14px] border border-apple-gray-200/60 p-6 shadow-sm">
                   <h3 className="text-[15px] font-bold text-apple-gray-900 mb-2">
                     Q: {item.q}
                   </h3>
@@ -254,7 +254,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
         {/* Tool CTA */}
         <section className="max-w-3xl mx-auto px-4">
-          <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-[28px] p-8 border border-orange-100/60 text-center">
+          <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-[14px] p-8 border border-orange-100/60 text-center">
             <div className="mb-3 flex justify-center text-apple-orange"><Icon name="heart" size={30} /></div>
             <h2 className="text-[20px] font-bold text-apple-gray-900 mb-2">
               了解概念之後，算出你的確切數字
@@ -280,9 +280,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               <Link
                 key={related.slug}
                 href={`/blog/${related.slug}`}
-                className="bg-white rounded-[18px] p-5 border border-apple-gray-200/60 shadow-sm hover:shadow-apple-warm hover:border-orange-200/60 transition-all group"
+                className="bg-white rounded-[14px] p-5 border border-apple-gray-200/60 shadow-sm hover:shadow-apple-warm hover:border-orange-200/60 transition-all group"
               >
-                <span className="text-[11px] font-semibold bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] font-semibold bg-orange-50 text-orange-600 px-2 py-0.5 rounded-md">
                   {related.category}
                 </span>
                 <p className="text-[14px] font-semibold text-apple-gray-800 mt-2 mb-1 leading-snug line-clamp-2 group-hover:text-amber-800 transition-colors">

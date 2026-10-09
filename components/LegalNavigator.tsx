@@ -118,7 +118,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
   const toggleCheck = (key: string) => setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
 
   return (
-    <div className="bg-white rounded-[28px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
+    <div className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 overflow-hidden">
       <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-5 border-b border-indigo-100/50">
         <div className="flex items-center gap-3">
           <span className="text-indigo-700 shrink-0"><Icon name="scale" size={28} /></span>
@@ -135,7 +135,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
           const checkedCount = item.checklist.filter((_, i) => checked[`${item.id}-${i}`]).length;
 
           return (
-            <div key={item.id} className={`border rounded-[20px] overflow-hidden transition-all ${item.bgColor}`}>
+            <div key={item.id} className={`border rounded-[14px] overflow-hidden transition-all ${item.bgColor}`}>
               {/* Header */}
               <button
                 onClick={() => toggle(item.id)}
@@ -150,7 +150,7 @@ export default function LegalNavigator({ elderlyAssets: _elderlyAssets }: LegalN
                 </div>
                 <div className="flex items-center gap-2">
                   {checkedCount > 0 && (
-                    <span className="text-[12px] bg-white/80 px-2 py-0.5 rounded-full text-apple-gray-600 font-medium">
+                    <span className="text-[12px] bg-white/80 px-2 py-0.5 rounded-md text-apple-gray-600 font-medium">
                       {checkedCount}/{item.checklist.length}
                     </span>
                   )}
