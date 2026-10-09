@@ -28,7 +28,7 @@ export default function CaregiverHealthPage() {
           照顧者身心健康
         </h1>
         <p className="text-[15px] text-apple-gray-500">
-          照顧好自己，才能給長輩最好的照顧
+          壓力檢測、失智溝通模擬：照顧別人之前，先顧好自己
         </p>
       </div>
 

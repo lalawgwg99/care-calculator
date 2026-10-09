@@ -324,9 +324,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
                 全台灣長照補助標準一致
               </h3>
               <p className="text-[14px] text-amber-800 leading-relaxed">
-                依據衛福部公告，長照3.0的四包錢補助額度在全國各縣市皆相同。
-                照顧與喘息採中央額度；交通接送須依{cityInfo.name}實際居住鄉鎮分區，不能直接套用其他縣市。
-                差異主要在於服務提供的可近性與等待時間。
+                四包錢補助額度全國一致。交通接送須依{cityInfo.name}實際居住鄉鎮分區，不能直接套用其他縣市；差異主要在服務可近性與等待時間。
               </p>
             </div>
           </div>

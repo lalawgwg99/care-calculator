@@ -248,11 +248,10 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
         <div className="bg-amber-50 rounded-[28px] p-8 sm:p-10 border border-amber-200/60 text-center">
           <div className="mb-4 text-amber-500"><Icon name="sparkles" size={48} /></div>
           <h2 className="text-[24px] sm:text-[28px] font-bold text-apple-gray-900 mb-3">
-            好消息！長輩目前狀況不錯
+            還不需要用到長照補助
           </h2>
           <p className="text-[16px] text-amber-800/70 leading-relaxed mb-6 max-w-lg mx-auto">
-            CMS 第 1 級屬於「輕度失能」，目前<strong>尚未達到長照補助的門檻</strong>（需 CMS 2 級以上）。
-            但這代表長輩的身體功能還不錯，是延緩退化的好時機！
+            CMS 第 1 級屬於「輕度失能」，目前<strong>尚未達到長照補助的門檻</strong>（需 CMS 2 級以上）。現在是延緩退化的好時機。
           </p>
           <div className="bg-white/80 rounded-[20px] p-6 border border-amber-100/50 text-left mb-6">
             <h4 className="text-[16px] font-bold text-apple-gray-900 mb-3">建議你現在可以做的事：</h4>

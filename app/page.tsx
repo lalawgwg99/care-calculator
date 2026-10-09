@@ -562,7 +562,6 @@ export default function Home() {
       <section className="max-w-4xl mx-auto px-4 mb-12">
         <Link href="/diary" className="block rounded-[28px] overflow-hidden group">
           <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-8 sm:p-10 text-center border border-orange-200/60">
-            <p className="text-[11px] font-bold uppercase tracking-[.2em] text-amber-600 mb-2">別家沒有的</p>
             <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 mb-3">
               不只試算，還陪你每天記錄
             </h3>
@@ -697,7 +696,7 @@ export default function Home() {
         <div className="fixed bottom-4 left-0 right-0 px-4 z-40">
           <div className="max-w-2xl mx-auto bg-white border border-apple-gray-200 shadow-lg rounded-full px-4 py-3 flex items-center justify-between gap-3">
             <div className="text-[13px] text-apple-gray-700">
-              已經滑到中段了，現在就 30 秒完成試算
+              30 秒算出每月補助和自付
             </div>
             <button
               onClick={scrollToCalculator}

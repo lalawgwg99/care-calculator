@@ -100,7 +100,7 @@ const TOOL_GROUPS = [
         href: "/tools/reablement",
         icon: "star" as IconName,
         title: "微光復能任務卡",
-        desc: "每週復能活動卡，身體、認知、社交全方位",
+        desc: "每週復能活動卡，身體、認知、社交三類任務",
       },
       {
         href: "/diary",
@@ -125,7 +125,7 @@ export default function ToolsPage() {
           照顧工具
         </h1>
         <p className="text-[16px] text-apple-gray-500 max-w-xl mx-auto">
-          從財務規劃到日常照顧，提供照顧家庭最需要的實用工具
+          財務試算、日常照顧、壓力檢測，全部在這裡
         </p>
       </div>
 

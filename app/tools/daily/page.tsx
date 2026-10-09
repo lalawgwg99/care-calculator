@@ -28,7 +28,7 @@ export default function DailyPage() {
           日常照顧輔助工具
         </h1>
         <p className="text-[15px] text-apple-gray-500">
-          讓就診更有效率，讓家人溝通更順暢
+          就醫提問單、雙語照顧卡：看診、交班一次準備好
         </p>
       </div>
 

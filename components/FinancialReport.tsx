@@ -182,7 +182,7 @@ export default function FinancialReport({
 
       <div className="text-center mb-4">
         <h2 className="text-[28px] sm:text-[34px] font-bold tracking-tight text-apple-gray-900 mb-3">
-          長照是一場馬拉松
+          5 年財務總覽
         </h2>
         <p className="text-[16px] sm:text-[18px] text-apple-gray-500">
           以平均 5 年的照顧期計算，這是你家庭未來的財務總覽。

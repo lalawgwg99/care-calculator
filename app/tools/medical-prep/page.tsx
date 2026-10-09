@@ -108,7 +108,6 @@ export default function MedicalPrepPage() {
           <div className="bg-amber-50/60 rounded-[16px] p-4 border border-amber-100/50">
             <p className="text-[13px] text-amber-800/80 leading-relaxed">
               <Icon name="bulb" size={15} className="inline-block align-[-2px] mr-1" /><strong>使用方式：</strong>看診時直接打開這個畫面給醫生看，或複製傳到 LINE。
-              醫生看到這張提問單，會覺得你很專業 <Icon name="thumbsUp" size={15} className="inline-block align-[-2px]" />
             </p>
           </div>
 
