@@ -2,6 +2,7 @@
 
 import Icon, { type IconName } from "@/components/Icon";
 import { useState, useMemo } from "react";
+import { CMS_CARE_QUOTAS } from "@/lib/policyData";
 
 declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
@@ -17,9 +18,8 @@ function fmt(n: number) {
 const CMS_TYPICAL_COSTS: Record<number, number> = {
   2: 12000, 3: 18000, 4: 25000, 5: 32000, 6: 42000, 7: 55000, 8: 70000,
 };
-const CMS_GOV_SUBSIDY: Record<number, number> = {
-  2: 8417, 3: 12986, 4: 15607, 5: 20244, 6: 23579, 7: 26956, 8: 30391,
-};
+// 自付比例（與本站試算一致）：一般戶 16%、中低收入戶 5%、低收入戶 0%
+const SELF_PAY_RATE = { general: 0.16, "mid-low": 0.05, low: 0 } as const;
 
 interface InsuranceAddonProps {
   monthlyOutOfPocket?: number;
@@ -34,18 +34,19 @@ export default function InsuranceAddon({
   const [insurance, setInsurance] = useState(10000);
   const [incomeType, setIncomeType] = useState<"general" | "mid-low" | "low">("general");
 
-  const copayRate = incomeType === "general" ? 0.84 : incomeType === "mid-low" ? 0.16 : 0;
+  const govShare = 1 - SELF_PAY_RATE[incomeType];
+  const totalCost = CMS_TYPICAL_COSTS[cmsLevel] ?? 0;
 
   const govSubsidy = useMemo(() => {
-    const base = CMS_GOV_SUBSIDY[cmsLevel] ?? 0;
-    return base;
-  }, [cmsLevel]);
+    const quota = CMS_CARE_QUOTAS[cmsLevel as keyof typeof CMS_CARE_QUOTAS] ?? 0;
+    return Math.min(totalCost, Math.round(quota * govShare));
+  }, [cmsLevel, govShare, totalCost]);
 
-  const totalCost = CMS_TYPICAL_COSTS[cmsLevel] ?? 0;
-  const outOfPocket = Math.round(totalCost * copayRate);
-  const covered = govSubsidy + insurance;
+  const outOfPocket = totalCost - govSubsidy;
   const gap = Math.max(0, outOfPocket - insurance);
-  const coverRate = Math.min(100, Math.round((covered / totalCost) * 100));
+  const coverRate = Math.min(100, Math.round(((govSubsidy + insurance) / totalCost) * 100));
+  // 結論只看缺口：有缺口就不說「充足」，避免自相矛盾
+  const verdict = gap === 0 ? "ok" : gap <= 15000 ? "warn" : "bad";
 
   const bars = [
     { label: "政府補助", value: govSubsidy, color: "bg-emerald-400", textColor: "text-emerald-700" },
@@ -145,21 +146,16 @@ export default function InsuranceAddon({
         </div>
 
         {/* Summary */}
-        <div className={`rounded-[16px] p-4 ${coverRate >= 80 ? "bg-emerald-50 border border-emerald-100" : coverRate >= 50 ? "bg-amber-50 border border-amber-100" : "bg-rose-50 border border-rose-100"}`}>
+        <div className={`rounded-[16px] p-4 ${verdict === "ok" ? "bg-emerald-50 border border-emerald-100" : verdict === "warn" ? "bg-amber-50 border border-amber-100" : "bg-rose-50 border border-rose-100"}`}>
           <div className="text-[13px] text-apple-gray-500 mb-1">保障覆蓋率</div>
           <div className="flex items-baseline gap-2">
-            <span className={`text-[32px] font-bold ${coverRate >= 80 ? "text-emerald-600" : coverRate >= 50 ? "text-amber-600" : "text-rose-600"}`}>
+            <span className={`text-[32px] font-bold ${verdict === "ok" ? "text-emerald-600" : verdict === "warn" ? "text-amber-600" : "text-rose-600"}`}>
               {coverRate}%
             </span>
             <span className="text-[13px] text-apple-gray-500">
-              {coverRate >= 80 ? "保障充足 ✓" : coverRate >= 50 ? "建議增加保障" : "缺口偏大，建議規劃"}
+              {verdict === "ok" ? "保障充足 ✓" : verdict === "warn" ? "尚有缺口" : "缺口偏大，建議規劃"}
             </span>
           </div>
-          {gap > 0 && (
-            <p className="text-[13px] text-rose-700 mt-2">
-              每月仍需自付約 <strong>{fmt(gap)}</strong>，可考慮增加長照險保額。
-            </p>
-          )}
         </div>
 
         {/* ====== 保險缺口指引（中立資訊：本站目前沒有保險合作方案） ====== */}
