@@ -46,9 +46,9 @@ const FOREIGN_CAREGIVER_REAL_COSTS = [
 ];
 const FOREIGN_REAL_MONTHLY = FOREIGN_CAREGIVER_REAL_COSTS.reduce((s, i) => s + i.amount, 0);
 
-// 住宿式機構實際費用明細
+// 住宿式機構實際費用明細（合計 45,000，與 lib/careLogic.ts 機構平均月費一致）
 const INSTITUTION_REAL_COSTS = [
-  { label: "機構基本月費（含住宿、三餐）", amount: 28000 },
+  { label: "機構基本月費（含住宿、三餐）", amount: 31000 },
   { label: "護理照顧費", amount: 8000 },
   { label: "日常耗材（尿布、護墊等）", amount: 4000 },
   { label: "其他雜費（洗衣、理髮、代購）", amount: 2000 },
@@ -296,7 +296,7 @@ export default function FinancialReport({
                       <span className="font-mono text-apple-red">{formatMoney(Math.max(0, INSTITUTION_REAL_MONTHLY - monthlyGovSubsidy))}</span>
                     </div>
                     <p className="text-[12px] text-violet-600/60 mt-1">
-                      * 費用因機構等級、地區而異，以上為全國平均估算
+                      * 各地機構收費不同，此為全國平均估算
                     </p>
                   </div>
                 )}

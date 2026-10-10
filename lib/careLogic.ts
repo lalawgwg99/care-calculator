@@ -49,7 +49,7 @@ const CMS_QUOTAS: Record<CMSLevel, number> = CMS_CARE_QUOTAS;
  * 身份自負額比例
  * 
  * base: 第一包（照顧服務）與第四包（喘息服務）的自負比例
- * transport: 第二包（交通接送）的自負比例
+ * transport: 第二包（交通接送）的自負比例（注意：實際計算已改吃 TRANSPORT_REGIONS 各區 copayGeneral/copayMidLow，此欄僅供 constants/careData.ts 顯示用）
  * device: 第三包（輔具及無障礙改造）的自負比例
  */
 const CARE_CO_PAY_RATES: Record<IncomeStatus, { base: number; transport: number; device: number }> = {
@@ -112,6 +112,10 @@ export function calculateCareBudget(
   // ========================================================================
   let baseQuota = CMS_QUOTAS[cmsLevel];
   const rates = CARE_CO_PAY_RATES[incomeStatus];
+  // 第二包（交通接送）部分負擔依居住地分區：第一區 30%/10%、第二區 27%/9%、第三區 25%/8%、第四區 21%/7%
+  const transportCopayRate = incomeStatus === 'low' ? 0
+    : incomeStatus === 'mid-low' ? TRANSPORT_REGIONS[transportRegion].copayMidLow
+    : TRANSPORT_REGIONS[transportRegion].copayGeneral;
 
   // 特殊情況 2：外籍看護工
   // 聘僱外籍看護工時，第一包錢額度僅剩 30%，且只能用於專業服務
@@ -134,8 +138,8 @@ export function calculateCareBudget(
 
   if (hasTransport) {
     const transportQuota = transportQuotaMonthly;
-    subsidyTransport = transportQuota * (1 - rates.transport);
-    outOfPocketTransport = transportQuota * rates.transport;
+    subsidyTransport = transportQuota * (1 - transportCopayRate);
+    outOfPocketTransport = transportQuota * transportCopayRate;
   }
 
   // ========================================================================

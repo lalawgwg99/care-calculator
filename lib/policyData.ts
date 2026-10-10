@@ -24,12 +24,13 @@ export type AssistiveDeviceGroup = "group1" | "group2";
 
 export const TRANSPORT_REGIONS: Record<
   TransportRegion,
-  { label: string; monthlyQuota: number; description: string }
+  { label: string; monthlyQuota: number; description: string; copayGeneral: number; copayMidLow: number }
 > = {
-  region1: { label: "第一區", monthlyQuota: 1680, description: "依居住地鄉鎮分區" },
-  region2: { label: "第二區", monthlyQuota: 1840, description: "依居住地鄉鎮分區" },
-  region3: { label: "第三區", monthlyQuota: 2000, description: "依居住地鄉鎮分區" },
-  region4: { label: "第四區", monthlyQuota: 2400, description: "原鄉、離島等指定地區" },
+  // 部分負擔比率：長期照顧給付及支付基準附表1（第一區 30%/10%、第二區 27%/9%、第三區 25%/8%、第四區 21%/7%）
+  region1: { label: "第一區", monthlyQuota: 1680, description: "依居住地鄉鎮分區", copayGeneral: 0.30, copayMidLow: 0.10 },
+  region2: { label: "第二區", monthlyQuota: 1840, description: "依居住地鄉鎮分區", copayGeneral: 0.27, copayMidLow: 0.09 },
+  region3: { label: "第三區", monthlyQuota: 2000, description: "依居住地鄉鎮分區", copayGeneral: 0.25, copayMidLow: 0.08 },
+  region4: { label: "第四區", monthlyQuota: 2400, description: "原鄉、離島等指定地區", copayGeneral: 0.21, copayMidLow: 0.07 },
 };
 
 export const ASSISTIVE_DEVICE_GROUPS: Record<
@@ -88,7 +89,8 @@ export const NATIONAL_PENSION_2026 = {
 export const FOREIGN_CAREGIVER_2026 = {
   contractMonthlyWage: 20000,
   employmentStabilityFee: 2000,
-  employerNhiEstimate: 1428,
+  // 雇主健保費估算：29,500（115年第一級投保金額）× 5.17% × 60%（雇主負擔比率）× 1.61（平均眷口數）≈ 1,473
+  employerNhiEstimate: 1473,
 } as const;
 
 export function getRespiteYearlyQuota(cmsLevel: number): number {

@@ -291,11 +291,11 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
           <div className="p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-blue-50 rounded-[14px] p-6 border border-blue-200">
-                <div className="text-[14px] text-blue-700 font-medium mb-2">長照專線（24小時）</div>
-                <a href={`tel:${cityInfo.ltcHotline.replace(/-/g, '')}`} className="text-[28px] font-bold text-blue-900 hover:underline">
-                  {cityInfo.ltcHotline}
+                <div className="text-[14px] text-blue-700 font-medium mb-2">長照專線（手機直撥）</div>
+                <a href="tel:1966" className="text-[28px] font-bold text-blue-900 hover:underline">
+                  1966
                 </a>
-                <p className="text-[12px] text-blue-600 mt-2">或撥打1966（手機）</p>
+                <p className="text-[12px] text-blue-600 mt-2">或撥{cityInfo.name}照管中心 {cityInfo.ltcHotline}</p>
               </div>
               <div className="bg-green-50 rounded-[14px] p-6 border border-green-200">
                 <div className="text-[14px] text-green-700 font-medium mb-2">服務地址</div>

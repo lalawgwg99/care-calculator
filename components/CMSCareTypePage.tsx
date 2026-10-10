@@ -71,7 +71,7 @@ function calculateSubsidy(level: CMSLevel, careType: CareType, incomeType: Incom
   const actualSubsidy = baseSubsidy - copay;
 
   const defaultTransportQuota = TRANSPORT_REGIONS.region1.monthlyQuota;
-  const transportSubsidy = levelInfo.hasTransport ? Math.floor(defaultTransportQuota * (1 - (incomeType === 'general' ? 0.21 : incomeType === 'mid-low' ? 0.07 : 0))) : 0;
+  const transportSubsidy = levelInfo.hasTransport ? Math.floor(defaultTransportQuota * (1 - (incomeType === 'general' ? TRANSPORT_REGIONS.region1.copayGeneral : incomeType === 'mid-low' ? TRANSPORT_REGIONS.region1.copayMidLow : 0))) : 0;
   const assistiveDeviceQuota = level >= 2 ? ASSISTIVE_DEVICE_GROUPS.group1.threeYearQuota : 0;
   const respiteYearly = levelInfo.respite;
   const respiteMonthly = Math.floor(respiteYearly / 12);
@@ -86,7 +86,7 @@ function calculateSubsidy(level: CMSLevel, careType: CareType, incomeType: Incom
     respiteMonthly,
     respiteCopay,
     totalSubsidy: actualSubsidy + transportSubsidy + (respiteMonthly - respiteCopay),
-    totalCopay: copay + (levelInfo.hasTransport ? Math.floor(defaultTransportQuota * (incomeType === 'general' ? 0.21 : incomeType === 'mid-low' ? 0.07 : 0)) : 0) + respiteCopay,
+    totalCopay: copay + (levelInfo.hasTransport ? Math.floor(defaultTransportQuota * (incomeType === 'general' ? TRANSPORT_REGIONS.region1.copayGeneral : incomeType === 'mid-low' ? TRANSPORT_REGIONS.region1.copayMidLow : 0)) : 0) + respiteCopay,
   };
 }
 
@@ -194,7 +194,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                     <div className="flex justify-between items-center py-3 border-b border-gray-100">
                       <span className="text-[15px] text-apple-gray-600">交通接送服務</span>
                       <span className="text-[15px] font-semibold text-green-700">
-                        補助 ${calculateSubsidy(level, careType, 'general')?.transportSubsidy.toLocaleString()} / 自付 ${Math.floor(TRANSPORT_REGIONS.region1.monthlyQuota * 0.21).toLocaleString()}
+                        補助 ${calculateSubsidy(level, careType, 'general')?.transportSubsidy.toLocaleString()} / 自付 ${Math.floor(TRANSPORT_REGIONS.region1.monthlyQuota * TRANSPORT_REGIONS.region1.copayGeneral).toLocaleString()}
                       </span>
                     </div>
                   )}

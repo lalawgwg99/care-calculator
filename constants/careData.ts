@@ -30,9 +30,9 @@ export interface SubsidyRuleData {
   // 第二包：交通接送 (月額，CMS 4級以上)
   transportMonthly: number | null;
   transportCopay: {
-    general: number;    // 一般戶 21%
-    midLow: number;     // 中低收入戶 7%
-    low: number;        // 低收入戶 0%
+    general: [number, number];  // 一般戶 21%～30%（依居住地分區）
+    midLow: [number, number];   // 中低收入戶 7%～10%（依居住地分區）
+    low: number;                // 低收入戶 0%
   } | null;
   // 第三包：輔具及無障礙改造 (三年額度)
   assistiveDeviceQuota: number | null;
@@ -100,9 +100,11 @@ const careCopay = {
   low: CO_PAY_RATES.low.care,
 };
 const transportCopay = {
-  general: CO_PAY_RATES.general.transport,
-  midLow: CO_PAY_RATES.midLow.transport,
-  low: CO_PAY_RATES.low.transport,
+  // 依居住地分區：第一區 30%/10%、第二區 27%/9%、第三區 25%/8%、第四區 21%/7%
+  // 精確計算用 lib/careLogic.ts 的分區費率，此處僅供區間顯示
+  general: [0.21, 0.30] as [number, number],
+  midLow: [0.07, 0.10] as [number, number],
+  low: 0,
 };
 const deviceCopay = {
   general: CO_PAY_RATES.general.device,
