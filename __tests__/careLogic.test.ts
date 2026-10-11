@@ -39,13 +39,13 @@ describe('careLogic 核心計算邏輯測試', () => {
       const result = calculateCareBudget(5, 'general', 'home-care');
 
       // 第一包：$24,100，自負 16% = $3,856，補助 = $20,244
-      // 第二包：$1,680，自負 21% = $353，補助 = $1,327
-      // 第四包：$32,340/12 = $2,695，自負 16% = $431，補助 = $2,264
-      // 總補助：$20,244 + $1,327 + $2,264 = $23,835
-      // 總自付：$3,856 + $353 + $431 = $4,640
+      // 第二包（預設第一區）：$1,680，自負 30% = $504，補助 = $1,176
+      // 第四包：$32,340/12 = $2,695，自負 16% = $431.2，補助 = $2,263.8
+      // 總補助：round($20,244 + $1,176 + $2,263.8) = $23,684
+      // 總自付：round($3,856 + $504 + $431.2) = $4,791
 
-      expect(result.totalSubsidyMonthly).toBe(23835);
-      expect(result.outOfPocketMonthly).toBe(4640);
+      expect(result.totalSubsidyMonthly).toBe(23684);
+      expect(result.outOfPocketMonthly).toBe(4791);
       expect(result.hasTransportation).toBe(true);
       expect(result.assistiveDeviceQuota).toBe(40000);
     });
@@ -53,14 +53,14 @@ describe('careLogic 核心計算邏輯測試', () => {
     test('CMS 第 8 級，一般戶，居家照顧', () => {
       const result = calculateCareBudget(8, 'general', 'home-care');
 
-      // 第一包：$36,180，自負 16% = $5,789，補助 = $30,391
-      // 第二包：$1,680，自負 21% = $353，補助 = $1,327
-      // 第四包：$48,510/12 = $4,043，自負 16% = $647，補助 = $3,396
-      // 總補助：$30,391 + $1,327 + $3,396 = $35,114
-      // 總自付：$5,789 + $353 + $647 = $6,789
+      // 第一包：$36,180，自負 16% = $5,788.8，補助 = $30,391.2
+      // 第二包（預設第一區）：$1,680，自負 30% = $504，補助 = $1,176
+      // 第四包：$48,510/12 = $4,042.5，自負 16% = $646.8，補助 = $3,395.7
+      // 總補助：round($30,391.2 + $1,176 + $3,395.7) = $34,963
+      // 總自付：round($5,788.8 + $504 + $646.8) = $6,940
 
-      expect(result.totalSubsidyMonthly).toBe(35114);
-      expect(result.outOfPocketMonthly).toBe(6788);
+      expect(result.totalSubsidyMonthly).toBe(34963);
+      expect(result.outOfPocketMonthly).toBe(6940);
       expect(result.hasTransportation).toBe(true);
       expect(result.assistiveDeviceQuota).toBe(40000);
     });
@@ -71,13 +71,13 @@ describe('careLogic 核心計算邏輯測試', () => {
       const result = calculateCareBudget(4, 'mid-low', 'home-care');
 
       // 第一包：$18,580，自負 5% = $929，補助 = $17,651
-      // 第二包：$1,680，自負 7% = $118，補助 = $1,562
-      // 第四包：$32,340/12 = $2,695，自負 5% = $135，補助 = $2,560
-      // 總補助：$17,651 + $1,562 + $2,560 = $21,773
-      // 總自付：$929 + $118 + $135 = $1,182
+      // 第二包（預設第一區，中低收自負 10%）：$1,680，自負 $168，補助 = $1,512
+      // 第四包：$32,340/12 = $2,695，自負 5% = $134.75，補助 = $2,560.25
+      // 總補助：round($17,651 + $1,512 + $2,560.25) = $21,723
+      // 總自付：round($929 + $168 + $134.75) = $1,232
 
-      expect(result.totalSubsidyMonthly).toBe(21774);
-      expect(result.outOfPocketMonthly).toBe(1181);
+      expect(result.totalSubsidyMonthly).toBe(21723);
+      expect(result.outOfPocketMonthly).toBe(1232);
       expect(result.hasTransportation).toBe(true);
     });
 
@@ -101,14 +101,14 @@ describe('careLogic 核心計算邏輯測試', () => {
     test('外籍看護工補助額度打 3 折', () => {
       const result = calculateCareBudget(5, 'general', 'foreign-caregiver');
 
-      // 第一包：$24,100 × 0.3 = $7,230，自負 16% = $1,157，補助 = $6,073
-      // 第二包：$1,680，自負 21% = $353，補助 = $1,327
-      // 第四包：$32,340/12 = $2,695，自負 16% = $431，補助 = $2,264
-      // 總補助：$6,073 + $1,327 + $2,264 = $9,664
-      // 總自付：$1,157 + $353 + $431 = $1,941
+      // 第一包：$24,100 × 0.3 = $7,230，自負 16% = $1,156.8，補助 = $6,073.2
+      // 第二包（預設第一區）：$1,680，自負 30% = $504，補助 = $1,176
+      // 第四包：$32,340/12 = $2,695，自負 16% = $431.2，補助 = $2,263.8
+      // 總補助：round($6,073.2 + $1,176 + $2,263.8) = $9,513
+      // 總自付：round($1,156.8 + $504 + $431.2) = $2,092
 
-      expect(result.totalSubsidyMonthly).toBe(9664);
-      expect(result.outOfPocketMonthly).toBe(1941);
+      expect(result.totalSubsidyMonthly).toBe(9513);
+      expect(result.outOfPocketMonthly).toBe(2092);
       expect(result.hasTransportation).toBe(true);
     });
 
@@ -128,13 +128,13 @@ describe('careLogic 核心計算邏輯測試', () => {
   });
 
   describe('calculateCareBudget - 住宿式機構', () => {
-    test('CMS 4+ 住宿式機構適用 12 萬/年補助', () => {
+    test('CMS 4+ 住宿式機構適用 18 萬/年補助（2026/9 新制）', () => {
       const result = calculateCareBudget(5, 'general', 'institution');
 
-      // CMS 5 >= 4：每月補助 $10,000
-      expect(result.totalSubsidyMonthly).toBe(10000);
-      // 自付 = 平均月費 $45,000 - 補助 $10,000 = $35,000
-      expect(result.outOfPocketMonthly).toBe(35000);
+      // CMS 5 >= 4：每月補助 $15,000（2026/9 新制：年 $180,000，按月認列）
+      expect(result.totalSubsidyMonthly).toBe(15000);
+      // 自付 = 平均月費 $45,000 - 補助 $15,000 = $30,000
+      expect(result.outOfPocketMonthly).toBe(30000);
       expect(result.hasTransportation).toBe(false);
       expect(result.assistiveDeviceQuota).toBe(0);
     });
@@ -142,8 +142,9 @@ describe('careLogic 核心計算邏輯測試', () => {
     test('CMS 6 級一般戶住宿式機構有補助', () => {
       const result = calculateCareBudget(6, 'general', 'institution');
 
-      expect(result.totalSubsidyMonthly).toBe(10000);
-      expect(result.outOfPocketMonthly).toBe(35000);
+      // 2026/9 新制：月補助 $15,000（年 $180,000，按月認列）
+      expect(result.totalSubsidyMonthly).toBe(15000);
+      expect(result.outOfPocketMonthly).toBe(30000);
     });
 
     test('CMS 1-3 級住宿式機構無補助（新申請者）', () => {
@@ -201,7 +202,7 @@ describe('careLogic 核心計算邏輯測試', () => {
         assistiveDeviceGroup: 'group2',
       });
       expect(result.assistiveDeviceQuota).toBe(60000);
-      expect(result.policyVersion).toBe('2026-07-22');
+      expect(result.policyVersion).toBe('2026-10-08');
     });
   });
 
@@ -209,9 +210,11 @@ describe('careLogic 核心計算邏輯測試', () => {
     test('第四區月額度為 2400，且補助與自付同步調整', () => {
       const region1 = calculateCareBudget(5, 'general', 'home-care', { transportRegion: 'region1' });
       const region4 = calculateCareBudget(5, 'general', 'home-care', { transportRegion: 'region4' });
+      // 第四區：$2,400，自負 21% = $504，補助 = $1,896；第一區：$1,680，自負 30% = $504，補助 = $1,176
+      // 兩區自付都是 $504（巧合），所以自付差 = 0，補助差 = $1,896 - $1,176 = $720
       expect(region4.transportQuotaMonthly).toBe(2400);
-      expect(region4.totalSubsidyMonthly - region1.totalSubsidyMonthly).toBe(569);
-      expect(region4.outOfPocketMonthly - region1.outOfPocketMonthly).toBe(151);
+      expect(region4.totalSubsidyMonthly - region1.totalSubsidyMonthly).toBe(720);
+      expect(region4.outOfPocketMonthly - region1.outOfPocketMonthly).toBe(0);
     });
   });
 
@@ -339,11 +342,11 @@ describe('careLogic 核心計算邏輯測試', () => {
         expect(result.totalSubsidyMonthly).toBe(0);
         expect(result.outOfPocketMonthly).toBe(45000);
       }
-      // CMS 4-8：每月補助 $10,000
+      // CMS 4-8：每月補助 $15,000（2026/9 新制：年 $180,000，按月認列）
       for (let level = 4; level <= 8; level++) {
         const result = calculateCareBudget(level as CMSLevel, 'general', 'institution');
-        expect(result.totalSubsidyMonthly).toBe(10000);
-        expect(result.outOfPocketMonthly).toBe(35000);
+        expect(result.totalSubsidyMonthly).toBe(15000);
+        expect(result.outOfPocketMonthly).toBe(30000);
       }
     });
   });

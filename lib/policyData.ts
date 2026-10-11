@@ -89,8 +89,10 @@ export const NATIONAL_PENSION_2026 = {
 export const FOREIGN_CAREGIVER_2026 = {
   contractMonthlyWage: 20000,
   employmentStabilityFee: 2000,
-  // 雇主健保費估算：29,500（115年第一級投保金額）× 5.17% × 60%（雇主負擔比率）× 1.61（平均眷口數）≈ 1,473
-  employerNhiEstimate: 1473,
+  // 雇主健保費估算：29,500（115年第一級投保金額）× 5.17%（健保費率）× 60%（雇主負擔比率）× 1.56（1＋平均眷口數 0.56）≈ 1,428
+  // 來源：115 年健保費負擔金額表（29,500 級距雇主負擔 1,428）＋ 2026 外勞仲介費用表（雇主負擔 1,428、移工自付 458）——2026-10-12 雙重核實，
+  // 修正先前 1,473 之誤（該數以平均眷口數 0.61 計算，無官方來源依據）。
+  employerNhiEstimate: 1428,
 } as const;
 
 export function getRespiteYearlyQuota(cmsLevel: number): number {

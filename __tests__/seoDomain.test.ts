@@ -3,7 +3,7 @@ import robots from "@/app/robots";
 import { SITE_URL, absoluteUrl, pageAlternates } from "@/lib/site";
 
 describe("SEO 正式網域", () => {
-  test("所有網址都以 care.taicalc.com 為唯一來源", () => {
+  test("所有網址都以 carepilot1966.com 為唯一來源", () => {
     expect(SITE_URL).toBe("https://carepilot1966.com");
     expect(absoluteUrl("/tools")).toBe("https://carepilot1966.com/tools");
     expect(pageAlternates("/tools")).toEqual({
@@ -12,11 +12,11 @@ describe("SEO 正式網域", () => {
     });
   });
 
-  test("sitemap 的 84 個網址全部使用正式網域且不重複", () => {
+  test("sitemap 的 91 個網址全部使用正式網域且不重複", () => {
     const entries = sitemap();
     const urls = entries.map((entry) => entry.url);
 
-    expect(urls).toHaveLength(84);
+    expect(urls).toHaveLength(91);
     expect(new Set(urls).size).toBe(urls.length);
     urls.forEach((url) => {
       expect(url === SITE_URL || url.startsWith(`${SITE_URL}/`)).toBe(true);
