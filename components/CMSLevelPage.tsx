@@ -2,6 +2,8 @@ import Icon, { type IconName } from "@/components/Icon";
 import type { Metadata } from "next";
 import Link from 'next/link';
 import { CMS_LEVELS, CMS_LEVELS_STR, CARE_TYPES, CMS_LEVEL_INFO, type CMSLevel } from '@/constants/pseoData';
+import { CMS_UNIQUE_CONTENT } from '@/constants/cmsUniqueContent';
+import CMSUniqueSection from '@/components/CMSUniqueSection';
 import { absoluteUrl, pageAlternates } from '@/lib/site';
 
 const CARE_TYPE_NAMES: Record<string, { name: string; desc: string }> = {
@@ -168,6 +170,11 @@ export default function CMSLevelPage({ params }: PageProps) {
             </Link>
           ))}
         </div>
+
+        {/* 該級獨有內容（差異化：降低模板重複率） */}
+        {CMS_UNIQUE_CONTENT[`cms${level}`] && (
+          <CMSUniqueSection content={CMS_UNIQUE_CONTENT[`cms${level}`]} />
+        )}
 
         {/* CTA */}
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[14px] p-8 border border-orange-100/60 text-center">

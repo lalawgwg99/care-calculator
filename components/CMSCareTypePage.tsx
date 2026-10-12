@@ -2,6 +2,8 @@ import Icon, { type IconName } from "@/components/Icon";
 import type { Metadata } from "next";
 import Link from 'next/link';
 import { CMS_LEVEL_INFO, CARE_TYPE_INFO, INCOME_TYPE_INFO, CMS_LEVELS_STR, CARE_TYPES, type CareType, type CMSLevel, type IncomeType } from '@/constants/pseoData';
+import { CMS_UNIQUE_CONTENT } from '@/constants/cmsUniqueContent';
+import CMSUniqueSection from '@/components/CMSUniqueSection';
 import { absoluteUrl, pageAlternates } from '@/lib/site';
 import { ASSISTIVE_DEVICE_GROUPS, TRANSPORT_REGIONS } from '@/lib/policyData';
 
@@ -253,6 +255,11 @@ export default function CMSCareTypePage({ params }: PageProps) {
             );
           })}
         </div>
+
+        {/* 該級＋該照顧方式獨有內容（差異化：降低模板重複率） */}
+        {CMS_UNIQUE_CONTENT[`cms${level}/${careType}`] && (
+          <CMSUniqueSection content={CMS_UNIQUE_CONTENT[`cms${level}/${careType}`]} />
+        )}
 
         {/* CTA */}
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-[14px] p-8 border border-orange-100/60 text-center">
