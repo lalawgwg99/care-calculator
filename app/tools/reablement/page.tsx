@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function ReablementPage() {
   return (
-    <main className="max-w-2xl mx-auto px-4 py-10 space-y-8">
+    <main className="max-w-2xl lg:max-w-4xl mx-auto px-4 py-10 space-y-8">
       <div className="text-center">
         <div className="inline-flex items-center gap-2 bg-amber-100 rounded-full px-4 py-2 mb-4">
           <Icon name="star" size={18} />

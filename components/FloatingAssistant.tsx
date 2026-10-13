@@ -162,10 +162,10 @@ export default function FloatingAssistant() {
         <div
           role="dialog"
           aria-label="小伴 AI 助手"
-          className="w-[min(380px,calc(100vw-32px))] h-[min(560px,72dvh)] bg-white border border-orange-200/70 rounded-[14px] shadow-[0_20px_50px_rgba(217,119,34,0.22)] flex flex-col overflow-hidden"
+          className="w-[min(380px,calc(100vw-32px))] h-[min(560px,72dvh)] bg-white border border-orange-200/70 rounded-[14px] shadow-[0_12px_32px_rgba(15,23,42,0.14)] flex flex-col overflow-hidden"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-apple-orange to-apple-pink text-white shrink-0">
+          <div className="flex items-center justify-between px-4 py-3 bg-apple-orange text-white shrink-0">
             <div className="flex items-center gap-2.5">
               <span className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
                 <Icon name="heart" size={20} />
@@ -251,7 +251,7 @@ export default function FloatingAssistant() {
                 onClick={() => send()}
                 disabled={loading || !input.trim()}
                 aria-label="送出"
-                className="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-r from-apple-orange to-apple-pink text-white flex items-center justify-center disabled:opacity-40 transition-opacity"
+                className="w-11 h-11 shrink-0 rounded-xl bg-apple-orange text-white flex items-center justify-center disabled:opacity-40 transition-opacity"
               >
                 <Icon name="chat" size={20} />
               </button>
@@ -267,7 +267,7 @@ export default function FloatingAssistant() {
       {!open && showHint && (
         <button
           onClick={openChat}
-          className="bg-white border border-orange-200 shadow-[0_8px_24px_rgba(217,119,34,0.18)] rounded-2xl rounded-br-md px-4 py-2.5 text-[14px] text-apple-gray-800 cursor-pointer max-w-[220px] text-left hover:shadow-lg transition-shadow"
+          className="bg-white border border-orange-200 shadow-sm rounded-2xl rounded-br-md px-4 py-2.5 text-[14px] text-apple-gray-800 cursor-pointer max-w-[220px] text-left hover:shadow-lg transition-shadow"
         >
           有長照問題嗎？問小伴
         </button>
@@ -277,7 +277,7 @@ export default function FloatingAssistant() {
       <button
         onClick={() => (open ? setOpen(false) : openChat())}
         aria-label={open ? "關閉小伴" : "開啟小伴 AI 助手"}
-        className="w-14 h-14 rounded-full bg-gradient-to-br from-apple-orange to-apple-pink text-white flex items-center justify-center shadow-[0_8px_24px_rgba(217,81,115,0.4)] hover:scale-105 active:scale-95 transition-transform"
+        className="w-14 h-14 rounded-full bg-apple-orange text-white flex items-center justify-center shadow-md hover:bg-apple-orange/90 transition-colors"
       >
         {open ? <Icon name="x" size={24} /> : <Icon name="chat" size={26} />}
       </button>

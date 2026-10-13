@@ -44,7 +44,7 @@ export default function BlogListPage() {
       </section>
 
       {/* Article Grid */}
-      <section className="max-w-4xl mx-auto px-4 pt-12">
+      <section className="max-w-4xl lg:max-w-6xl mx-auto px-4 pt-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {BLOG_POSTS.map((post) => (
             <Link

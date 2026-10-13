@@ -260,7 +260,7 @@ export default function Home() {
     <div className="w-full">
       {/* ====== HERO SECTION ====== */}
       <section className="hero-surface relative overflow-hidden rounded-b-[40px] pt-16 pb-20 px-6 sm:px-10 mb-12">
-        <div className="max-w-3xl mx-auto text-center relative z-10">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           {/* Warm Emoji Badge */}
           <div className="inline-flex items-center gap-2 glass-chip rounded-full px-5 py-2.5 shadow-sm mb-8">
             <Icon name="heart" size={18} className="text-amber-700 shrink-0" />
@@ -334,7 +334,7 @@ export default function Home() {
       {renderFlowFrame(true)}
 
       {/* ====== ASSESSMENT FORM ====== */}
-      <section className="max-w-2xl mx-auto px-4 mb-16" id="calculator">
+      <section className="max-w-2xl lg:max-w-4xl mx-auto px-4 mb-16" id="calculator">
         <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
           {/* Form Header */}
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 sm:px-10 py-6 border-b border-orange-100/50">
@@ -453,7 +453,7 @@ export default function Home() {
       <CaregiverTips />
 
       {/* ====== MORE TOOLS SECTION ====== */}
-      <section className="max-w-4xl mx-auto px-4 mb-12">
+      <section className="max-w-4xl lg:max-w-6xl mx-auto px-4 mb-12">
         <h3 className="text-[20px] font-bold text-center text-apple-gray-900 mb-6">
           更多照顧工具
         </h3>
@@ -484,7 +484,7 @@ export default function Home() {
       </section>
 
       {/* ====== 照顧日記 AI 亮點 ====== */}
-      <section className="max-w-4xl mx-auto px-4 mb-12">
+      <section className="max-w-4xl lg:max-w-6xl mx-auto px-4 mb-12">
         <Link href="/diary" className="block rounded-[14px] overflow-hidden group">
           <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-8 sm:p-10 text-center border border-orange-200/60">
             <h3 className="text-[22px] sm:text-[26px] font-bold text-apple-gray-900 mb-3">
@@ -528,7 +528,7 @@ export default function Home() {
 
   // ========== STEP 2: PATHWAY COMPARISON ========== //
   const renderPathwayStep = () => (
-    <div className="w-full max-w-5xl mx-auto px-4">
+    <div className="w-full max-w-5xl lg:max-w-7xl mx-auto px-4">
       <div className="mb-6">
         <button
           onClick={() => { setCurrentStep('landing'); window.scrollTo(0, 0); }}
@@ -561,7 +561,7 @@ export default function Home() {
   const renderCartStep = () => {
     if (!currentResult) return null;
     return (
-      <div className="w-full max-w-3xl mx-auto px-4">
+      <div className="w-full max-w-3xl lg:max-w-5xl mx-auto px-4">
         <div className="flex items-center gap-4 mb-6">
           <button
             onClick={() => setCurrentStep('pathway')}

@@ -94,7 +94,7 @@ export default function CMSLevelPage({ params }: PageProps) {
       </section>
 
       {/* Subsidy Overview */}
-      <section className="max-w-4xl mx-auto px-4 pt-12">
+      <section className="max-w-4xl lg:max-w-6xl mx-auto px-4 pt-12">
         <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-orange-100/50">
             <h2 className="text-[22px] font-bold text-apple-gray-900">

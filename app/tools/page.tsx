@@ -114,7 +114,7 @@ const TOOL_GROUPS = [
 
 export default function ToolsPage() {
   return (
-    <main className="max-w-4xl mx-auto px-4 py-10">
+    <main className="max-w-4xl lg:max-w-6xl mx-auto px-4 py-10">
       {/* Header */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 bg-amber-100 rounded-full px-4 py-2 mb-4">
