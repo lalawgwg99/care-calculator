@@ -1,5 +1,6 @@
 // 測量 CMS 模板頁之間的文字相似度（Jaccard over 4-gram shingles + difflib-like ratio）
-// 用法：node scripts/cms-similarity.mjs out
+// 用法：node scripts/cms-similarity.mjs out [page1 page2 ...]
+// 頁面清單可由 argv 傳入，未傳則用預設清單。
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
@@ -31,7 +32,9 @@ function jaccard(a, b) {
   return union === 0 ? 1 : inter / union;
 }
 
-const pages = ['cms4', 'cms5', 'cms5/foreign-caregiver', 'cms4/foreign-caregiver', 'cms3', 'cms6'];
+const pages = process.argv.slice(3).length > 0
+  ? process.argv.slice(3)
+  : ['cms4', 'cms5', 'cms5/foreign-caregiver', 'cms4/foreign-caregiver', 'cms3', 'cms6'];
 const texts = {};
 for (const p of pages) {
   try { texts[p] = textOf(p + '.html'); }
