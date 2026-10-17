@@ -34,8 +34,8 @@ export const CMS_LEVELS_STR = CMS_LEVELS.map(String);
 // CMS等级详情
 export const CMS_LEVEL_INFO: Record<CMSLevel, { name: string; description: string; subsidy: number; hasTransport: boolean; respite: number }> = {
   1: { name: '輕度失能', description: '日常生活活動能力輕微受限', subsidy: CMS_CARE_QUOTAS[1], hasTransport: false, respite: getRespiteYearlyQuota(1) },
-  2: { name: '輕度失能', description: '日常生活活動能力輕微受限', subsidy: CMS_CARE_QUOTAS[2], hasTransport: false, respite: getRespiteYearlyQuota(2) },
-  3: { name: '中度失能', description: '日常生活活動能力中度受限', subsidy: CMS_CARE_QUOTAS[3], hasTransport: false, respite: getRespiteYearlyQuota(3) },
+  2: { name: '輕度失能', description: '日常生活活動能力輕微受限', subsidy: CMS_CARE_QUOTAS[2], hasTransport: true, respite: getRespiteYearlyQuota(2) },
+  3: { name: '中度失能', description: '日常生活活動能力中度受限', subsidy: CMS_CARE_QUOTAS[3], hasTransport: true, respite: getRespiteYearlyQuota(3) },
   4: { name: '中度失能', description: '日常生活活動能力中度受限', subsidy: CMS_CARE_QUOTAS[4], hasTransport: true, respite: getRespiteYearlyQuota(4) },
   5: { name: '重度失能', description: '日常生活活動能力重度受限', subsidy: CMS_CARE_QUOTAS[5], hasTransport: true, respite: getRespiteYearlyQuota(5) },
   6: { name: '重度失能', description: '日常生活活動能力重度受限', subsidy: CMS_CARE_QUOTAS[6], hasTransport: true, respite: getRespiteYearlyQuota(6) },

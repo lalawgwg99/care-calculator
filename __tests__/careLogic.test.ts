@@ -24,14 +24,14 @@ describe('careLogic 核心計算邏輯測試', () => {
       const result = calculateCareBudget(2, 'general', 'home-care');
 
       // 第一包：$10,020，自負 16% = $1,603，補助 = $8,417
-      // 第二包：無（CMS 2 級不符合）
+      // 第二包（預設第一區）：$1,680，自負 30% = $504，補助 = $1,176（111/2/1 起 CMS 2 級即可申請）
       // 第四包：$32,340/12 = $2,695，自負 16% = $431，補助 = $2,264
-      // 總補助：$8,417 + $0 + $2,264 = $10,681
-      // 總自付：$1,603 + $0 + $431 = $2,034
+      // 總補助：$8,417 + $1,176 + $2,264 = $11,857
+      // 總自付：$1,603 + $504 + $431 = $2,538
 
-      expect(result.totalSubsidyMonthly).toBe(10681);
-      expect(result.outOfPocketMonthly).toBe(2034);
-      expect(result.hasTransportation).toBe(false);
+      expect(result.totalSubsidyMonthly).toBe(11857);
+      expect(result.outOfPocketMonthly).toBe(2538);
+      expect(result.hasTransportation).toBe(true);
       expect(result.assistiveDeviceQuota).toBe(40000);
     });
 
@@ -116,14 +116,14 @@ describe('careLogic 核心計算邏輯測試', () => {
       const result = calculateCareBudget(2, 'general', 'foreign-caregiver');
 
       // 第一包：$10,020 × 0.3 = $3,006，自負 16% = $481，補助 = $2,525
-      // 第二包：無
+      // 第二包（預設第一區）：$1,680，自負 30% = $504，補助 = $1,176（111/2/1 起 CMS 2 級即可申請）
       // 第四包：$32,340/12 = $2,695，自負 16% = $431，補助 = $2,264
-      // 總補助：$2,525 + $0 + $2,264 = $4,789
-      // 總自付：$481 + $0 + $431 = $912
+      // 總補助：$2,525 + $1,176 + $2,264 = $5,965
+      // 總自付：$481 + $504 + $431 = $1,416
 
-      expect(result.totalSubsidyMonthly).toBe(4789);
-      expect(result.outOfPocketMonthly).toBe(912);
-      expect(result.hasTransportation).toBe(false);
+      expect(result.totalSubsidyMonthly).toBe(5965);
+      expect(result.outOfPocketMonthly).toBe(1416);
+      expect(result.hasTransportation).toBe(true);
     });
   });
 
@@ -166,14 +166,14 @@ describe('careLogic 核心計算邏輯測試', () => {
   });
 
   describe('calculateCareBudget - 交通接送資格', () => {
-    test('CMS 1-3 級無交通接送', () => {
+    test('CMS 1 級無交通接送，2-8 級有交通接送（111/2/1 起放寬）', () => {
       const result1 = calculateCareBudget(1, 'general', 'home-care');
       const result2 = calculateCareBudget(2, 'general', 'home-care');
       const result3 = calculateCareBudget(3, 'general', 'home-care');
 
       expect(result1.hasTransportation).toBe(false);
-      expect(result2.hasTransportation).toBe(false);
-      expect(result3.hasTransportation).toBe(false);
+      expect(result2.hasTransportation).toBe(true);
+      expect(result3.hasTransportation).toBe(true);
     });
 
     test('CMS 4-8 級有交通接送', () => {

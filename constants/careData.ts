@@ -27,7 +27,7 @@ export interface SubsidyRuleData {
     midLow: number;     // 中低收入戶 5%
     low: number;        // 低收入戶 0%
   };
-  // 第二包：交通接送 (月額，CMS 4級以上)
+  // 第二包：交通接送 (月額，CMS 2級以上，111/2/1 起放寬）
   transportMonthly: number | null;
   transportCopay: {
     general: [number, number];  // 一般戶 21%～30%（依居住地分區）
@@ -114,7 +114,7 @@ const deviceCopay = {
 
 export const SUBSIDY_RULES: SubsidyRuleData[] = CMS_LEVELS.map(({ level }) => {
   const eligible = level >= 2;
-  const hasTransport = level >= 4;
+  const hasTransport = level >= 2; // 交通接送：111/2/1 起放寬為 CMS 第 2 級（含）以上
   return {
     cmsLevel: level,
     careServiceMonthly: CMS_CARE_QUOTAS[level as keyof typeof CMS_CARE_QUOTAS],

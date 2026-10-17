@@ -118,7 +118,7 @@ export default function CMSLevelPage({ params }: PageProps) {
                 <div className={`text-[24px] font-bold ${info.transport ? 'text-blue-900' : 'text-gray-400'}`}>
                   {info.transport ? '$1,680～2,400' : '無'}
                 </div>
-                <div className={`text-[11px] ${info.transport ? 'text-blue-600' : 'text-gray-400'} mt-1`}>{info.transport ? '/月' : '需4級以上'}</div>
+                <div className={`text-[11px] ${info.transport ? 'text-blue-600' : 'text-gray-400'} mt-1`}>{info.transport ? '/月' : '需2級以上'}</div>
               </div>
               <div className="bg-purple-50 rounded-[14px] p-5 border border-purple-200 text-center">
                 <div className="text-[13px] text-purple-700 font-medium mb-2">輔具額度</div>

@@ -130,11 +130,11 @@ export function calculateCareBudget(
   // ========================================================================
   // 第二包：交通接送服務 (每月額度)
   // ========================================================================
-  // 給付條件：CMS 第 4 級 (含) 以上
+  // 給付條件：CMS 第 2 級 (含) 以上（衛福部 111 年 2 月 1 日起放寬；放寬前為第 4 級以上）
   // 依居住地鄉鎮分為四區：每月 $1,680 / $1,840 / $2,000 / $2,400
   let subsidyTransport = 0;
   let outOfPocketTransport = 0;
-  const hasTransport = cmsLevel >= 4;
+  const hasTransport = cmsLevel >= 2;
 
   if (hasTransport) {
     const transportQuota = transportQuotaMonthly;

@@ -56,14 +56,12 @@ describe('careData 數據完整性測試', () => {
       }
     });
 
-    test('CMS 1-3 級不應有交通接送', () => {
-      for (let i = 0; i < 3; i++) {
-        expect(SUBSIDY_RULES[i].transportMonthly).toBeNull();
-      }
+    test('CMS 1 級無交通接送', () => {
+      expect(SUBSIDY_RULES[0].transportMonthly).toBeNull();
     });
 
-    test('CMS 4-8 級應有交通接送', () => {
-      for (let i = 3; i < 8; i++) {
+    test('CMS 2-8 級應有交通接送（111/2/1 起放寬為 2 級以上）', () => {
+      for (let i = 1; i < 8; i++) {
         expect(SUBSIDY_RULES[i].transportMonthly).toBe(1680);
       }
     });
