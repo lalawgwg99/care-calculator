@@ -12,17 +12,25 @@ interface PathwayComparisonProps {
   assistiveDeviceGroup: AssistiveDeviceGroup;
   onSelectPathway: (type: CareType) => void;
   initialSelectedPathway?: CareType | null;
+  /** 住宿式機構：2023/1/1 前已入住的既有住民 */
+  isExistingResident: boolean;
+  /** 住宿式機構：領有中度以上身心障礙證明 */
+  hasModerateDisabilityCert: boolean;
+  onExistingResidentChange: (v: boolean) => void;
+  onDisabilityCertChange: (v: boolean) => void;
 }
 
 // 外籍看護真實月支出（含薪資、安定費、健保、加班、仲介）
 const FOREIGN_CAREGIVER_EXTRA = 26896;
 
-export default function PathwayComparison({ cmsLevel, incomeStatus, transportRegion, assistiveDeviceGroup, onSelectPathway, initialSelectedPathway }: PathwayComparisonProps) {
-  const options = { transportRegion, assistiveDeviceGroup };
+export default function PathwayComparison({ cmsLevel, incomeStatus, transportRegion, assistiveDeviceGroup, onSelectPathway, initialSelectedPathway, isExistingResident, hasModerateDisabilityCert, onExistingResidentChange, onDisabilityCertChange }: PathwayComparisonProps) {
+  const options = { transportRegion, assistiveDeviceGroup, isExistingResident, hasModerateDisabilityCert };
   const homeCareResult = calculateCareBudget(cmsLevel, incomeStatus, "home-care", options);
   const dayCareResult = calculateCareBudget(cmsLevel, incomeStatus, "day-care", options);
   const institutionResult = calculateCareBudget(cmsLevel, incomeStatus, "institution", options);
   const foreignResult = calculateCareBudget(cmsLevel, incomeStatus, "foreign-caregiver", options);
+  // 住宿式機構補助（已含既有住民／身障證明兩類特殊資格）
+  const institutionSubsidy = institutionResult.totalSubsidyMonthly;
 
   const formatMoney = (amount: number) => {
     return new Intl.NumberFormat("zh-TW", {
@@ -84,10 +92,14 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
       waitTime: "排隊等候，通常需 1-6 個月",
       features: [
         "24 小時專業護理團隊",
-        cmsLevel >= 4 ? "每年最高補助 $180,000（2026/9 新制，已取消排富）" : "CMS 4 級以上才有年度補助",
+        institutionSubsidy >= 15000
+          ? "每月補助 $15,000、全年最高 $180,000（2026/9 新制）"
+          : institutionSubsidy > 0
+            ? "每月補助 $5,000（既有住民身分）"
+            : "未符合補助資格（需 CMS 4+／中度以上身障／既有住民）",
         "適合重度以上失能長輩",
       ],
-      cons: cmsLevel < 4 ? { text: "目前等級未達補助門檻（需 CMS 4+）", warning: true } : { text: "月費較高，但家屬零體力負擔", warning: false },
+      cons: institutionSubsidy === 0 ? { text: "目前未達任何補助資格", warning: true } : { text: "月費較高，但家屬零體力負擔", warning: false },
       primaryColor: "text-violet-600",
       borderColor: "border-violet-200",
       bgGradient: "bg-gradient-to-br from-white to-violet-50/50",
@@ -128,7 +140,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
     if (type === "foreign-caregiver" && cmsLevel >= 4) score += 10;
     if (incomeStatus === "low" && type === lowestOutPocketId) score += 25;
     if (incomeStatus === "mid-low" && type === "day-care") score += 10;
-    if (type === "institution" && cmsLevel < 4) score -= 25;
+    if (type === "institution" && institutionSubsidy === 0) score -= 25;
     if (type === "foreign-caregiver" && incomeStatus === "low") score -= 10;
     return Math.max(35, Math.min(95, score));
   };
@@ -291,6 +303,37 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
         </p>
       </div>
 
+      {/* 住宿式機構資格補充：兩類特殊資格會影響補助金額 */}
+      <div className="max-w-2xl mx-auto mb-8 bg-violet-50/70 border border-violet-200/60 rounded-[14px] p-4 sm:p-5">
+        <div className="text-[13px] font-semibold text-violet-900 mb-3">
+          住宿式機構補助資格補充（有符合請勾選，會即時更新下方試算）
+        </div>
+        <label className="flex items-start gap-3 cursor-pointer py-1.5">
+          <input
+            type="checkbox"
+            checked={isExistingResident}
+            onChange={(e) => onExistingResidentChange(e.target.checked)}
+            className="mt-1 w-5 h-5 accent-violet-600 shrink-0"
+          />
+          <span className="text-[14px] text-apple-gray-800">
+            2023/1/1 前就已入住機構的<strong>既有住民</strong>
+            <span className="block text-[12px] text-apple-gray-500 mt-0.5">CMS 未達 4 級也可領每月 $5,000（無此資格則 $0）</span>
+          </span>
+        </label>
+        <label className="flex items-start gap-3 cursor-pointer py-1.5">
+          <input
+            type="checkbox"
+            checked={hasModerateDisabilityCert}
+            onChange={(e) => onDisabilityCertChange(e.target.checked)}
+            className="mt-1 w-5 h-5 accent-violet-600 shrink-0"
+          />
+          <span className="text-[14px] text-apple-gray-800">
+            領有<strong>中度以上身心障礙證明</strong>
+            <span className="block text-[12px] text-apple-gray-500 mt-0.5">可替代 CMS 4 級資格，領每月 $15,000</span>
+          </span>
+        </label>
+      </div>
+
       {/* 決策推薦提示 */}
       <div className="bg-emerald-50 border border-emerald-200/70 rounded-[14px] p-5 sm:p-6 mb-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -409,7 +452,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
       {/* 提示 */}
       <div className="mt-6 text-center text-[13px] text-apple-gray-400">
         * 外籍看護自付含薪資、就業安定費、健保費等實際支出約 ${FOREIGN_CAREGIVER_EXTRA.toLocaleString()}/月
-        {cmsLevel < 4 && "　* 住宿式機構補助需 CMS 4 級以上"}
+        {institutionSubsidy === 0 && "　* 住宿式機構補助：CMS 4+／中度以上身障每月 $15,000；2023 年前入住的既有住民每月 $5,000"}
       </div>
     </div>
   );

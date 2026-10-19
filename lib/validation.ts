@@ -5,15 +5,16 @@
 
 import { z } from 'zod';
 
-// 定義驗證 Schema
+// 注意：此 schema 目前無任何檔案引用（2026-10-19 稽核確認零引用，保留備用）
+// 枚舉值須與 lib/careLogic.ts 的 IncomeStatus 一致（'mid-low' 而非 'midLow'）
 export const CareBudgetInputSchema = z.object({
   cmsLevel: z
     .number()
     .int('CMS 等級必須是整數')
     .min(1, 'CMS 等級最小為 1')
     .max(8, 'CMS 等級最大為 8'),
-  incomeStatus: z.enum(['general', 'midLow', 'low'], {
-    message: '收入身份必須是 general、midLow 或 low',
+  incomeStatus: z.enum(['general', 'mid-low', 'low'], {
+    message: '收入身份必須是 general、mid-low 或 low',
   }),
   careType: z.enum(['home-care', 'day-care', 'foreign-caregiver', 'institution'], {
     message: '照顧方式必須是有效的選項',

@@ -190,7 +190,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                       <div>
                         <h4 className="text-[15px] font-bold text-rose-900 mb-1">住宿機構補助另計</h4>
                         <p className="text-[13px] text-rose-800 leading-relaxed">
-                          本頁上方的照顧服務額度適用於居家、日照等社區式服務。長期入住住宿式機構適用另一套「住宿式服務機構使用者補助」：CMS 第4級以上（或領有中度以上身心障礙證明），每月補助 NT$15,000、全年最高 NT$180,000（2026 年 9 月新制，按月認列）。CMS 第1～3 級入住機構無此補助。
+                          本頁上方的照顧服務額度適用於居家、日照等社區式服務。長期入住住宿式機構適用另一套「住宿式服務機構使用者補助」：CMS 第4級以上（或領有中度以上身心障礙證明），每月補助 NT$15,000、全年最高 NT$180,000（2026 年 9 月新制，按月認列）；2023/1/1 前已入住的既有住民、CMS 未達 4 級也有每月 NT$5,000。CMS 第1～3 級新入住者無此補助。
                           {' '}<Link href="/blog/institution-subsidy-18k-2026-new" className="font-bold underline">查看 2026 年新制申請攻略 →</Link>
                         </p>
                       </div>

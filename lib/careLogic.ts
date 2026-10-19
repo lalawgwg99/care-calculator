@@ -35,6 +35,10 @@ export interface CareResult {
 export interface CareCalculationOptions {
   transportRegion?: TransportRegion;
   assistiveDeviceGroup?: AssistiveDeviceGroup;
+  /** 住宿式機構用：2023/1/1 前已入住的既有住民（CMS 未達 4 級，每月 $5,000） */
+  isExistingResident?: boolean;
+  /** 住宿式機構用：領有中度以上身心障礙證明（可替代 CMS 4 級資格，每月 $15,000） */
+  hasModerateDisabilityCert?: boolean;
 }
 
 /**
@@ -87,12 +91,17 @@ export function calculateCareBudget(
   // ========================================================================
   // 住宿式機構不適用長照四包錢，改用「住宿式服務機構使用者補助方案」
   // 2026-09-10 行政院拍板調增（追溯 2026/01/01，09/14 開放申請）：
-  //   - CMS 4 級以上（或中度以上身障）：每月 $15,000，全年最高 $180,000
+  //   - CMS 4 級以上（或領有中度以上身心障礙證明）：每月 $15,000，全年最高 $180,000
+  //   - 既有住民（2023/1/1 前已入住、未達 CMS 4 級）：每月 $5,000
+  //   - 實際撥款以當月自付住宿費為上限（本站以平均月費 45,000 估算，高於補助故不觸發上限）
   //   - 認列改為「按月認列」：當月實際入住達日曆天數 1/2 以上即認列 1 個月（不再需要全年累積 180 天）
   //   - 撥款週期改為一年 2 次：第一期（1–8 月）11 月底前撥付；第二期（9–12 月）隔年 1 月底前撥付
   //   - 資料來源：行政院 2026-09-10 記者會（中央社／華視／經濟日報）、衛福部
   if (careType === 'institution') {
-    const institutionMonthlySubsidy = cmsLevel >= 4 ? 15000 : 0;
+    const qualifiesFull = cmsLevel >= 4 || options.hasModerateDisabilityCert === true;
+    const institutionMonthlySubsidy = qualifiesFull
+      ? 15000
+      : options.isExistingResident === true ? 5000 : 0;
     const avgMonthlyFee = 45000; // 全國機構平均月費（含三餐、護理費）
     const outOfPocketInstitution = Math.max(0, avgMonthlyFee - institutionMonthlySubsidy);
     return {
@@ -118,7 +127,7 @@ export function calculateCareBudget(
     : TRANSPORT_REGIONS[transportRegion].copayGeneral;
 
   // 特殊情況 2：外籍看護工
-  // 聘僱外籍看護工時，第一包錢額度僅剩 30%，且只能用於專業服務
+  // 聘僱外籍看護工時，第一包錢額度僅剩 30%（114/9/1 起放寬：額度內可用日間照顧、家庭托顧，不再僅限專業服務）
   if (careType === 'foreign-caregiver') {
     baseQuota = baseQuota * 0.3;
   }

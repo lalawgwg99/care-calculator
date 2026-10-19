@@ -58,6 +58,9 @@ export default function Home() {
   const [assistiveDeviceGroup, setAssistiveDeviceGroup] = useState<AssistiveDeviceGroup>("group1");
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
   const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
+  // 住宿式機構補助的兩類特殊資格（2026-10-19 週稽核補上：既有住民／中度以上身障證明）
+  const [isExistingResident, setIsExistingResident] = useState(false);
+  const [hasModerateDisabilityCert, setHasModerateDisabilityCert] = useState(false);
   const [showEstimatorModal, setShowEstimatorModal] = useState(false);
   const [wizardProgress] = useState<WizardProgress | null>(() => {
     if (typeof window === "undefined") return null;
@@ -158,6 +161,8 @@ export default function Home() {
     setIncomeStatus(null);
     setTransportRegion("region1");
     setAssistiveDeviceGroup("group1");
+    setIsExistingResident(false);
+    setHasModerateDisabilityCert(false);
     setSelectedPathway(null);
     setSelectedConditions([]);
     setShowResumeBanner(false);
@@ -179,9 +184,9 @@ export default function Home() {
 
   const currentResult = useMemo(() => (
     (cmsLevel && incomeStatus && selectedPathway)
-      ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway, { transportRegion, assistiveDeviceGroup })
+      ? calculateCareBudget(cmsLevel, incomeStatus, selectedPathway, { transportRegion, assistiveDeviceGroup, isExistingResident, hasModerateDisabilityCert })
       : null
-  ), [cmsLevel, incomeStatus, selectedPathway, transportRegion, assistiveDeviceGroup]);
+  ), [cmsLevel, incomeStatus, selectedPathway, transportRegion, assistiveDeviceGroup, isExistingResident, hasModerateDisabilityCert]);
   const currentStepIndex = FLOW_STEPS.findIndex((step) => step.id === currentStep);
   const progressPct = ((currentStepIndex + 1) / FLOW_STEPS.length) * 100;
 
@@ -542,6 +547,10 @@ export default function Home() {
         incomeStatus={incomeStatus!}
         transportRegion={transportRegion}
         assistiveDeviceGroup={assistiveDeviceGroup}
+        isExistingResident={isExistingResident}
+        hasModerateDisabilityCert={hasModerateDisabilityCert}
+        onExistingResidentChange={setIsExistingResident}
+        onDisabilityCertChange={setHasModerateDisabilityCert}
         initialSelectedPathway={selectedPathway}
         onSelectPathway={(path) => {
           setSelectedPathway(path);

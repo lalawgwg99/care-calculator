@@ -163,6 +163,31 @@ describe('careLogic 核心計算邏輯測試', () => {
       expect(resultGeneral).toEqual(resultMidLow);
       expect(resultMidLow).toEqual(resultLow);
     });
+
+    // 2026-10-19 週稽核新增：兩類特殊資格（P1 修復）
+    test('既有住民（2023/1/1 前入住）：CMS 3 也可領每月 $5,000', () => {
+      const result = calculateCareBudget(3, 'general', 'institution', { isExistingResident: true });
+      expect(result.totalSubsidyMonthly).toBe(5000);
+      expect(result.outOfPocketMonthly).toBe(40000);
+    });
+
+    test('既有住民：CMS 4+ 仍領全額 $15,000（不降為 5,000）', () => {
+      const result = calculateCareBudget(5, 'general', 'institution', { isExistingResident: true });
+      expect(result.totalSubsidyMonthly).toBe(15000);
+      expect(result.outOfPocketMonthly).toBe(30000);
+    });
+
+    test('中度以上身心障礙證明可替代 CMS 資格：CMS 3 領 $15,000', () => {
+      const result = calculateCareBudget(3, 'general', 'institution', { hasModerateDisabilityCert: true });
+      expect(result.totalSubsidyMonthly).toBe(15000);
+      expect(result.outOfPocketMonthly).toBe(30000);
+    });
+
+    test('特殊資格不影響其他照顧方式（只對 institution 生效）', () => {
+      const withFlag = calculateCareBudget(5, 'general', 'home-care', { isExistingResident: true, hasModerateDisabilityCert: true });
+      const withoutFlag = calculateCareBudget(5, 'general', 'home-care');
+      expect(withFlag).toEqual(withoutFlag);
+    });
   });
 
   describe('calculateCareBudget - 交通接送資格', () => {
