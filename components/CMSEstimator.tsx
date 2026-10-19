@@ -61,8 +61,12 @@ interface CMSEstimatorProps {
 export default function CMSEstimator({ onComplete, onCancel }: CMSEstimatorProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
+  // 防連點：作答後短暫鎖定，避免誤觸一次跳過多題（2026-10-19 週稽核）
+  const [answering, setAnswering] = useState(false);
 
   const handleSelect = (points: number) => {
+    if (answering) return;
+    setAnswering(true);
     const newAnswers = [...answers, points];
     if (currentStep < QUESTIONS.length - 1) {
       setAnswers(newAnswers);
@@ -80,6 +84,10 @@ export default function CMSEstimator({ onComplete, onCancel }: CMSEstimatorProps
       else estimatedCMS = 8;                      // Profound/Bedridden
 
       onComplete(estimatedCMS);
+    }
+    // 下一題渲染後解除鎖定（最後一題直接完成，不需解鎖）
+    if (currentStep < QUESTIONS.length - 1) {
+      setTimeout(() => setAnswering(false), 350);
     }
   };
 
@@ -113,7 +121,8 @@ export default function CMSEstimator({ onComplete, onCancel }: CMSEstimatorProps
               <button
                 key={idx}
                 onClick={() => handleSelect(option.points)}
-                className="w-full text-left p-4 sm:p-5 rounded-[16px] bg-apple-gray-50 hover:bg-apple-gray-100 border border-transparent hover:border-apple-gray-200 transition-all duration-200"
+                disabled={answering}
+                className={`w-full text-left p-4 sm:p-5 rounded-[16px] border border-transparent transition-all duration-200 ${answering ? "bg-apple-gray-50 opacity-60" : "bg-apple-gray-50 hover:bg-apple-gray-100 hover:border-apple-gray-200"}`}
               >
                 <div className="text-[17px] font-semibold text-apple-gray-900 mb-1">
                   {option.label}

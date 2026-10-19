@@ -83,6 +83,8 @@ export default function BurnoutCheckPage() {
   const [answers, setAnswers] = useState<number[]>([]);
   const [completed, setCompleted] = useState(false);
   const [copied, setCopied] = useState(false);
+  // 防連點：作答後短暫鎖定，避免誤觸一次跳過多題（2026-10-19 週稽核）
+  const [answering, setAnswering] = useState(false);
 
   const totalScore = answers.reduce((s, v) => s + v, 0);
   const resultLevel = RESULT_LEVELS.find((r) => totalScore >= r.min && totalScore <= r.max) || RESULT_LEVELS[0];
@@ -101,6 +103,8 @@ export default function BurnoutCheckPage() {
   });
 
   const handleAnswer = (value: number) => {
+    if (answering) return; // 連點防護：鎖定期內忽略
+    setAnswering(true);
     const newAnswers = [...answers, value];
     setAnswers(newAnswers);
     if (currentQ + 1 >= QUESTIONS.length) {
@@ -108,6 +112,8 @@ export default function BurnoutCheckPage() {
     } else {
       setCurrentQ(currentQ + 1);
     }
+    // 下一題渲染後解除鎖定
+    setTimeout(() => setAnswering(false), 350);
   };
 
   // ========== QUESTION VIEW ==========
@@ -164,7 +170,8 @@ export default function BurnoutCheckPage() {
                 <button
                   key={opt.value}
                   onClick={() => handleAnswer(opt.value)}
-                  className="py-3 px-2 rounded-[14px] border-2 border-apple-gray-200/60 hover:border-rose-300 hover:bg-rose-50/30 transition-all text-center"
+                  disabled={answering}
+                  className={`py-3 px-2 rounded-[14px] border-2 border-apple-gray-200/60 transition-all text-center ${answering ? "opacity-60" : "hover:border-rose-300 hover:bg-rose-50/30"}`}
                 >
                   <div className="text-[15px] font-semibold text-apple-gray-800">{opt.label}</div>
                 </button>
@@ -271,7 +278,7 @@ export default function BurnoutCheckPage() {
             <Icon name="share" size={20} />{copied ? "已複製！" : "分享結果"}
           </button>
           <button
-            onClick={() => { setCompleted(false); setCurrentQ(0); setAnswers([]); }}
+            onClick={() => { setCompleted(false); setCurrentQ(0); setAnswers([]); setAnswering(false); }}
             className="w-full py-4 bg-white text-rose-700 text-[16px] font-bold rounded-full border-2 border-rose-200 hover:bg-rose-50 transition-colors flex items-center justify-center gap-2"
           >
             <Icon name="refresh" size={20} />重新測試
