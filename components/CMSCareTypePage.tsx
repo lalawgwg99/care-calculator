@@ -67,6 +67,23 @@ function calculateSubsidy(level: CMSLevel, careType: CareType, incomeType: Incom
 
   if (!levelInfo || !careInfo || !incomeInfo) return null;
 
+  // 住宿式機構不適用長照四包錢：CMS 4 級以上每月 15,000，未達 4 級為 0
+  //（既有住民過渡條款每月 5,000 由頁面警示區塊文字說明；不扣自負額、不另加交通/喘息/輔具）
+  if (careType === 'institution') {
+    const baseSubsidy = level >= 4 ? 15000 : 0;
+    return {
+      baseSubsidy,
+      copay: 0,
+      actualSubsidy: baseSubsidy,
+      transportSubsidy: 0,
+      assistiveDeviceQuota: 0,
+      respiteMonthly: 0,
+      respiteCopay: 0,
+      totalSubsidy: baseSubsidy,
+      totalCopay: 0,
+    };
+  }
+
   const baseSubsidy = levelInfo.subsidy * careInfo.subsidyRate;
   const copayRate = incomeInfo.copayRate;
   const copay = Math.floor(baseSubsidy * copayRate);
@@ -207,7 +224,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                       補助 ${calculateSubsidy(level, careType, 'general')?.actualSubsidy.toLocaleString()} / 自付 ${calculateSubsidy(level, careType, 'general')?.copay.toLocaleString()}
                     </span>
                   </div>
-                  {levelInfo.hasTransport && (
+                  {levelInfo.hasTransport && careType !== 'institution' && (
                     <div className="flex justify-between items-center py-3 border-b border-gray-100">
                       <span className="text-[15px] text-apple-gray-600">交通接送服務</span>
                       <span className="text-[15px] font-semibold text-green-700">
@@ -215,7 +232,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                       </span>
                     </div>
                   )}
-                  {levelInfo.respite > 0 && (
+                  {levelInfo.respite > 0 && careType !== 'institution' && (
                     <div className="flex justify-between items-center py-3 border-b border-gray-100">
                       <span className="text-[15px] text-apple-gray-600">喘息服務（月攤）</span>
                       <span className="text-[15px] font-semibold text-green-700">
@@ -223,7 +240,7 @@ export default function CMSCareTypePage({ params }: PageProps) {
                       </span>
                     </div>
                   )}
-                  {level >= 2 && (
+                  {level >= 2 && careType !== 'institution' && (
                     <div className="flex justify-between items-center py-3">
                       <span className="text-[15px] text-apple-gray-600">輔具及無障礙改造</span>
                       <span className="text-[15px] font-semibold text-blue-700">
