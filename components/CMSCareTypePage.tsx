@@ -160,11 +160,11 @@ export default function CMSCareTypePage({ params }: PageProps) {
               <div className="text-center py-8">
                 <div className="text-[48px] mb-4">ℹ️</div>
                 <h3 className="text-[20px] font-bold text-apple-gray-900 mb-2">
-                  CMS 第1級尚無照顧及專業服務補助
+                  CMS 第1級尚無長照給付服務
                 </h3>
                 <p className="text-[15px] text-apple-gray-500">
-                  第1級屬於輕度失能，目前長照3.0尚未補助照顧服務。<br />
-                  但仍可申請輔具補助及喘息服務（需達第2級）。
+                  第1級屬於輕度失能，長照四包錢（照顧及專業服務、交通接送、輔具及居家無障礙改善、喘息服務）均需等級2級以上。<br />
+                  可洽照管中心轉介社區據點（健康促進、共餐、預防及延緩失能課程）；狀況變化可申請複評。
                 </p>
               </div>
             ) : (
