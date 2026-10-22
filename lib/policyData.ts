@@ -95,6 +95,26 @@ export const FOREIGN_CAREGIVER_2026 = {
   employerNhiEstimate: 1428,
 } as const;
 
+/**
+ * 外籍看護雇主成本的估算值（非法定固定金額，頁面須標示為估算，以實際繳費單為準）。
+ * 核實日期：2026-10-22。
+ * - 職災保險：家事移工雇主依法須投保勞工職業災害保險（111/5/1 起），費率 0.18%，
+ *   115 年費用表估算約 $56/月（勞保局每 3 個月寄發繳費單，金額隨投保薪資級距變動）。
+ * - 意外險：勞動契約範本要求雇主為家事移工投保 30 萬元以上意外險，市面年費約 $355–$495（2026 年仲介費用表），預設取 $400/年。
+ * - 加班費：休假日出勤以月薪 ÷ 30 計算，月薪 $20,000 時為 $667/日。
+ * - 仲介費（雇主）：依「私立就業服務機構收費項目及金額標準」，登記費＋介紹費合計不得超過移工第一個月薪資；
+ *   服務費每名每年不得超過 $2,000，且不得預收。
+ */
+export const FOREIGN_CAREGIVER_ESTIMATES = {
+  occupationalInsuranceMonthly: 56,
+  accidentInsuranceYearly: 400,
+  agencyServiceFeeYearlyCap: 2000,
+} as const;
+
+export function caregiverOvertimeDailyWage(monthlyWage: number): number {
+  return Math.round(monthlyWage / 30);
+}
+
 export function getRespiteYearlyQuota(cmsLevel: number): number {
   if (cmsLevel >= 7 && cmsLevel <= 8) return RESPITE_YEARLY_QUOTAS.highNeed;
   if (cmsLevel >= 2 && cmsLevel <= 6) return RESPITE_YEARLY_QUOTAS.standard;
