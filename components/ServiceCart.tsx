@@ -198,11 +198,15 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate, onCart
           </p>
         </div>
         <div className="bg-apple-gray-50 px-4 py-2 rounded-[12px] text-right flex-shrink-0">
-          <div className="text-[13px] text-apple-gray-500 mb-0.5">剩餘政府額度</div>
-          <div className={`text-[17px] font-mono font-bold ${
-            totalSubsidyMonthly - coveredBySubsidy > 0 ? "text-apple-green" : "text-apple-red"
-          }`}>
-            {formatMoney(Math.max(0, totalSubsidyMonthly - coveredBySubsidy))}
+          <div className="text-[13px] text-apple-gray-500 mb-0.5">每月自付（服務自付＋耗材）</div>
+          <div className="text-[17px] font-mono font-bold text-apple-red">
+            {formatMoney(finalOutOfPocket)}
+          </div>
+          <div className="text-[12px] text-apple-gray-500 mt-1">
+            剩餘政府額度{" "}
+            <span className={`font-mono font-semibold ${totalSubsidyMonthly - coveredBySubsidy > 0 ? "text-apple-green" : "text-apple-red"}`}>
+              {formatMoney(Math.max(0, totalSubsidyMonthly - coveredBySubsidy))}
+            </span>
           </div>
         </div>
       </div>
