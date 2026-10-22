@@ -157,15 +157,15 @@ export default function FinancialReport({
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-          <div className="rounded-[14px] bg-white/10 border border-white/15 p-4">
+          <div className="rounded-[14px] bg-white/10 p-4">
             <div className="text-[12px] text-white/70 mb-1">家庭每月總支出</div>
             <div className="text-[21px] font-mono font-bold">{formatMoney(adjustedMonthlyBurden)}</div>
           </div>
-          <div className="rounded-[14px] bg-white/10 border border-white/15 p-4">
+          <div className="rounded-[14px] bg-white/10 p-4">
             <div className="text-[12px] text-white/70 mb-1">每人月分攤（含疾病）</div>
             <div className="text-[21px] font-mono font-bold">{formatMoney(Math.max(0, adjustedPerPersonMonthly))}</div>
           </div>
-          <div className="rounded-[14px] bg-white/10 border border-white/15 p-4">
+          <div className="rounded-[14px] bg-white/10 p-4">
             <div className="text-[12px] text-white/70 mb-1">5 年家庭總支出</div>
             <div className="text-[21px] font-mono font-bold">{formatMoney(total5YearPaid + extraConditionMonthlyCost * months)}</div>
           </div>
@@ -190,10 +190,10 @@ export default function FinancialReport({
       </div>
 
       {/* ====== MAIN REPORT CARD ====== */}
-      <div className="bg-white rounded-[14px] shadow-apple-warm border border-apple-gray-200/60 overflow-hidden">
+      <div className="bg-white rounded-[14px] shadow-apple-warm overflow-hidden">
         <div className="h-2 bg-gradient-to-r from-apple-orange via-apple-pink to-apple-purple w-full" />
-        <div className="p-7 sm:p-9">
-          <div className="flex items-center justify-between mb-7 pb-7 border-b border-apple-gray-200/60">
+        <div className="p-4 sm:p-9">
+          <div className="flex items-center justify-between mb-5 pb-5 sm:mb-7 sm:pb-7 border-b border-apple-gray-200/60">
             <div>
               <div className="text-[13px] text-apple-gray-500 font-medium mb-1 uppercase tracking-wider">選擇方案</div>
               <div className="text-[21px] font-bold text-apple-gray-900">{getCareTypeName(careType)}</div>
@@ -205,7 +205,7 @@ export default function FinancialReport({
           </div>
 
           <div className="space-y-4 mb-7">
-            <div className="flex items-center justify-between p-5 rounded-[14px] bg-apple-red/5 border border-apple-red/10">
+            <div className="flex items-center justify-between p-4 sm:p-5 rounded-[14px] bg-apple-red/5">
               <div>
                 <div className="text-[16px] font-semibold text-apple-red mb-1">家庭 5 年總支出（你要付的）</div>
                 <div className="text-[13px] text-apple-gray-500">
@@ -218,7 +218,7 @@ export default function FinancialReport({
                 {formatMoney(total5YearPaid)}
               </div>
             </div>
-            <div className="flex items-center justify-between p-5 rounded-[14px] bg-apple-green/5 border border-apple-green/10">
+            <div className="flex items-center justify-between p-4 sm:p-5 rounded-[14px] bg-apple-green/5">
               <div>
                 <div className="text-[16px] font-semibold text-apple-green mb-1">政府 5 年總補助（政府幫你付的）</div>
                 <div className="text-[13px] text-apple-gray-500">包含照顧、接送、喘息額度</div>
@@ -231,7 +231,7 @@ export default function FinancialReport({
 
           {/* Foreign caregiver real cost breakdown */}
           {isForeignCaregiver && (
-            <div className="bg-blue-50/60 rounded-[14px] p-5 border border-blue-100/50 mb-7">
+            <div className="bg-blue-50/60 rounded-[14px] p-4 sm:p-5 mb-7">
               <button
                 onClick={() => setShowForeignBreakdown(!showForeignBreakdown)}
                 className="w-full flex items-center justify-between"
@@ -265,7 +265,7 @@ export default function FinancialReport({
           {/* Institution real cost breakdown */}
           {isInstitution && (
             <div className="space-y-4 mb-7">
-              <div className="bg-violet-50/60 rounded-[14px] p-5 border border-violet-100/50">
+              <div className="bg-violet-50/60 rounded-[14px] p-4 sm:p-5">
                 <button
                   onClick={() => setShowInstitutionBreakdown(!showInstitutionBreakdown)}
                   className="w-full flex items-center justify-between"
@@ -304,7 +304,7 @@ export default function FinancialReport({
               </div>
 
               {/* 住宿補助新制提醒（2026/9 起） */}
-              <div className="bg-amber-50/80 rounded-[14px] p-5 border border-amber-200/50">
+              <div className="bg-amber-50/80 rounded-[14px] p-4 sm:p-5">
                 <div className="flex items-start gap-3">
                   <span className="text-amber-700 flex-shrink-0 mt-0.5"><Icon name="calendar" size={22} /></span>
                   <div>
@@ -313,7 +313,7 @@ export default function FinancialReport({
                       住宿式機構補助改為<strong>按月認列：每月 $15,000，全年最高 $180,000</strong>。
                       當月入住達該月日曆天數一半即認列 1 個月，不再需要全年累計 180 天。
                     </p>
-                    <div className="bg-white/60 rounded-[12px] p-3 border border-amber-100/50">
+                    <div className="bg-white/60 rounded-[12px] p-3">
                       <p className="text-[12px] text-amber-700/70">
                         <strong>撥款時程：</strong>一年撥款兩次——1–8 月份預計 11 月底前核撥，9–12 月份預計隔年 1 月底前核撥。
                         追溯自 2026/1/1，2026/9/14 起開放申請。
@@ -329,7 +329,7 @@ export default function FinancialReport({
 
       {/* ====== DISEASE-SPECIFIC COSTS ====== */}
       {selectedConditions.length > 0 && (
-        <div className="bg-white rounded-[14px] border border-apple-gray-200/60 p-6 shadow-sm">
+        <div className="bg-white rounded-[14px] p-5 sm:p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-apple-gray-700"><Icon name="stethoscope" size={26} /></span>
             <div>
@@ -385,7 +385,7 @@ export default function FinancialReport({
 
       {/* ====== DISEASE COMMUNICATION TIPS ====== */}
       {selectedConditions.length > 0 && (
-        <div className="bg-gradient-to-br from-purple-50/50 to-indigo-50/30 rounded-[14px] p-6 border border-purple-100/40">
+        <div className="bg-gradient-to-br from-purple-50/50 to-indigo-50/30 rounded-[14px] p-5 sm:p-6">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-purple-700"><Icon name="chat" size={26} /></span>
             <h4 className="text-[16px] font-bold text-apple-gray-900">跟長輩溝通的小提醒</h4>
@@ -425,7 +425,7 @@ export default function FinancialReport({
       )}
 
       {/* ====== ELDERLY ASSETS + FAMILY SPLIT ====== */}
-      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-[14px] p-7 sm:p-8 border border-orange-100/50">
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-[14px] p-5 sm:p-8">
         <div className="flex items-center gap-3 mb-5">
           <span className="text-amber-700"><Icon name="users" size={28} /></span>
           <div>
@@ -435,7 +435,7 @@ export default function FinancialReport({
         </div>
 
         {/* Elderly assets input */}
-        <div className="bg-white/70 rounded-[14px] p-5 border border-orange-100/30 mb-5">
+        <div className="bg-white/70 rounded-[14px] p-4 sm:p-5 mb-5">
           <label className="block text-[14px] font-semibold text-apple-gray-700 mb-3">
             <Icon name="coins" size={15} className="inline-block mr-1 align-[-2px]" /> 長輩可動用的積蓄／退休金／保險
           </label>
@@ -462,7 +462,7 @@ export default function FinancialReport({
         </div>
 
         {/* Siblings split */}
-        <div className="bg-white/70 rounded-[14px] p-5 border border-orange-100/30">
+        <div className="bg-white/70 rounded-[14px] p-4 sm:p-5">
           <div className="flex items-center gap-4 mb-4">
             <span className="text-[14px] font-semibold text-apple-gray-700 whitespace-nowrap">子女分攤人數</span>
             <div className="flex items-center gap-3 bg-white rounded-full px-3 py-1.5 shadow-sm border border-apple-gray-200/60">
@@ -507,7 +507,7 @@ export default function FinancialReport({
       <LegalNavigator elderlyAssets={elderlyAssets} />
 
       {/* ====== OPPORTUNITY COST WARNING ====== */}
-      <div className="bg-white rounded-[14px] border border-apple-gray-200/60 overflow-hidden shadow-sm">
+      <div className="bg-white rounded-[14px] overflow-hidden shadow-sm">
         <button
           onClick={() => setShowOpportunityCost(!showOpportunityCost)}
           className="w-full flex items-center justify-between p-6"
@@ -552,7 +552,7 @@ export default function FinancialReport({
             </div>
 
             {savingFromNotQuitting > 0 && (
-              <div className="bg-green-50 rounded-[16px] p-5 border border-green-100/50">
+              <div className="bg-green-50 rounded-[16px] p-4 sm:p-5">
                 <p className="text-[15px] font-bold text-green-800 mb-1">
                   不辭職，繼續上班 + 善用長照 2.0，5 年可多留住
                 </p>
@@ -563,7 +563,7 @@ export default function FinancialReport({
               </div>
             )}
 
-            <div className="bg-amber-50/60 rounded-[14px] p-4 border border-orange-100/30">
+            <div className="bg-amber-50/60 rounded-[14px] p-4">
               <p className="text-[13px] text-amber-800/70 leading-relaxed">
                 <Icon name="bulb" size={14} className="inline-block mr-1 align-[-2px]" /> <strong>另外別忘了：</strong>辭職會中斷勞保年資，影響你未來的老年年金，
                 以及不孝的標籤還沒算…善用政府長照資源，才是對全家最好的選擇。

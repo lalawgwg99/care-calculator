@@ -234,7 +234,7 @@ export default function HiddenSavingsPanel({
   };
 
   return (
-    <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-[14px] border border-emerald-200/50 overflow-hidden shadow-sm">
+    <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-[14px] overflow-hidden shadow-sm">
       {/* ====== HEADER ====== */}
       <div className="p-7 sm:p-9">
         <div className="flex items-center gap-3 mb-2">
@@ -248,7 +248,7 @@ export default function HiddenSavingsPanel({
         </p>
 
         {/* ====== 總金額預覽 ====== */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-[14px] p-6 border border-emerald-100/50 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-[14px] p-4 sm:p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="text-[13px] text-apple-gray-500 mb-1">每年可省下</div>
@@ -289,7 +289,7 @@ export default function HiddenSavingsPanel({
         </div>
 
         {/* ====== 快速設定表單 ====== */}
-        <div className="bg-white/70 rounded-[14px] border border-emerald-100/50 overflow-hidden mb-6">
+        <div className="bg-white/70 rounded-[14px] overflow-hidden mb-6">
           <button
             onClick={() => setIsFormExpanded(!isFormExpanded)}
             className="w-full flex items-center justify-between p-5"
@@ -446,7 +446,7 @@ export default function HiddenSavingsPanel({
         </div>
 
         {/* ====== 提醒文字 ====== */}
-        <div className="mt-6 bg-white/60 rounded-[16px] p-4 border border-emerald-100/50">
+        <div className="mt-6 bg-white/60 rounded-[16px] p-4">
           <p className="text-[12px] text-emerald-700/60 leading-relaxed">
             * 稅務與國保採 2026 年可核對的中央標準；地方健保、敬老卡、停車與牌照稅因資格條件不足，不列入省下總額。
             實際節稅金額仍以綜合所得稅申報及國稅局核定為準。
