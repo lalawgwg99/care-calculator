@@ -22,6 +22,24 @@ const TOOL_GROUPS = [
     iconBg: "bg-blue-100",
     tools: [
       {
+        href: "/tools/home-vs-institution",
+        icon: "scale" as IconName,
+        title: "在宅 vs 機構總成本比較",
+        desc: "兩邊每月總自付同屏對照，含補助抵扣與家人請假成本",
+      },
+      {
+        href: "/tools/foreign-caregiver",
+        icon: "users" as IconName,
+        title: "外籍看護聘僱全攻略",
+        desc: "資格自測（80 歲免評新制）＋每月費用試算＋管理實務",
+      },
+      {
+        href: "/tools/facility-costs",
+        icon: "coins" as IconName,
+        title: "機構費用行情",
+        desc: "縣市官方核定的護理之家收費上限與查費方法",
+      },
+      {
         href: "/insurance",
         icon: "shield" as IconName,
         title: "保險補充計算",
@@ -57,6 +75,18 @@ const TOOL_GROUPS = [
         icon: "clipboard" as IconName,
         title: "機構評估清單",
         desc: "選擇居家或住宿機構的評估評分表",
+      },
+      {
+        href: "/tools/facility-checklist",
+        icon: "check" as IconName,
+        title: "機構挑選檢核表",
+        desc: "參觀前、中、後三階段清單＋紅旗警訊，可列印",
+      },
+      {
+        href: "/tools/dementia-guide",
+        icon: "brain" as IconName,
+        title: "失智行為應對速查",
+        desc: "半夜不睡、想出門、懷疑偷東西等五種行為的當下應對",
       },
     ],
   },
