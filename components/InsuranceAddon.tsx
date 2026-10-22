@@ -49,7 +49,7 @@ export default function InsuranceAddon({
   const verdict = gap === 0 ? "ok" : gap <= 15000 ? "warn" : "bad";
 
   const bars = [
-    { label: "政府補助", value: govSubsidy, color: "bg-emerald-400", textColor: "text-emerald-700" },
+    { label: "政府補助（僅照顧服務）", value: govSubsidy, color: "bg-emerald-400", textColor: "text-emerald-700" },
     { label: "保險補充", value: insurance, color: "bg-blue-400", textColor: "text-blue-700" },
     { label: "自付缺口", value: gap, color: "bg-rose-300", textColor: "text-rose-700" },
   ];

@@ -162,7 +162,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
     if (cmsLevel >= 4) {
       return {
         id: "day-care" as CareType,
-        reason: "中重度失能且仍需生活支援，日照可兼顧成本與白天照護。",
+        reason: "居家與日照的政府補助、自付額相同，差別在照顧型態：白天需要有人看顧、家屬要上班，先考慮日照；夜間照顧需求高或不便接送，再選居家。",
       };
     }
     return {
@@ -219,6 +219,9 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
             <div className="text-[12px] text-apple-gray-500 mb-0.5">政府每月補助</div>
             <div className="text-[20px] font-mono font-bold text-emerald-600 tracking-tight">
               {formatMoney(path.monthlySubsidy)}
+            </div>
+            <div className="text-[11px] text-apple-gray-400 mt-0.5">
+              {path.id === "institution" ? "住宿式機構補助" : "照顧＋交通＋喘息（攤提）合計"}
             </div>
           </div>
           <div>
@@ -306,7 +309,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
       {/* 住宿式機構資格補充：兩類特殊資格會影響補助金額 */}
       <div className="max-w-2xl mx-auto mb-8 bg-violet-50/70 border border-violet-200/60 rounded-[14px] p-4 sm:p-5">
         <div className="text-[13px] font-semibold text-violet-900 mb-3">
-          住宿式機構補助資格補充（有符合請勾選，會即時更新下方試算）
+          如果長輩有下面任一情況，請勾選（會影響機構補助金額，勾了會即時重算）
         </div>
         <label className="flex items-start gap-3 cursor-pointer py-1.5">
           <input
@@ -316,8 +319,8 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
             className="mt-1 w-5 h-5 accent-violet-600 shrink-0"
           />
           <span className="text-[14px] text-apple-gray-800">
-            2023/1/1 前就已入住機構的<strong>既有住民</strong>
-            <span className="block text-[12px] text-apple-gray-500 mt-0.5">CMS 未達 4 級也可領每月 $5,000（無此資格則 $0）</span>
+            長輩在 <strong>2023 年以前就住進機構</strong>，一直住到現在
+            <span className="block text-[12px] text-apple-gray-500 mt-0.5">符合「既有住民」資格：就算 CMS 未達 4 級，每月也可領 $5,000 補助；沒勾就是 $0</span>
           </span>
         </label>
         <label className="flex items-start gap-3 cursor-pointer py-1.5">
@@ -328,8 +331,8 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
             className="mt-1 w-5 h-5 accent-violet-600 shrink-0"
           />
           <span className="text-[14px] text-apple-gray-800">
-            領有<strong>中度以上身心障礙證明</strong>
-            <span className="block text-[12px] text-apple-gray-500 mt-0.5">可替代 CMS 4 級資格，領每月 $15,000</span>
+            長輩有<strong>中度以上的身心障礙證明</strong>
+            <span className="block text-[12px] text-apple-gray-500 mt-0.5">就算 CMS 未達 4 級，也可領每月 $15,000 補助</span>
           </span>
         </label>
       </div>
@@ -339,8 +342,9 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="text-[13px] text-emerald-700 font-semibold mb-1">決策推薦提示</div>
-            <div className="text-[18px] font-bold text-apple-gray-900">
-              {recommendedPath.icon} 建議優先考量「{recommendedPath.title}」
+            <div className="text-[18px] font-bold text-apple-gray-900 flex items-center gap-2">
+              <Icon name={recommendedPath.icon} size={22} className="shrink-0" />
+              建議優先考量「{recommendedPath.title}」
             </div>
             <p className="text-[13px] text-emerald-800/80 mt-1">
               {recommendation.reason}
@@ -402,8 +406,12 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
               >
                 <div className="text-[13px] text-apple-gray-500 mb-1 flex items-center gap-1.5"><Icon name={path.icon} size={14} /> {path.title}</div>
                 <div className="text-[18px] font-bold text-apple-gray-900">{formatMoney(path.monthlyOutPocket)}/月</div>
-                <div className={`text-[12px] mt-1 ${monthlyDiff >= 0 ? "text-apple-red" : "text-emerald-700"}`}>
-                  {monthlyDiff >= 0 ? `比推薦多 ${formatMoney(Math.abs(monthlyDiff))}/月` : `比推薦少 ${formatMoney(Math.abs(monthlyDiff))}/月`}
+                <div className={`text-[12px] mt-1 ${monthlyDiff === 0 ? "text-apple-gray-500" : monthlyDiff > 0 ? "text-apple-red" : "text-emerald-700"}`}>
+                  {monthlyDiff === 0
+                    ? "與推薦方案同價"
+                    : monthlyDiff > 0
+                      ? `比推薦多 ${formatMoney(Math.abs(monthlyDiff))}/月`
+                      : `比推薦少 ${formatMoney(Math.abs(monthlyDiff))}/月`}
                 </div>
               </button>
             );
@@ -423,7 +431,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
           {pathways.map((path) => {
             const total5Year = path.monthlyOutPocket * 60;
             const isRecommended = path.id === recommendedId;
-            const isLowestOutPocket = path.id === lowestOutPocketId;
+            const isLowestOutPocket = path.monthlyOutPocket === lowestOutPocket;
             return (
               <div key={path.id} className={`rounded-[16px] p-4 text-center border ${isRecommended ? "border-emerald-300 bg-emerald-50/50" : "border-apple-gray-100 bg-apple-gray-50/50"}`}>
                 <div className="mb-1 text-apple-gray-500"><Icon name={path.icon} size={22} /></div>
@@ -451,7 +459,7 @@ export default function PathwayComparison({ cmsLevel, incomeStatus, transportReg
 
       {/* 提示 */}
       <div className="mt-6 text-center text-[13px] text-apple-gray-400">
-        * 外籍看護自付含薪資、就業安定費、健保費等實際支出約 ${FOREIGN_CAREGIVER_EXTRA.toLocaleString()}/月
+        * 外籍看護每月自付 = 薪資、就業安定費、健保費等 ${FOREIGN_CAREGIVER_EXTRA.toLocaleString()} ＋ 長照服務自付（依 CMS 等級與收入身分計算）
         {institutionSubsidy === 0 && "　* 住宿式機構補助：CMS 4+／中度以上身障每月 $15,000；2023 年前入住的既有住民每月 $5,000"}
       </div>
     </div>

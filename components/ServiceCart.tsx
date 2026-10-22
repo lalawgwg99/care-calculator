@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon, { type IconName } from "./Icon";
 
 export interface CareServiceItem {
@@ -114,9 +114,10 @@ const SERVICE_PRESETS: ServicePreset[] = [
 export interface ServiceCartProps {
   totalSubsidyMonthly: number;
   baseCopayRate: number;
+  onCartChange?: (info: { monthlyOutOfPocket: number; hasSelection: boolean }) => void;
 }
 
-export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: ServiceCartProps) {
+export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate, onCartChange }: ServiceCartProps) {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [consumablesMonthly, setConsumablesMonthly] = useState(3000);
   const [expandedCategory, setExpandedCategory] = useState<number>(0);
@@ -149,6 +150,16 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
     : 0;
 
   const selectedCount = Object.values(quantities).reduce((a, b) => a + b, 0);
+
+  // 把購物車算出的月自付回報給父層（5 年報表要用購物車的數字，不是試算初值）
+  const cartChangeRef = useRef(onCartChange);
+  cartChangeRef.current = onCartChange;
+  useEffect(() => {
+    cartChangeRef.current?.({
+      monthlyOutOfPocket: Math.round(finalOutOfPocket),
+      hasSelection: selectedCount > 0,
+    });
+  }, [finalOutOfPocket, selectedCount]);
   const selectedItems = ALL_SERVICES
     .filter((item) => (quantities[item.id] || 0) > 0)
     .map((item) => ({
@@ -268,7 +279,13 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {SERVICE_PRESETS.map((preset) => (
+          {SERVICE_PRESETS.map((preset) => {
+            const presetServiceCost = Object.entries(preset.quantities).reduce((sum, [id, qty]) => {
+              const item = ALL_SERVICES.find((s) => s.id === id);
+              return sum + (item ? item.cost * qty : 0);
+            }, 0);
+            const presetOverQuota = presetServiceCost > totalSubsidyMonthly;
+            return (
             <button
               key={preset.id}
               onClick={() => applyPreset(preset)}
@@ -280,12 +297,17 @@ export default function ServiceCart({ totalSubsidyMonthly, baseCopayRate }: Serv
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[12px] font-bold text-apple-gray-500">方案 {preset.icon}</span>
-                <span className="text-[11px] font-semibold text-apple-blue">{formatMoney(preset.targetBudget)}/月</span>
+                <span className="text-[11px] font-semibold text-apple-blue">服務費約 {formatMoney(presetServiceCost)}/月</span>
               </div>
               <div className="text-[14px] font-bold text-apple-gray-900 mb-1">{preset.name}</div>
               <p className="text-[12px] text-apple-gray-500 leading-relaxed">{preset.description}</p>
+              <p className="text-[11px] text-apple-gray-400 mt-1.5">建議月預算上限 {formatMoney(preset.targetBudget)}（含耗材與自付）</p>
+              {presetOverQuota && (
+                <p className="text-[11px] text-apple-red mt-1">超過你的政府額度 {formatMoney(totalSubsidyMonthly)}，超出部分全額自付</p>
+              )}
             </button>
-          ))}
+            );
+          })}
         </div>
       </div>
 

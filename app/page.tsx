@@ -57,6 +57,7 @@ export default function Home() {
   const [transportRegion, setTransportRegion] = useState<TransportRegion>("region1");
   const [assistiveDeviceGroup, setAssistiveDeviceGroup] = useState<AssistiveDeviceGroup>("group1");
   const [selectedPathway, setSelectedPathway] = useState<CareType | null>(null);
+  const [cartOutOfPocket, setCartOutOfPocket] = useState<number | null>(null);
   const [selectedConditions, setSelectedConditions] = useState<ConditionId[]>([]);
   // 住宿式機構補助的兩類特殊資格（2026-10-19 週稽核補上：既有住民／中度以上身障證明）
   const [isExistingResident, setIsExistingResident] = useState(false);
@@ -349,9 +350,9 @@ export default function Home() {
             </h2>
             <p className="text-[15px] text-amber-800/60 mt-1">3 個問題，約 30 秒完成</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-amber-800/70">
-              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 1：選擇等級</span>
-              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 2：選擇收入身份</span>
-              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 3：交通與輔具組別</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 1：在哪裡照顧</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 2：自理狀況</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">步驟 3：收入身份</span>
               <span className="px-3 py-1 rounded-lg bg-white/80 border border-orange-100">完成後：比較四種照顧路徑</span>
             </div>
           </div>
@@ -542,6 +543,25 @@ export default function Home() {
           ← 回到首頁
         </button>
       </div>
+      <div className="flex flex-wrap items-center gap-2 mb-6 bg-white border border-apple-gray-200/60 rounded-[14px] px-4 py-3">
+        <span className="text-[13px] text-apple-gray-600 mr-1">
+          目前以 <strong className="text-apple-gray-900">CMS {cmsLevel} 級</strong>試算。已經知道照管中心核定的等級？直接改：
+        </span>
+        {([1, 2, 3, 4, 5, 6, 7, 8] as CMSLevel[]).map((l) => (
+          <button
+            key={l}
+            onClick={() => setCmsLevel(l)}
+            aria-pressed={cmsLevel === l}
+            className={`w-9 h-9 rounded-full text-[14px] font-bold transition-colors ${
+              cmsLevel === l
+                ? "bg-apple-orange text-white"
+                : "bg-apple-gray-50 text-apple-gray-600 border border-apple-gray-200 hover:border-apple-orange hover:text-apple-orange"
+            }`}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
       <PathwayComparison
         cmsLevel={cmsLevel!}
         incomeStatus={incomeStatus!}
@@ -583,6 +603,9 @@ export default function Home() {
         <ServiceCart
           totalSubsidyMonthly={currentResult.totalSubsidyMonthly}
           baseCopayRate={baseCopayRate}
+          onCartChange={({ monthlyOutOfPocket, hasSelection }) =>
+            setCartOutOfPocket(hasSelection ? monthlyOutOfPocket : null)
+          }
         />
         <div className="mt-8 text-center">
           <button
@@ -604,6 +627,11 @@ export default function Home() {
         careType={selectedPathway}
         monthlyGovSubsidy={currentResult.totalSubsidyMonthly}
         monthlyOutOfPocket={currentResult.outOfPocketMonthly}
+        shoppingCartTotal={
+          (selectedPathway === "home-care" || selectedPathway === "day-care") && cartOutOfPocket !== null
+            ? cartOutOfPocket
+            : undefined
+        }
         assistiveDeviceQuota={currentResult.assistiveDeviceQuota}
         selectedConditions={selectedConditions}
         cmsLevel={cmsLevel ?? undefined}

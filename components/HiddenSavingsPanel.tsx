@@ -276,13 +276,13 @@ export default function HiddenSavingsPanel({
                 <span className="font-mono text-[15px] text-apple-green">-{formatMoney(savings.totalMonthlySavings)}</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-emerald-100/60">
-                <span className="text-[16px] font-semibold text-apple-gray-900">每月實際淨支出</span>
+                <span className="text-[16px] font-semibold text-apple-gray-900">每月平均負擔（全年減免攤提後）</span>
                 <span className="text-[24px] font-mono font-bold text-apple-orange">
                   {formatMoney(Math.max(0, netMonthlyCost))}
                 </span>
               </div>
               <p className="text-[12px] text-emerald-700/60 mt-2 text-right">
-                原本月付 {formatMoney(monthlyOutOfPocket)}，扣除各項減免後降至 {formatMoney(Math.max(0, netMonthlyCost))}
+                這是把一整年的減免平均攤到每個月的估算，不是每月實際付的現金。每月現金支出仍是 {formatMoney(monthlyOutOfPocket)}；其中長照特別扣除額等稅務減免，要到隔年 5 月報稅時才會反映。
               </p>
             </div>
           )}

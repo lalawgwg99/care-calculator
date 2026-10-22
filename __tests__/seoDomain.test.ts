@@ -12,11 +12,11 @@ describe("SEO 正式網域", () => {
     });
   });
 
-  test("sitemap 的 91 個網址全部使用正式網域且不重複", () => {
+  test("sitemap 的 96 個網址全部使用正式網域且不重複", () => {
     const entries = sitemap();
     const urls = entries.map((entry) => entry.url);
 
-    expect(urls).toHaveLength(91);
+    expect(urls).toHaveLength(96);
     expect(new Set(urls).size).toBe(urls.length);
     urls.forEach((url) => {
       expect(url === SITE_URL || url.startsWith(`${SITE_URL}/`)).toBe(true);

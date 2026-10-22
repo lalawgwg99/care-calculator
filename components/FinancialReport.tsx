@@ -205,25 +205,26 @@ export default function FinancialReport({
           </div>
 
           <div className="space-y-4 mb-7">
-            <div className="flex items-center justify-between p-5 rounded-[14px] bg-apple-green/5 border border-apple-green/10">
-              <div>
-                <div className="text-[16px] font-semibold text-apple-green mb-1">政府 5 年總補助</div>
-                <div className="text-[13px] text-apple-gray-500">包含照顧、接送、喘息額度</div>
-              </div>
-              <div className="text-[24px] sm:text-[28px] font-mono font-bold text-apple-green">
-                {formatMoney(total5YearGov)}
-              </div>
-            </div>
             <div className="flex items-center justify-between p-5 rounded-[14px] bg-apple-red/5 border border-apple-red/10">
               <div>
-                <div className="text-[16px] font-semibold text-apple-red mb-1">家庭 5 年總支出</div>
+                <div className="text-[16px] font-semibold text-apple-red mb-1">家庭 5 年總支出（你要付的）</div>
                 <div className="text-[13px] text-apple-gray-500">
                   月自付 {formatMoney(totalMonthlyBurden)}
                   {isForeignCaregiver && "（含外看真實成本）"}
+                  {shoppingCartTotal !== undefined && "（依你在購物車自訂的服務組合）"}
                 </div>
               </div>
               <div className="text-[24px] sm:text-[28px] font-mono font-bold text-apple-red">
                 {formatMoney(total5YearPaid)}
+              </div>
+            </div>
+            <div className="flex items-center justify-between p-5 rounded-[14px] bg-apple-green/5 border border-apple-green/10">
+              <div>
+                <div className="text-[16px] font-semibold text-apple-green mb-1">政府 5 年總補助（政府幫你付的）</div>
+                <div className="text-[13px] text-apple-gray-500">包含照顧、接送、喘息額度</div>
+              </div>
+              <div className="text-[24px] sm:text-[28px] font-mono font-bold text-apple-green">
+                {formatMoney(total5YearGov)}
               </div>
             </div>
           </div>

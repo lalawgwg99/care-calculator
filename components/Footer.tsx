@@ -63,7 +63,7 @@ export default function Footer() {
                     長照專線 1966
                   </div>
                   <div className="text-[12px] text-amber-700/70 mt-0.5">
-                    免費 · 週一至五 8:30–17:30
+                    免費 · 週一至五 8:30–12:00、13:30–17:30
                   </div>
                 </div>
               </a>
