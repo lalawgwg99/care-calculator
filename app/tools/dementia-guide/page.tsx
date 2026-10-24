@@ -50,7 +50,7 @@ export default function DementiaGuidePage() {
       </section>
 
       <section className="mt-8 grid sm:grid-cols-2 gap-3">
-        <Link href="/conditions/dementia" className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 p-4 hover:shadow-apple-hover transition-shadow">
+        <Link href="/blog/dementia-care-subsidy-guide" className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 p-4 hover:shadow-apple-hover transition-shadow">
           <div className="font-semibold text-[14px] text-apple-gray-900">失智症家庭的完整費用規劃</div>
           <div className="text-[12px] text-apple-gray-500 mt-1">認知功能障礙的照顧路徑與補助，一頁看完</div>
         </Link>
