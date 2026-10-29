@@ -40,6 +40,12 @@ const TOOL_GROUPS = [
         desc: "縣市官方核定的護理之家收費上限與查費方法",
       },
       {
+        href: "/tools/institution-subsidy",
+        icon: "coins" as IconName,
+        title: "住宿式機構補助試算器",
+        desc: "115 年度現制：每月最高 15,000 元試算＋申請步驟與文件清單",
+      },
+      {
         href: "/insurance",
         icon: "shield" as IconName,
         title: "保險補充計算",
@@ -87,6 +93,12 @@ const TOOL_GROUPS = [
         icon: "brain" as IconName,
         title: "失智行為應對速查",
         desc: "半夜不睡、想出門、懷疑偷東西等五種行為的當下應對",
+      },
+      {
+        href: "/tools/barthel-check",
+        icon: "clipboard" as IconName,
+        title: "巴氏量表自評工具",
+        desc: "十項日常生活逐項點選，即時加總 0–100 分與依賴程度白話說明",
       },
     ],
   },

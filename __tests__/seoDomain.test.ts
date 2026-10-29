@@ -16,7 +16,7 @@ describe("SEO 正式網域", () => {
     const entries = sitemap();
     const urls = entries.map((entry) => entry.url);
 
-    expect(urls).toHaveLength(96);
+    expect(urls).toHaveLength(103);
     expect(new Set(urls).size).toBe(urls.length);
     urls.forEach((url) => {
       expect(url === SITE_URL || url.startsWith(`${SITE_URL}/`)).toBe(true);
