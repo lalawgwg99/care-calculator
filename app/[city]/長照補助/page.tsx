@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Icon from '@/components/Icon';
 import { TAIWAN_CITIES, CMS_LEVELS, CMS_LEVEL_INFO, CARE_TYPE_INFO } from '@/constants/pseoData';
 import { absoluteUrl, pageAlternates } from '@/lib/site';
+import { POLICY_SOURCES } from '@/lib/policyData';
 
 interface PageProps {
   params: { city: string };
@@ -397,7 +398,7 @@ export default function CityLTCRevenuePage({ params }: PageProps) {
             查詢{cityInfo.name}的長照機構、日照中心、居家服務單位
           </p>
           <a
-            href={`https://1966.gov.tw/LTC/cp-6568-69925-207.html`}
+            href={POLICY_SOURCES.longTermCare}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-apple-orange text-[16px] font-bold rounded-full shadow-lg hover:shadow-xl transition-shadow border border-orange-200"
