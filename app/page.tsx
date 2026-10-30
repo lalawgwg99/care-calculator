@@ -376,7 +376,7 @@ export default function Home() {
               <div className="pt-6">
             <div className="mb-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
-                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">3. 交通接送分區</span>
+                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">4. 交通接送分區</span>
                 <select
                   value={transportRegion}
                   onChange={(event) => setTransportRegion(event.target.value as TransportRegion)}
@@ -389,7 +389,7 @@ export default function Home() {
                 <span className="block text-[12px] text-apple-gray-500 mt-2">分區以照管中心依居住鄉鎮核定為準。</span>
               </label>
               <label className="block">
-                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">4. 輔具額度組別</span>
+                <span className="block text-[15px] font-semibold text-apple-gray-800 mb-2">5. 輔具額度組別</span>
                 <select
                   value={assistiveDeviceGroup}
                   onChange={(event) => setAssistiveDeviceGroup(event.target.value as AssistiveDeviceGroup)}
@@ -406,7 +406,7 @@ export default function Home() {
             {/* Condition Selection (Optional) */}
             <div className="mb-10">
               <label className="block text-[16px] font-semibold text-apple-gray-800 mb-2">
-                5. 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
+                6. 長輩的主要健康狀況 <span className="text-[14px] font-normal text-apple-gray-500">(可複選，選填)</span>
               </label>
               <p className="text-[13px] text-apple-gray-500 mb-4">
                 選填。選了會給你對應疾病的照顧建議和注意事項。
