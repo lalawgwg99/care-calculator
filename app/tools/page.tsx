@@ -17,6 +17,25 @@ export const metadata: Metadata = {
 
 const TOOL_GROUPS = [
   {
+    title: "出院準備",
+    color: "from-teal-50 to-emerald-50",
+    iconBg: "bg-teal-100",
+    tools: [
+      {
+        href: "/tools/discharge-checklist",
+        icon: "hospital" as IconName,
+        title: "出院準備倒數待辦清單",
+        desc: "輸入預計出院日，自動生成出院前 7 天→當天→出院後 3 天的待辦清單",
+      },
+      {
+        href: "/tools/care-report",
+        icon: "doc" as IconName,
+        title: "免費照顧報告書",
+        desc: "待辦時程＋成本對照＋應備文件，一頁整理好、免費列印成 PDF",
+      },
+    ],
+  },
+  {
     title: "財務 & 法律",
     color: "from-blue-50 to-indigo-50",
     iconBg: "bg-blue-100",
