@@ -227,7 +227,7 @@ describe('careLogic 核心計算邏輯測試', () => {
         assistiveDeviceGroup: 'group2',
       });
       expect(result.assistiveDeviceQuota).toBe(60000);
-      expect(result.policyVersion).toBe('2026-10-08');
+      expect(result.policyVersion).toBe('2026-10-31');
     });
   });
 
