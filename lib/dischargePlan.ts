@@ -123,12 +123,19 @@ export const DISCHARGE_SOURCES = {
   applyLtc: "https://1966.gov.tw/LTC/cp-6533-70777-207.html",
 } as const;
 
-/** 以本地時區解析 YYYY-MM-DD（避免 UTC 換日偏移）。 */
+/** 以本地時區解析 YYYY-MM-DD（避免 UTC 換日偏移）。月／日超出範圍視為無效。 */
 export function parseLocalDate(value: string): Date | null {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!m) return null;
-  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-  return Number.isNaN(d.getTime()) ? null : d;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const day = Number(m[3]);
+  if (mo < 1 || mo > 12 || day < 1) return null;
+  const d = new Date(y, mo - 1, day);
+  // Date 會自動進位（如 2 月 30 日變 3 月 2 日、13 月變隔年 1 月），須回頭
+  // 核對年月日一致才算合法；否則同步解析（參數／已存日期）會放行怪日期。
+  if (d.getFullYear() !== y || d.getMonth() !== mo - 1 || d.getDate() !== day) return null;
+  return d;
 }
 
 export function toDateInputValue(d: Date): string {
@@ -163,6 +170,73 @@ export const PHASE_LABELS: Record<DischargePhase, string> = {
   day: "出院當天",
   after: "出院後 3 天",
 };
+
+/**
+ * 待辦頁與報告書共用的本機狀態（同一份 localStorage 紀錄）。
+ *
+ * 斷點說明（2026-11-05 實測）：舊版待辦頁只存 checked／docsChecked、從不存
+ * dischargeDate，報告書的日期又只從 ?discharge= 參數讀——經「相關工具」卡片
+ * 或直接開網址進報告書時沒有參數，日期就掉回預設值（今天＋7 天），印出來
+ * 是錯的時程。舊版兩頁又都用「先渲染空狀態、再用 useEffect 讀取修正」，
+ * 首次載入一定先看到未勾選／預設日期，且待辦頁 mount 時的寫入 effect 會
+ * 先以初始空集合把已存勾選蓋掉（讀取 effect 的 setState 尚未套用），構成
+ * 寫入競態。修法：日期寫進同一份紀錄、兩頁一律用 lazy initializer 直接
+ * 從 localStorage 讀（首次 render 就正確，不經 effect 修正、不先寫空值）。
+ */
+export const DISCHARGE_STORAGE_KEY = "carepilot-discharge-v1";
+
+export interface DischargeSavedState {
+  dischargeDate?: string;
+  checked?: string[];
+  docsChecked?: string[];
+}
+
+/** 預設出院日：今天＋7 天（兩頁共用，避免各寫一份漂移）。 */
+export function defaultDischargeDate(): string {
+  return toDateInputValue(addDays(new Date(), 7));
+}
+
+function isStringArray(v: unknown): v is string[] {
+  return Array.isArray(v) && v.every((x) => typeof x === "string");
+}
+
+/** 讀取共用已存狀態；SSR 時回 null，損壞／格式不符的欄位逐項捨棄。 */
+export function loadDischargeState(): DischargeSavedState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(DISCHARGE_STORAGE_KEY);
+    if (!raw) return null;
+    const saved = JSON.parse(raw) as DischargeSavedState;
+    if (typeof saved !== "object" || saved === null) return null;
+    const out: DischargeSavedState = {};
+    if (typeof saved.dischargeDate === "string" && parseLocalDate(saved.dischargeDate)) {
+      out.dischargeDate = saved.dischargeDate;
+    }
+    if (isStringArray(saved.checked)) out.checked = saved.checked;
+    if (isStringArray(saved.docsChecked)) out.docsChecked = saved.docsChecked;
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+/** 寫回共用已存狀態（SSR 時為空操作，寫入失敗靜默忽略）。 */
+export function saveDischargeState(state: DischargeSavedState): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(DISCHARGE_STORAGE_KEY, JSON.stringify(state));
+  } catch {}
+}
+
+/**
+ * 報告書出院日期解析順序：URL ?discharge= 參數（已驗證）＞ 已存日期（已驗證）
+ * ＞ 預設（今天＋7 天）。無效值一律往下一層 fallback，不丟例外。
+ */
+export function resolveDischargeDate(param: string | null, stored?: string): string {
+  if (param && parseLocalDate(param)) return param;
+  if (stored && parseLocalDate(stored)) return stored;
+  return defaultDischargeDate();
+}
 
 export const DISCHARGE_DISCLAIMER =
   "本清單僅供一般資訊參考，不是醫療建議。照顧計畫、評估時程與費用以照管專員正式評估、各醫院出院準備小組公告及衛福部最新公告為準；各醫院參與計畫情形不同，請先向住院醫院確認。";

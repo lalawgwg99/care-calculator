@@ -5,17 +5,16 @@ import { useEffect, useMemo, useState } from "react";
 import Icon from "@/components/Icon";
 import {
   buildDischargeTimeline,
+  defaultDischargeDate,
   DISCHARGE_DISCLAIMER,
   DISCHARGE_DOCS,
   formatDateZh,
+  loadDischargeState,
   parseLocalDate,
   PHASE_LABELS,
-  toDateInputValue,
-  addDays,
+  saveDischargeState,
   type DischargePhase,
 } from "@/lib/dischargePlan";
-
-const STORAGE_KEY = "carepilot-discharge-v1";
 
 const PHASE_ORDER: DischargePhase[] = ["before", "day", "after"];
 
@@ -25,34 +24,21 @@ const PHASE_STYLE: Record<DischargePhase, string> = {
   after: "bg-indigo-50 border-indigo-100 text-indigo-800",
 };
 
-function defaultDischargeDate(): string {
-  return toDateInputValue(addDays(new Date(), 7));
-}
-
 export default function DischargeChecklist() {
-  const [dischargeDate, setDischargeDate] = useState(defaultDischargeDate);
+  // 同步修復（2026-11-05）：四個狀態一律用 lazy initializer 直接從共用
+  // localStorage 讀，首次 render 就正確。舊版「先渲染空狀態、再用 useEffect
+  // 讀取修正」會讓首次載入看到未勾選，且 mount 時的寫入 effect 會先以空
+  // 集合蓋掉已存勾選。出院日期也要寫進同一份紀錄，報告書才讀得到。
+  const [dischargeDate, setDischargeDate] = useState(
+    () => loadDischargeState()?.dischargeDate ?? defaultDischargeDate()
+  );
   const [elderName, setElderName] = useState("");
-  const [checked, setChecked] = useState<Set<string>>(new Set());
-  const [docsChecked, setDocsChecked] = useState<Set<string>>(new Set());
+  const [checked, setChecked] = useState<Set<string>>(() => new Set(loadDischargeState()?.checked ?? []));
+  const [docsChecked, setDocsChecked] = useState<Set<string>>(() => new Set(loadDischargeState()?.docsChecked ?? []));
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const saved = JSON.parse(raw) as { checked?: string[]; docsChecked?: string[] };
-        if (saved.checked) setChecked(new Set(saved.checked));
-        if (saved.docsChecked) setDocsChecked(new Set(saved.docsChecked));
-      }
-    } catch {}
-    // 只在初次載入讀取
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ checked: [...checked], docsChecked: [...docsChecked] }));
-    } catch {}
-  }, [checked, docsChecked]);
+    saveDischargeState({ dischargeDate, checked: [...checked], docsChecked: [...docsChecked] });
+  }, [dischargeDate, checked, docsChecked]);
 
   const discharge = parseLocalDate(dischargeDate);
   const timeline = useMemo(() => (discharge ? buildDischargeTimeline(discharge) : []), [discharge]);

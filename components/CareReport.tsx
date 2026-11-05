@@ -13,29 +13,35 @@ import {
 import { ASSISTIVE_DEVICE_GROUPS, getRespiteYearlyQuota, POLICY_VERSION } from "@/lib/policyData";
 import {
   buildDischargeTimeline,
+  defaultDischargeDate,
   DISCHARGE_DISCLAIMER,
   DISCHARGE_DOCS,
   DISCHARGE_SOURCES,
   formatDateZh,
+  loadDischargeState,
   parseLocalDate,
   PHASE_LABELS,
-  toDateInputValue,
-  addDays,
+  resolveDischargeDate,
+  saveDischargeState,
   type DischargePhase,
 } from "@/lib/dischargePlan";
 
-const STORAGE_KEY = "carepilot-discharge-v1";
 const PHASE_ORDER: DischargePhase[] = ["before", "day", "after"];
 
 const fmt = (n: number) => Math.round(n).toLocaleString("zh-TW");
 
-function defaultDischargeDate(): string {
-  return toDateInputValue(addDays(new Date(), 7));
-}
-
 export default function CareReport() {
   const [elderName, setElderName] = useState("");
-  const [dischargeDate, setDischargeDate] = useState(defaultDischargeDate);
+  // 同步修復（2026-11-05）：出院日期解析順序為 ?discharge= 參數 ＞ 待辦頁
+  // 已存日期 ＞ 預設；勾選狀態與待辦頁共用同一份 localStorage 紀錄。四個
+  // 狀態一律用 lazy initializer 直接讀，首次 render 就正確，不經 useEffect
+  // 修正（舊版首次載入一定先看到未勾選／預設日期）。寫回 effect 讓在報告
+  // 書頁勾的／改的日期也帶回待辦頁（雙向同步）。
+  const [dischargeDate, setDischargeDate] = useState(() => {
+    if (typeof window === "undefined") return defaultDischargeDate();
+    const param = new URLSearchParams(window.location.search).get("discharge");
+    return resolveDischargeDate(param, loadDischargeState()?.dischargeDate);
+  });
   const [cmsLevel, setCmsLevel] = useState<CMSLevel | null>(null);
   const [incomeStatus, setIncomeStatus] = useState<IncomeStatus>("general");
   const [carePlan, setCarePlan] = useState<"home" | "institution" | "undecided">("undecided");
@@ -44,24 +50,13 @@ export default function CareReport() {
   const [homeConsumables, setHomeConsumables] = useState(3000);
   const [leaveDays, setLeaveDays] = useState(0);
   const [dailyWage, setDailyWage] = useState(1500);
-  const [checked, setChecked] = useState<Set<string>>(new Set());
-  const [docsChecked, setDocsChecked] = useState<Set<string>>(new Set());
+  const [checked, setChecked] = useState<Set<string>>(() => new Set(loadDischargeState()?.checked ?? []));
+  const [docsChecked, setDocsChecked] = useState<Set<string>>(() => new Set(loadDischargeState()?.docsChecked ?? []));
   const [generatedAt] = useState(() => new Date());
 
-  // 從出院清單頁帶入日期，並讀取同一份勾選狀態
   useEffect(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const d = params.get("discharge");
-      if (d && parseLocalDate(d)) setDischargeDate(d);
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const saved = JSON.parse(raw) as { checked?: string[]; docsChecked?: string[] };
-        if (saved.checked) setChecked(new Set(saved.checked));
-        if (saved.docsChecked) setDocsChecked(new Set(saved.docsChecked));
-      }
-    } catch {}
-  }, []);
+    saveDischargeState({ dischargeDate, checked: [...checked], docsChecked: [...docsChecked] });
+  }, [dischargeDate, checked, docsChecked]);
 
   const discharge = parseLocalDate(dischargeDate);
   const timeline = useMemo(() => (discharge ? buildDischargeTimeline(discharge) : []), [discharge]);
