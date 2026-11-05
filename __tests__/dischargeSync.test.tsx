@@ -40,7 +40,7 @@ describe("出院狀態首次載入同步（元件）", () => {
     expect(dateInput.value).toBe("2026-11-20");
     // D-7 待辦已按 11-20 重算為 11/13（兩項同日），不再是預設 11-12 的 11/5
     expect(screen.getAllByText("11月13日（週五）")).toHaveLength(2);
-    expect(screen.queryByText("11月5日（週四）")).not.toBeInTheDocument();
+    expect(screen.queryByText("11月5日（週四）")).toBeNull();
     // 勾選狀態首次渲染即正確：2 項待辦＋1 項文件
     expect(screen.getAllByRole("checkbox")).toHaveLength(17);
     expect(checkedBoxes()).toHaveLength(3);
