@@ -12,13 +12,13 @@ describe("SEO 正式網域", () => {
     });
   });
 
-  test("sitemap 的 111 個網址全部使用正式網域且不重複", () => {
+  test("sitemap 的 112 個網址全部使用正式網域且不重複", () => {
     const entries = sitemap();
     const urls = entries.map((entry) => entry.url);
 
-    // 計數組成（2026-11-06）：6 主頁＋17 工具子頁（含新增出院待辦、照顧報告書）
-    // ＋1 日記＋8 CMS 等級頁＋22 縣市頁＋32 CMS×照顧方式組合頁＋25 篇 blog
-    expect(urls).toHaveLength(111);
+    // 計數組成（2026-11-07）：6 主頁＋17 工具子頁（含新增出院待辦、照顧報告書）
+    // ＋1 日記＋8 CMS 等級頁＋22 縣市頁＋32 CMS×照顧方式組合頁＋26 篇 blog
+    expect(urls).toHaveLength(112);
     expect(new Set(urls).size).toBe(urls.length);
     urls.forEach((url) => {
       expect(url === SITE_URL || url.startsWith(`${SITE_URL}/`)).toBe(true);
