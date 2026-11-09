@@ -237,7 +237,10 @@ export function getCMSLevelName(level: CMSLevel): string {
 export function getIncomeStatusName(status: IncomeStatus): string {
   const names: Record<IncomeStatus, string> = {
     'general': '一般戶',
-    'mid-low': '中低收入戶',
+    // 給付辦法第 14 條：5% 的是第二類「長照中低收入戶」（領中低收入老人
+    // 津貼第 2 款或身障生活補助者）；列冊中低收入戶屬第一類、免部分負擔。
+    // 舊稱「中低收入戶」易誤導，2026-11-09 稽核改稱第二類。
+    'mid-low': '長照中低收入戶（第二類）',
     'low': '低收入戶',
   };
   return names[status];

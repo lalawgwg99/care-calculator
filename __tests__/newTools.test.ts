@@ -85,6 +85,35 @@ describe("住宿式機構補助試算器（115 年度現制）", () => {
     expect(r.monthlyGap).toBe(30000);
   });
 
+  it("案例 4b：過渡保障認列月數未滿 8 個月時按實際月數計，不直接給 12 萬（2026-11-09 稽核 BUG-1）", () => {
+    // 保障 12 萬是「住滿 1–8 月」的期間總額（須累計入住達 180 日）；月數 3 個月只能算 3×15,000。
+    // 舊公式 120,000＋max(0, 月數−8)×15,000 會在月數 3 時算出 120,000（多算 75,000）。
+    const three = calcInstitutionSubsidy({
+      institution: "nursing",
+      qualify: "cms4",
+      monthlyFee: 45000,
+      months: 3,
+      transition: true,
+    });
+    expect(three.annualSubsidy).toBe(45000);
+    const one = calcInstitutionSubsidy({
+      institution: "nursing",
+      qualify: "cms4",
+      monthlyFee: 45000,
+      months: 1,
+      transition: true,
+    });
+    expect(one.annualSubsidy).toBe(15000);
+    const seven = calcInstitutionSubsidy({
+      institution: "nursing",
+      qualify: "cms4",
+      monthlyFee: 45000,
+      months: 7,
+      transition: true,
+    });
+    expect(seven.annualSubsidy).toBe(105000);
+  });
+
   it("不適用：非指定機構類型／三類資格皆非", () => {
     const a = calcInstitutionSubsidy({
       institution: "other",

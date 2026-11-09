@@ -18,6 +18,7 @@ import {
   DISCHARGE_DOCS,
   DISCHARGE_SOURCES,
   formatDateZh,
+  isPastDay,
   loadDischargeState,
   parseLocalDate,
   PHASE_LABELS,
@@ -59,6 +60,7 @@ export default function CareReport() {
   }, [dischargeDate, checked, docsChecked]);
 
   const discharge = parseLocalDate(dischargeDate);
+  const pastDischarge = discharge ? isPastDay(discharge) : false;
   const timeline = useMemo(() => (discharge ? buildDischargeTimeline(discharge) : []), [discharge]);
 
   const home = useMemo(
@@ -164,7 +166,7 @@ export default function CareReport() {
                 className="mt-1 w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
               >
                 <option value="general">一般戶</option>
-                <option value="mid-low">中低收入戶</option>
+                <option value="mid-low">長照中低收入戶（第二類）</option>
                 <option value="low">低收入戶</option>
               </select>
             </label>
@@ -181,6 +183,9 @@ export default function CareReport() {
               </select>
             </label>
           </div>
+          <p className="mt-2 text-[12px] text-apple-gray-400 leading-relaxed">
+            註：列冊中低收入戶屬第一類、免部分負擔；第二類指領中低收入老人津貼或身障生活補助者（部分負擔 5%）。
+          </p>
           <label className="block">
             <span className="text-[13px] text-apple-gray-600">機構月費（可依實際報價修改）</span>
             <div className="mt-1 flex items-center gap-1">
@@ -189,7 +194,7 @@ export default function CareReport() {
                 type="number"
                 min={0}
                 value={facilityFee}
-                onChange={(e) => setFacilityFee(Number(e.target.value) || 0)}
+                onChange={(e) => setFacilityFee(Math.max(0, Number(e.target.value) || 0))}
                 className="w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
               />
               <span className="text-apple-gray-400 text-[13px] shrink-0">/月</span>
@@ -204,14 +209,52 @@ export default function CareReport() {
                 type="number"
                 min={0}
                 value={homeConsumables}
-                onChange={(e) => setHomeConsumables(Number(e.target.value) || 0)}
+                onChange={(e) => setHomeConsumables(Math.max(0, Number(e.target.value) || 0))}
                 className="w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
               />
               <span className="text-apple-gray-400 text-[13px] shrink-0">/月</span>
             </div>
             <span className="block mt-1 text-[12px] text-apple-gray-400">無官方標準金額，預設 $3,000 為常見估算</span>
           </label>
+          <div className="grid grid-cols-2 gap-4">
+            <label className="block">
+              <span className="text-[13px] text-apple-gray-600">家人每月請假天數</span>
+              <input
+                type="number"
+                min={0}
+                max={31}
+                value={leaveDays}
+                onChange={(e) => setLeaveDays(Math.max(0, Math.min(31, Number(e.target.value) || 0)))}
+                className="mt-1 w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
+              />
+              <span className="block mt-1 text-[12px] text-apple-gray-400">陪同就醫、照顧空窗的隱形成本</span>
+            </label>
+            <label className="block">
+              <span className="text-[13px] text-apple-gray-600">請假一天的薪資損失</span>
+              <div className="mt-1 flex items-center gap-1">
+                <span className="text-apple-gray-400 text-[13px]">$</span>
+                <input
+                  type="number"
+                  min={0}
+                  value={dailyWage}
+                  onChange={(e) => setDailyWage(Math.max(0, Number(e.target.value) || 0))}
+                  className="w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
+                />
+              </div>
+              <span className="block mt-1 text-[12px] text-apple-gray-400">預設 $1,500，可依實際日薪修改</span>
+            </label>
+          </div>
         </div>
+        {!discharge && (
+          <p className="mt-4 rounded-[10px] bg-red-50 border border-red-200 px-3 py-2 text-[13px] text-red-800 leading-relaxed">
+            出院日期無效（年份須為 100–9999 年），請重新選擇日期；下方待辦時程暫不顯示。
+          </p>
+        )}
+        {discharge && pastDischarge && (
+          <p className="mt-4 rounded-[10px] bg-amber-50 border border-amber-200 px-3 py-2 text-[13px] text-amber-900 leading-relaxed">
+            提醒：預計出院日 {formatDateZh(discharge)} 已過去，以下待辦時程僅供回顧；若日期有誤請重新選擇。
+          </p>
+        )}
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <button
             onClick={handlePrint}
@@ -241,6 +284,16 @@ export default function CareReport() {
         </div>
 
         {/* 一、待辦時程 */}
+        {!discharge && (
+          <p className="mt-5 rounded-[10px] bg-red-50 border border-red-200 px-3 py-2 text-[13px] text-red-800 leading-relaxed">
+            出院日期無效，請重新選擇日期；待辦時程暫不顯示。
+          </p>
+        )}
+        {discharge && pastDischarge && (
+          <p className="mt-5 rounded-[10px] bg-amber-50 border border-amber-200 px-3 py-2 text-[13px] text-amber-900 leading-relaxed">
+            提醒：預計出院日 {formatDateZh(discharge)} 已過去，以下待辦時程僅供回顧。
+          </p>
+        )}
         <section className="mt-5">
           <h3 className="font-bold text-[16px] text-apple-gray-900">一、出院待辦時程</h3>
           {PHASE_ORDER.map((phase) => {

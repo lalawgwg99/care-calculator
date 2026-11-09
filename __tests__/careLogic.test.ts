@@ -307,7 +307,7 @@ describe('careLogic 核心計算邏輯測試', () => {
 
     test('getIncomeStatusName 返回正確名稱', () => {
       expect(getIncomeStatusName('general')).toBe('一般戶');
-      expect(getIncomeStatusName('mid-low')).toBe('中低收入戶');
+      expect(getIncomeStatusName('mid-low')).toBe('長照中低收入戶（第二類）');
       expect(getIncomeStatusName('low')).toBe('低收入戶');
     });
 

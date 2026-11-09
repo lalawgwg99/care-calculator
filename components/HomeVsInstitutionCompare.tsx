@@ -33,7 +33,7 @@ function MoneyInput({
           type="number"
           min={0}
           value={Number.isNaN(value) ? "" : value}
-          onChange={(e) => onChange(e.target.value === "" ? 0 : Number(e.target.value))}
+          onChange={(e) => onChange(e.target.value === "" ? 0 : Math.max(0, Number(e.target.value)))}
           className="w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
         />
         <span className="text-apple-gray-400 text-[13px] shrink-0">/月</span>
@@ -133,7 +133,7 @@ export default function HomeVsInstitutionCompare() {
                 className="mt-1 w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
               >
                 <option value="general">一般戶</option>
-                <option value="mid-low">中低收入戶</option>
+                <option value="mid-low">長照中低收入戶（第二類）</option>
                 <option value="low">低收入戶</option>
               </select>
             </label>
@@ -152,6 +152,9 @@ export default function HomeVsInstitutionCompare() {
               </select>
             </label>
           </div>
+          <p className="text-[12px] text-apple-gray-400 leading-relaxed">
+            註：列冊中低收入戶屬第一類、免部分負擔；第二類指領中低收入老人津貼或身障生活補助者（部分負擔 5%）。
+          </p>
           <div className="grid sm:grid-cols-2 gap-2">
             <label className="flex items-start gap-2.5 bg-apple-gray-50 rounded-lg px-3 py-2.5 cursor-pointer">
               <input
@@ -215,7 +218,7 @@ export default function HomeVsInstitutionCompare() {
                     min={0}
                     max={31}
                     value={leaveDays}
-                    onChange={(e) => setLeaveDays(Number(e.target.value) || 0)}
+                    onChange={(e) => setLeaveDays(Math.max(0, Math.min(31, Number(e.target.value) || 0)))}
                     className="mt-1 w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
                   />
                 </label>
@@ -227,7 +230,7 @@ export default function HomeVsInstitutionCompare() {
                       type="number"
                       min={0}
                       value={dailyWage}
-                      onChange={(e) => setDailyWage(Number(e.target.value) || 0)}
+                      onChange={(e) => setDailyWage(Math.max(0, Number(e.target.value) || 0))}
                       className="w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
                     />
                   </div>

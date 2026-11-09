@@ -140,6 +140,14 @@ describe("出院狀態同步（待辦頁 ↔ 報告書）", () => {
     expect(loadDischargeState()).toEqual({ docsChecked: ["健保卡"] });
   });
 
+  it("load：未知任務 id／文件名稱捨棄，只保留已知項目（2026-11-09 稽核 BUG-6）", () => {
+    window.localStorage.setItem(
+      DISCHARGE_STORAGE_KEY,
+      JSON.stringify({ checked: ["bogus-id", "contact-team"], docsChecked: ["健保卡", "不存在的文件"] })
+    );
+    expect(loadDischargeState()).toEqual({ checked: ["contact-team"], docsChecked: ["健保卡"] });
+  });
+
   it("以 2026-11-20 為出院日，時程逐項相符（不再是預設 11-12 的舊時程）", () => {
     const timeline = buildDischargeTimeline(parseLocalDate("2026-11-20")!);
     const byId = new Map(timeline.map((t) => [t.id, t]));

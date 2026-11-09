@@ -9,6 +9,7 @@ import {
   DISCHARGE_DISCLAIMER,
   DISCHARGE_DOCS,
   formatDateZh,
+  isPastDay,
   loadDischargeState,
   parseLocalDate,
   PHASE_LABELS,
@@ -41,6 +42,7 @@ export default function DischargeChecklist() {
   }, [dischargeDate, checked, docsChecked]);
 
   const discharge = parseLocalDate(dischargeDate);
+  const pastDischarge = discharge ? isPastDay(discharge) : false;
   const timeline = useMemo(() => (discharge ? buildDischargeTimeline(discharge) : []), [discharge]);
 
   const toggle = (id: string) =>
@@ -89,6 +91,16 @@ export default function DischargeChecklist() {
             <span className="block mt-1 text-[12px] text-apple-gray-400">只存在你的瀏覽器，不會上傳</span>
           </label>
         </div>
+        {!discharge && (
+          <p className="mt-4 rounded-[10px] bg-red-50 border border-red-200 px-3 py-2 text-[13px] text-red-800 leading-relaxed">
+            出院日期無效（年份須為 100–9999 年），請重新選擇日期；下方待辦時程暫不顯示。
+          </p>
+        )}
+        {discharge && pastDischarge && (
+          <p className="mt-4 rounded-[10px] bg-amber-50 border border-amber-200 px-3 py-2 text-[13px] text-amber-900 leading-relaxed">
+            提醒：預計出院日 {formatDateZh(discharge)} 已過去，以下待辦時程僅供回顧；若日期有誤請重新選擇。
+          </p>
+        )}
         {discharge && (
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <div className="text-[14px] text-apple-gray-700">

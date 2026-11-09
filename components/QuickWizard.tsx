@@ -30,7 +30,7 @@ const CMS_OPTIONS: Option<CMSLevel>[] = [
 
 const INCOME_OPTIONS: Option<IncomeStatus>[] = [
   { value: "general", title: "一般家庭", desc: "沒有中低收、低收證明" },
-  { value: "mid-low", title: "中低收入戶", desc: "有縣市政府核定的證明" },
+  { value: "mid-low", title: "長照中低收入戶（第二類）", desc: "領中低收入老人津貼或身障生活補助；列冊中低收入戶屬第一類、免自付" },
   { value: "low", title: "低收入戶", desc: "有縣市政府核定的證明" },
 ];
 

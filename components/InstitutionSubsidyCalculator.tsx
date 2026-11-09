@@ -102,8 +102,12 @@ export function calcInstitutionSubsidy(input: SubsidyInput): SubsidyResult {
   if (input.transition && input.qualify !== "existing") {
     // 115 年度過渡保障：114 年度曾核定 12 萬元、且 115 年 1–8 月期間實際入住
     // 累計達 180 日者，該期間補助保障核給 12 萬元；9 月起按月認列。
+    // 保障 12 萬元是「住滿 1–8 月」的期間總額，不是一勾就領 12 萬：
+    // 認列月數未滿 8 個月時按實際月數計（每月 15,000 元），否則月數 3 個月
+    // 也會算出 12 萬元、高估 75,000 元（2026-11-09 稽核 BUG-1）。
+    // 月數 ≤8 時等同月數×15,000；月數 ＞8 時為 120,000＋(月數−8)×15,000。
     annualSubsidy = Math.min(
-      TRANSITION_GUARANTEE + Math.max(0, months - 8) * MONTHLY_SEVERE,
+      Math.min(months, 8) * MONTHLY_SEVERE + Math.max(0, months - 8) * MONTHLY_SEVERE,
       annualCap,
       selfPayTotal
     );
@@ -136,7 +140,7 @@ const INSTITUTIONS: { value: InstitutionType; label: string }[] = [
 const QUALIFIES: { value: QualifyType; label: string; hint: string }[] = [
   { value: "cms4", label: "CMS 第 4 級以上", hint: "經照管中心評估達長照需要等級 4 級以上" },
   { value: "disability", label: "身障證明中度以上", hint: "持有中度以上身心障礙證明" },
-  { value: "existing", label: "既有住民", hint: "112 年 1 月 1 日前已入住，且未達 4 級" },
+  { value: "existing", label: "既有住民", hint: "112 年 1 月 1 日前已入住，且未達 4 級；若已達 4 級或持有身障證明，請改選前兩項（補助較高）" },
   { value: "none", label: "以上皆非", hint: "未評估、未達 4 級、也無身障證明" },
 ];
 
@@ -294,6 +298,11 @@ export default function InstitutionSubsidyCalculator() {
             </span>
           </label>
         )}
+        {transition && qualify !== "existing" && monthsNum < 8 && (
+          <p className="mt-3 rounded-[10px] bg-amber-50 border border-amber-200 px-3 py-2 text-[13px] text-amber-900 leading-relaxed">
+            提醒：過渡保障須 115 年 1–8 月累計入住達 180 日才適用；認列月數未滿 8 個月時，本試算按實際月數計算（每月 15,000 元），不直接以 12 萬元計。
+          </p>
+        )}
       </section>
 
       <section className="bg-white rounded-[14px] shadow-apple border border-apple-gray-200/60 p-5">
@@ -330,7 +339,7 @@ export default function InstitutionSubsidyCalculator() {
             </div>
             {transition && qualify !== "existing" && (
               <p className="text-[13px] text-apple-gray-600 leading-relaxed mt-3">
-                已套用 115 年度過渡保障：1–8 月期間保障 {fmt(TRANSITION_GUARANTEE)}，9 月起按月認列；全年仍以 {fmt(ANNUAL_CAP_SEVERE)} 為上限，並以實際自付總額為上限。
+                已套用 115 年度過渡保障：1–8 月期間保障 {fmt(TRANSITION_GUARANTEE)}（須累計入住達 180 日；未滿 8 個月按實際月數計），9 月起按月認列；全年仍以 {fmt(ANNUAL_CAP_SEVERE)} 為上限，並以實際自付總額為上限。
               </p>
             )}
             <p className="text-[13px] text-apple-gray-600 leading-relaxed mt-3">

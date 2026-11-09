@@ -186,7 +186,7 @@ export default function ForeignCaregiverGuide() {
                 type="number"
                 min={0}
                 value={monthlyWage}
-                onChange={(e) => setMonthlyWage(Number(e.target.value) || 0)}
+                onChange={(e) => setMonthlyWage(Math.max(0, Number(e.target.value) || 0))}
                 className="w-full rounded-lg border border-apple-gray-200 px-3 py-2 text-[15px] text-apple-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500/40"
               />
             </div>
@@ -245,7 +245,7 @@ export default function ForeignCaregiverGuide() {
                     type="number"
                     min={0}
                     value={agencyIntroFee}
-                    onChange={(e) => setAgencyIntroFee(Number(e.target.value) || 0)}
+                    onChange={(e) => setAgencyIntroFee(Math.max(0, Number(e.target.value) || 0))}
                     className="w-24 rounded-md border border-apple-gray-200 px-2 py-1 text-[13px] text-apple-gray-900"
                   />
                 </div>

@@ -221,7 +221,7 @@ export default function FinancialReport({
             <div className="flex items-center justify-between p-4 sm:p-5 rounded-[14px] bg-apple-green/5">
               <div>
                 <div className="text-[16px] font-semibold text-apple-green mb-1">政府 5 年總補助（政府幫你付的）</div>
-                <div className="text-[13px] text-apple-gray-500">包含照顧、接送、喘息額度</div>
+                <div className="text-[13px] text-apple-gray-500">包含照顧、接送、喘息額度；金額為補助額度上限，服務費用超出額度部分需全額自費</div>
               </div>
               <div className="text-[24px] sm:text-[28px] font-mono font-bold text-apple-green">
                 {formatMoney(total5YearGov)}

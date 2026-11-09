@@ -212,12 +212,28 @@ export function loadDischargeState(): DischargeSavedState | null {
     if (typeof saved.dischargeDate === "string" && parseLocalDate(saved.dischargeDate)) {
       out.dischargeDate = saved.dischargeDate;
     }
-    if (isStringArray(saved.checked)) out.checked = saved.checked;
-    if (isStringArray(saved.docsChecked)) out.docsChecked = saved.docsChecked;
+    // 只保留已知的任務 id／文件名稱：未知 id（localStorage 被竄改，或未來
+    // 任務更名後舊存檔殘留）若照單全收，進度會虛增（2026-11-09 稽核 BUG-6：
+    // ["bogus-id","contact-team"] 曾顯示 2/10，畫面只勾 1 項）。
+    if (isStringArray(saved.checked)) {
+      const knownIds = new Set(DISCHARGE_TASKS.map((t) => t.id));
+      out.checked = saved.checked.filter((id) => knownIds.has(id));
+    }
+    if (isStringArray(saved.docsChecked)) {
+      const knownDocs = new Set(DISCHARGE_DOCS.map((d) => d.label));
+      out.docsChecked = saved.docsChecked.filter((label) => knownDocs.has(label));
+    }
     return out;
   } catch {
     return null;
   }
+}
+
+/** 該日是否已過去（以本地日期比較，不含今天）。 */
+export function isPastDay(d: Date): boolean {
+  const today = new Date();
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return d < startOfToday;
 }
 
 /** 寫回共用已存狀態（SSR 時為空操作，寫入失敗靜默忽略）。 */
