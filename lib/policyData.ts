@@ -26,7 +26,7 @@ export const TRANSPORT_REGIONS: Record<
   TransportRegion,
   { label: string; monthlyQuota: number; description: string; copayGeneral: number; copayMidLow: number }
 > = {
-  // 部分負擔比率：長期照顧給付及支付基準附表1（第一區 30%/10%、第二區 27%/9%、第三區 25%/8%、第四區 21%/7%）
+  // 部分負擔比率：《長期照顧服務申請及給付辦法》附表五（第一區 30%/10%、第二區 27%/9%、第三區 25%/8%、第四區 21%/7%）
   region1: { label: "第一區", monthlyQuota: 1680, description: "依居住地鄉鎮分區", copayGeneral: 0.30, copayMidLow: 0.10 },
   region2: { label: "第二區", monthlyQuota: 1840, description: "依居住地鄉鎮分區", copayGeneral: 0.27, copayMidLow: 0.09 },
   region3: { label: "第三區", monthlyQuota: 2000, description: "依居住地鄉鎮分區", copayGeneral: 0.25, copayMidLow: 0.08 },
