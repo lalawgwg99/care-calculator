@@ -53,7 +53,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 县市地区长照页面 (GEO优化)
   const cityEntries = TAIWAN_CITIES.map((city) => ({
     url: `${BASE_URL}/${city.slug}/長照補助`,
-    lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
@@ -62,7 +61,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const cmsLevelEntries = CMS_LEVELS.flatMap((level) =>
     CARE_TYPES.map((care) => ({
       url: `${BASE_URL}/cms${level}/${care.slug}`,
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.5,
     }))
@@ -72,154 +70,129 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // 首页 - 最高优先级
     {
       url: BASE_URL,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     // 主要页面
     {
       url: `${BASE_URL}/blog`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/tools`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/search`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/insurance`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/about`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     // 工具子页面
     {
       url: `${BASE_URL}/tools/conditions`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/caregiverhealth`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/daily`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/tools/reablement`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/tools/burnout-check`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/tools/caregiver-comm`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/tools/dementia-sim`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/tools/medical-prep`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/tools/home-vs-institution`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/tools/discharge-checklist`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/care-report`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/foreign-caregiver`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/tools/facility-costs`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/facility-checklist`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/dementia-guide`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/institution-subsidy`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/tools/barthel-check`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/diary`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.7,
     },
     // CMS等级专项页面
     ...CMS_LEVELS.map((level) => ({
       url: `${BASE_URL}/cms${level}`,
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
